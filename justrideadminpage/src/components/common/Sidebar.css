@@ -1,0 +1,149 @@
+/* Universal Standard Sidebar across all JustRide Views */
+.app-sidebar {
+  width: 260px;
+  height: 100vh;
+  background-color: #111613;
+  border-right: 1px solid #27312B;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 1.5rem 0;
+  z-index: 50;
+  user-select: none;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-brand-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  background-color: #151A17;
+  border: 1px solid #27312B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4be277;
+  flex-shrink: 0;
+}
+
+.brand-motorcycle-icon {
+  font-size: 24px;
+  color: #4be277;
+}
+
+.brand-text-title {
+  font-size: 22px;
+  line-height: 28px;
+  font-weight: 700;
+  color: #4be277;
+  letter-spacing: -0.01em;
+}
+
+.brand-text-role {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  color: #bccbb9;
+  text-transform: uppercase;
+}
+
+.sidebar-cta-btn-wrap {
+  padding: 0 1.25rem 1.25rem 1.25rem;
+}
+
+.btn-new-ticket {
+  width: 100%;
+  padding: 0.625rem 1rem;
+  background-color: #22c55e;
+  color: #0B0F0D;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.btn-new-ticket:hover {
+  background-color: #4ADE80;
+  box-shadow: 0 0 16px rgba(74, 222, 128, 0.35);
+}
+
+.sidebar-nav-section {
+  flex: 1;
+  padding: 0 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow-y: auto;
+}
+
+.nav-link-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.65rem 0.875rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  background: transparent;
+  border: none;
+  border-left: 3px solid transparent;
+  color: #bccbb9;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.nav-link-btn:hover {
+  background-color: #1B211E;
+  color: #d6e5ea;
+}
+
+.nav-link-btn.active {
+  border-left-color: #4be277;
+  background-color: rgba(75, 226, 119, 0.1);
+  color: #d6e5ea;
+  font-weight: 700;
+}
+
+.nav-link-btn.active .nav-icon {
+  color: #4be277;
+}
+
+.nav-icon {
+  font-size: 20px;
+}
+
+.sidebar-footer-section {
+  border-top: 1px solid #27312B;
+  padding: 1rem 0.75rem 0 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.nav-link-btn.logout-btn {
+  color: #ffb4ab;
+  margin-top: 0.5rem;
+}
+
+.nav-link-btn.logout-btn:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ffdad6;
+}

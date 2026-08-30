@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ==========================================================================
+   JUSTRIDE GLOBAL UNIFIED DESIGN SYSTEM (SUPPORT & ADMIN CONSISTENT PALETTE)
+   Strictly standardized tonal layering across all Admin & Staff/Helper views:
+   - Canvas / Base: #0B0F0D (Layer 0)
+   - Sidebar / Level 1: #111613 (Layer 1)
+   - Cards / Containers: #151A17 (Layer 2)
+   - Hover / Active / Drawer: #1B211E (Layer 3)
+   - Border / Lines: #27312B (Border Standard)
+   - Primary Accent: #22C55E / #4be277 (Neon Emerald)
+   - Secondary Accent: #7BD0FF (Cyan Telemetry)
+   - Warning: #F59E0B / #ffba61 (Amber)
+   - Danger / Error: #EF4444 / #ffb4ab (Red Alert)
+   - Text Hierarchy: #F8FAFC (High), #d6e5ea (Body), #94A3A8 / #bccbb9 (Muted)
+   ========================================================================== */
+
+:root {
+  /* Tonal Layers */
+  --bg-layer-0: #0B0F0D;
+  --bg-layer-1: #111613;
+  --bg-layer-2: #151A17;
+  --bg-layer-3: #1B211E;
+  
+  /* Borders */
+  --border-standard: #27312B;
+  --border-subtle: rgba(39, 49, 43, 0.6);
+  --border-focus: #22C55E;
+  
+  /* Accents */
+  --color-primary: #22C55E;
+  --color-primary-light: #4be277;
+  --color-primary-dim: rgba(75, 226, 119, 0.1);
+  --color-secondary: #7BD0FF;
+  --color-secondary-dim: rgba(123, 208, 255, 0.1);
+  --color-warning: #F59E0B;
+  --color-warning-dim: rgba(245, 158, 11, 0.1);
+  --color-danger: #EF4444;
+  --color-danger-dim: rgba(239, 68, 68, 0.1);
+  
+  /* Text */
+  --text-white: #F8FAFC;
+  --text-body: #d6e5ea;
+  --text-muted: #94A3A8;
+  --text-dim: #869585;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg-layer-0);
+  color: var(--text-body);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: flex-start;
+  background-color: var(--bg-layer-0);
+}
+
+/* Form Inputs & Controls */
+input, select, textarea {
+  font-family: inherit;
+  background-color: var(--bg-layer-2);
+  border: 1px solid var(--border-standard);
+  color: var(--text-white);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--color-primary);
+  outline: none;
+  box-shadow: 0 0 8px rgba(34, 197, 94, 0.2);
+}
+
+/* Universal Button Styles */
+.btn-primary {
+  background-color: #22C55E;
+  color: #0B0F0D;
+  font-weight: 700;
+  border-radius: 0.375rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #4ADE80;
+  box-shadow: 0 0 16px rgba(74, 222, 128, 0.35);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--border-standard);
+  color: var(--text-white);
+  border-radius: 0.375rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-layer-3);
+  border-color: #27312B;
+}
+
+/* Glow Effects */
+.input-glow:focus-within {
+  box-shadow: 0 0 0 1px var(--color-primary), 0 0 16px 0 rgba(34, 197, 94, 0.2);
+}
+
+.btn-glow:hover {
+  box-shadow: 0 0 20px 0 rgba(34, 197, 94, 0.35);
+}
+
+/* Material Symbols */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  user-select: none;
+}

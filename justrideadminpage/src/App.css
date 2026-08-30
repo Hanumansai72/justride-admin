@@ -1,0 +1,276 @@
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--color-surface-container);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.75rem;
+  padding: 2rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.top-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-primary-container);
+  opacity: 0.75;
+}
+
+.card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.logo-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-surface-container-highest);
+  border: 1px solid var(--color-outline-variant);
+  margin-bottom: 1.5rem;
+}
+
+.logo-icon {
+  color: var(--color-primary-container);
+  font-size: 28px;
+}
+
+.brand-title {
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-on-surface);
+  margin-bottom: 0.5rem;
+}
+
+.portal-title {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+  margin-bottom: 0.25rem;
+}
+
+.portal-subtitle {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-outline);
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: var(--color-on-surface-variant);
+  text-transform: uppercase;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  color: var(--color-outline);
+  font-size: 20px;
+  pointer-events: none;
+}
+
+.form-input {
+  width: 100%;
+  height: 3rem;
+  padding-left: 3rem;
+  padding-right: 1rem;
+  background-color: var(--color-surface-container-high);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.5rem;
+  color: var(--color-on-surface);
+  font-size: 14px;
+  line-height: 20px;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.form-input::placeholder {
+  color: rgba(134, 149, 133, 0.5);
+}
+
+.form-input:focus {
+  border-color: var(--color-primary-container);
+}
+
+.password-input {
+  padding-right: 3rem;
+}
+
+.toggle-password-btn {
+  position: absolute;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: var(--color-outline);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  outline: none;
+  transition: color 0.2s ease;
+}
+
+.toggle-password-btn:hover {
+  color: var(--color-on-surface);
+}
+
+.form-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.5rem;
+}
+
+.remember-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.checkbox-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 0.25rem;
+  background-color: var(--color-surface-container-high);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.checkbox-input:checked {
+  background-color: var(--color-primary-container);
+  border-color: var(--color-primary-container);
+}
+
+.checkbox-check-icon {
+  position: absolute;
+  font-size: 16px;
+  color: var(--color-on-primary-container);
+  pointer-events: none;
+}
+
+.remember-text {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-on-surface-variant);
+  transition: color 0.2s ease;
+}
+
+.remember-label:hover .remember-text {
+  color: var(--color-on-surface);
+}
+
+.forgot-link {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: var(--color-primary-container);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.forgot-link:hover {
+  color: var(--color-primary-fixed);
+}
+
+.submit-wrapper {
+  padding-top: 0.75rem;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 3rem;
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+}
+
+.submit-btn:hover {
+  background-color: var(--color-surface-tint);
+}
+
+.submit-btn:active {
+  transform: scale(0.98);
+}
+
+.submit-arrow-icon {
+  font-size: 20px;
+}
+
+.security-tag {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.75rem;
+}
+
+.security-tag span {
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0.03em;
+  font-weight: 500;
+  color: var(--color-outline-variant);
+}
