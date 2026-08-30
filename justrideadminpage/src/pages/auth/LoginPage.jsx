@@ -5,7 +5,7 @@ import '../../App.css';
 export default function LoginPage({ onLoginSuccess }) {
   const { login } = useAuth();
   const [identifier, setIdentifier] = useState('admin@justride.io');
-  const [password, setPassword] = useState('password123');
+  const [password, setPassword] = useState('');
   const [role, setRole] = useState('admin'); // 'admin' | 'staff'
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -32,7 +32,6 @@ export default function LoginPage({ onLoginSuccess }) {
       }
     } catch (err) {
       console.warn('Backend login attempt returned:', err.message);
-      // If backend user doesn't exist yet in local development database, provide helpful fallback message and allow demo login
       const message =
         err.data?.message ||
         err.message ||
@@ -43,16 +42,14 @@ export default function LoginPage({ onLoginSuccess }) {
     }
   };
 
-  const handleDemoSignIn = (demoRole) => {
-    if (demoRole === 'admin') {
-      setRole('admin');
+  const handleTabChange = (selectedRole) => {
+    setRole(selectedRole);
+    if (selectedRole === 'admin') {
       setIdentifier('admin@justride.io');
-      setPassword('password123');
     } else {
-      setRole('staff');
-      setIdentifier('EMP-001001');
-      setPassword('staff123');
+      setIdentifier('');
     }
+    setPassword('');
     setErrorMsg('');
   };
 
@@ -105,7 +102,7 @@ export default function LoginPage({ onLoginSuccess }) {
               cursor: 'pointer',
               transition: 'all 0.2s ease',
             }}
-            onClick={() => handleDemoSignIn('admin')}
+            onClick={() => handleTabChange('admin')}
           >
             Admin Portal
           </button>
@@ -123,7 +120,7 @@ export default function LoginPage({ onLoginSuccess }) {
               cursor: 'pointer',
               transition: 'all 0.2s ease',
             }}
-            onClick={() => handleDemoSignIn('staff')}
+            onClick={() => handleTabChange('staff')}
           >
             Staff / Helper Portal
           </button>

@@ -50,10 +50,6 @@ export default function CreateUser({ onNavigate, onLogout }) {
         {/* TopNavBar */}
         <header className="provision-topbar">
           <div className="topbar-right-controls">
-            <div className="system-status-pill">
-              <span className="live-pulse-dot" />
-              <span>System Operational</span>
-            </div>
 
             <button
               type="button"

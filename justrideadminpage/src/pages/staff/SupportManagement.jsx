@@ -75,28 +75,28 @@ export default function SupportManagement({ onNavigate, onLogout }) {
   const metrics = [
     {
       title: 'OPEN TICKETS',
-      value: String(openCount || (totalCount ? Math.floor(totalCount * 0.6) : 42)),
+      value: isLoading ? '...' : String(openCount),
       icon: 'inbox',
       borderClass: '',
       valueColor: 'text-white',
     },
     {
       title: 'IN PROGRESS',
-      value: String(inProgressCount || 15),
+      value: isLoading ? '...' : String(inProgressCount),
       icon: 'autorenew',
       borderClass: 'border-l-secondary',
       valueColor: 'text-secondary',
     },
     {
       title: 'HIGH / CRITICAL',
-      value: String(highPriorityCount || 8),
+      value: isLoading ? '...' : String(highPriorityCount),
       icon: 'warning',
       borderClass: 'border-l-error',
       valueColor: 'text-error',
     },
     {
       title: 'RESOLVED TOTAL',
-      value: String(resolvedCount || 128),
+      value: isLoading ? '...' : String(resolvedCount),
       icon: 'check_circle',
       borderClass: 'border-l-primary',
       valueColor: 'text-primary',

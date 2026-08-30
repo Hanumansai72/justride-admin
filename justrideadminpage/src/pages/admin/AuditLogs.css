@@ -6,9 +6,7 @@
   background-color: #0B0F0D;
   color: #d6e5ea;
   overflow-x: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
+  box-sizing: border-box;
 }
 
 /* Sidebar */

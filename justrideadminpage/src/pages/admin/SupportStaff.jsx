@@ -116,11 +116,6 @@ export default function SupportStaff({ onNavigate, onLogout }) {
           </div>
 
           <div className="topbar-right-group">
-            <div className="system-pill">
-              <span className="live-pulse-dot" />
-              <span>System Operational</span>
-            </div>
-
             <div className="topbar-actions">
               <button
                 type="button"

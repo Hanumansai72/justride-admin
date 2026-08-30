@@ -1,0 +1,329 @@
+.register-device-page {
+  display: flex;
+  width: 100vw;
+  min-height: 100vh;
+  background-color: #0b0f0d;
+  color: #d6e5ea;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+}
+
+.register-device-main {
+  flex: 1;
+  margin-left: 260px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at 80% 10%, rgba(75, 226, 119, 0.03) 0%, transparent 60%);
+  box-sizing: border-box;
+}
+
+.register-device-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid #1a231e;
+  background-color: rgba(15, 22, 18, 0.6);
+  backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.topbar-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.85rem;
+  background-color: #151e18;
+  border: 1px solid #243329;
+  border-radius: 8px;
+  color: #94a3a8;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: #1e2b23;
+  color: #fff;
+  border-color: #3b5343;
+}
+
+.topbar-heading {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.topbar-right-controls .system-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: rgba(75, 226, 119, 0.08);
+  border: 1px solid rgba(75, 226, 119, 0.2);
+  padding: 0.35rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #4be277;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.live-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #4be277;
+  box-shadow: 0 0 8px #4be277;
+  animation: pulse-glow 2s infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.3); }
+}
+
+.register-device-content {
+  flex: 1;
+  padding: 2.5rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.register-device-card {
+  width: 100%;
+  max-width: 780px;
+  background: rgba(18, 26, 21, 0.75);
+  border: 1px solid #233228;
+  border-radius: 16px;
+  padding: 2.25rem;
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(16px);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #1f2b23;
+}
+
+.header-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(75, 226, 119, 0.12);
+  border: 1px solid rgba(75, 226, 119, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4be277;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 0.25rem 0;
+}
+
+.card-subtitle {
+  font-size: 0.85rem;
+  color: #8c9fa4;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.alert-box {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.15rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  margin-bottom: 1.5rem;
+}
+
+.alert-box.error {
+  background: rgba(255, 84, 73, 0.1);
+  border: 1px solid rgba(255, 84, 73, 0.3);
+  color: #ff7e75;
+}
+
+.alert-box.success {
+  background: rgba(75, 226, 119, 0.1);
+  border: 1px solid rgba(75, 226, 119, 0.3);
+  color: #4be277;
+}
+
+.device-form .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #c4d7dc;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.01em;
+}
+
+.label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.label-row label {
+  margin-bottom: 0;
+}
+
+.btn-inline-action {
+  background: transparent;
+  border: none;
+  color: #4be277;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s ease;
+}
+
+.btn-inline-action:hover {
+  opacity: 0.8;
+  text-decoration: underline;
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 0.85rem;
+  color: #5c7278;
+  font-size: 20px;
+  pointer-events: none;
+}
+
+.input-wrap input {
+  width: 100%;
+  background-color: #0e1511;
+  border: 1px solid #223027;
+  border-radius: 10px;
+  padding: 0.75rem 1rem 0.75rem 2.6rem;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.input-wrap input:focus {
+  border-color: #4be277;
+  box-shadow: 0 0 0 3px rgba(75, 226, 119, 0.15);
+  background-color: #121b15;
+}
+
+.field-hint {
+  display: block;
+  font-size: 0.75rem;
+  color: #6a8288;
+  margin-top: 0.35rem;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #1f2b23;
+}
+
+.btn-cancel {
+  padding: 0.75rem 1.5rem;
+  background-color: #141c17;
+  border: 1px solid #233228;
+  border-radius: 10px;
+  color: #8fa2a7;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #1b2620;
+  color: #fff;
+}
+
+.btn-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: linear-gradient(135deg, #4be277 0%, #2ec45b 100%);
+  border: none;
+  border-radius: 10px;
+  color: #051d0d;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(75, 226, 119, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-submit:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(75, 226, 119, 0.4);
+}
+
+.btn-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spin-icon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 640px) {
+  .device-form .form-grid {
+    grid-template-columns: 1fr;
+  }
+}

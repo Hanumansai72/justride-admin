@@ -72,7 +72,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
   const metrics = [
     {
       title: 'STABLE CHANNEL',
-      value: releases.find(r => r.channel === 'STABLE')?.version || 'v2.1.4',
+      value: releases.find(r => r.channel === 'STABLE')?.version || (isLoading ? '...' : 'None Deployed'),
       subtext: 'Recommended for fleet',
       icon: 'verified',
       iconBg: 'text-primary',
@@ -81,7 +81,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
     },
     {
       title: 'BETA TESTING',
-      value: releases.find(r => r.channel === 'BETA')?.version || 'v2.2.0-rc1',
+      value: releases.find(r => r.channel === 'BETA')?.version || (isLoading ? '...' : 'None Deployed'),
       subtext: 'Active telemetry testing',
       icon: 'science',
       iconBg: 'text-warning',
@@ -118,11 +118,6 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
         {/* TopNavBar */}
         <header className="firmware-topbar">
           <div className="topbar-actions">
-            <div className="system-status-pill">
-              <span className="status-live-dot" />
-              <span>System Operational</span>
-            </div>
-
             <div className="topbar-icon-actions">
               <button
                 type="button"

@@ -101,11 +101,6 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
         {/* TopNavBar */}
         <header className="notif-topbar">
           <div className="topbar-right-ctrls">
-            <div className="system-pill">
-              <span className="live-pulse-dot" />
-              <span>System Operational</span>
-            </div>
-
             <div className="topbar-icon-actions">
               <button
                 type="button"

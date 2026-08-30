@@ -19,13 +19,13 @@ export default function UsersManagement({ onNavigate, onLogout }) {
   const [actionLoadingId, setActionLoadingId] = useState(null);
 
   const [stats, setStats] = useState({
-    total: '12,458',
-    totalTrend: '+12%',
-    active: '11,204',
-    suspended: '1,042',
-    banned: '212',
-    withDevice: '8,990',
-    adoptionRate: '72% adoption',
+    total: '0',
+    totalTrend: 'Live',
+    active: '0',
+    suspended: '0',
+    banned: '0',
+    withDevice: '0',
+    adoptionRate: 'Live status',
   });
 
   const fetchUsers = useCallback(async () => {
@@ -60,14 +60,25 @@ export default function UsersManagement({ onNavigate, onLogout }) {
         }));
 
         setUsers(mapped);
+        const total = res.pagination?.total ?? mapped.length;
+        const activeCount = mapped.filter((u) => u.status === 'ACTIVE').length;
+        const suspendedCount = mapped.filter((u) => u.status === 'SUSPENDED').length;
+        const bannedCount = mapped.filter((u) => u.status === 'BANNED').length;
+        const withDevCount = mapped.filter((u) => !!u.pairedDevice).length;
+
         if (res.pagination) {
           setTotalCount(res.pagination.total || mapped.length);
           setTotalPages(res.pagination.pages || 1);
-          setStats((prev) => ({
-            ...prev,
-            total: Number(res.pagination.total).toLocaleString(),
-          }));
         }
+        setStats({
+          total: Number(total).toLocaleString(),
+          totalTrend: 'Live',
+          active: Number(activeCount).toLocaleString(),
+          suspended: Number(suspendedCount).toLocaleString(),
+          banned: Number(bannedCount).toLocaleString(),
+          withDevice: Number(withDevCount).toLocaleString(),
+          adoptionRate: total > 0 ? `${Math.round((withDevCount / total) * 100)}% adoption` : '0% adoption',
+        });
       }
     } catch (err) {
       console.warn('Could not fetch real users from backend, using current list:', err.message);
@@ -137,11 +148,6 @@ export default function UsersManagement({ onNavigate, onLogout }) {
           </div>
 
           <div className="topbar-right">
-            <div className="system-pill">
-              <span className="live-pulse-dot" />
-              <span>System Operational</span>
-            </div>
-
             <div className="topbar-actions">
               <button
                 type="button"

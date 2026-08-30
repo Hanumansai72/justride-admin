@@ -302,12 +302,11 @@ export default function AuditLogs({ onNavigate, onLogout }) {
                       </tr>
                     ) : (
                       logs.map((log) => {
-                        const isSelected = selectedLog?.id === log.id;
                         return (
                           <tr
                             key={log.id}
-                            className={`audit-tr ${isSelected ? 'tr-selected' : ''}`}
-                            onClick={() => setSelectedLog(log)}
+                            className="audit-tr"
+                            onClick={() => onNavigate && onNavigate('audit-detail', log.id)}
                           >
                             <td className="font-mono text-muted text-sm">{log.timestamp}</td>
 
@@ -373,10 +372,10 @@ export default function AuditLogs({ onNavigate, onLogout }) {
                               <button
                                 type="button"
                                 className="inspect-btn"
-                                title="Inspect Details"
+                                title="Inspect Full Event Record Page"
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  setSelectedLog(log);
+                                  if (onNavigate) onNavigate('audit-detail', log.id);
                                 }}
                               >
                                 <span className="material-symbols-outlined icon-18">
@@ -422,65 +421,6 @@ export default function AuditLogs({ onNavigate, onLogout }) {
               </div>
             </div>
 
-            {/* Side Inspection Panel (When Log Selected) */}
-            {selectedLog && (
-              <aside className="audit-detail-drawer">
-                <div className="drawer-header">
-                  <div className="drawer-top-badge">
-                    <span
-                      className={`action-badge ${
-                        selectedLog.destructive ? 'badge-destructive' : 'badge-routine'
-                      }`}
-                    >
-                      {selectedLog.destructive ? 'Security / Sensitive Event' : 'System Event'}
-                    </span>
-                    <button
-                      type="button"
-                      className="close-drawer-btn"
-                      onClick={() => setSelectedLog(null)}
-                    >
-                      <span className="material-symbols-outlined icon-20">close</span>
-                    </button>
-                  </div>
-                  <h3 className="drawer-action-title">{selectedLog.actionTitle}</h3>
-                  <p className="drawer-log-id font-mono">Log ID: #{selectedLog.id}</p>
-                </div>
-
-                <div className="drawer-scroll-body">
-                  {/* Meta Info Grid */}
-                  <div className="drawer-meta-grid">
-                    <div>
-                      <span className="drawer-label">Actor</span>
-                      <span className="drawer-val">
-                        {selectedLog.actor} ({selectedLog.actorId})
-                      </span>
-                    </div>
-                    <div>
-                      <span className="drawer-label">Timestamp</span>
-                      <span className="drawer-val">{selectedLog.utcTimestamp}</span>
-                    </div>
-                    <div className="col-span-2">
-                      <span className="drawer-label">Audit Narrative / Description</span>
-                      <p className="reason-code-box">{selectedLog.description}</p>
-                    </div>
-                  </div>
-
-                  {/* Additional Context CTA */}
-                  <div className="drawer-footer-cta">
-                    <button
-                      type="button"
-                      className="btn-ack-review btn-glow"
-                      onClick={() => {
-                        alert(`Acknowledged review for audit record ${selectedLog.id}`);
-                        setSelectedLog(null);
-                      }}
-                    >
-                      Acknowledge Record Review
-                    </button>
-                  </div>
-                </div>
-              </aside>
-            )}
           </div>
         </main>
       </div>

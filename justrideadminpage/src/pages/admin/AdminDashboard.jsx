@@ -50,17 +50,17 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
     return () => clearInterval(interval);
   }, [loadDashboardData]);
 
-  // Derived KPI Cards
-  const totalUsers = statsData?.overview?.total_users ?? 12458;
-  const totalDevices = statsData?.overview?.total_devices ?? 8920;
-  const pairedDevices = statsData?.overview?.paired_devices ?? 7105;
-  const openTickets = statsData?.overview?.open_tickets ?? 42;
+  // Derived KPI Cards (Real DB Metrics)
+  const totalUsers = statsData?.overview?.total_users ?? 0;
+  const totalDevices = statsData?.overview?.total_devices ?? 0;
+  const pairedDevices = statsData?.overview?.paired_devices ?? 0;
+  const openTickets = statsData?.overview?.open_tickets ?? 0;
 
   const stats = [
     {
       title: 'TOTAL USERS',
       value: Number(totalUsers).toLocaleString(),
-      change: statsData?.users?.new_this_month ? `+${statsData.users.new_this_month} this month` : '+5.2% this week',
+      change: statsData?.users?.new_this_month !== undefined ? `+${statsData.users.new_this_month} this month` : 'Live count',
       isUp: true,
       color: 'primary',
       icon: 'group',
@@ -69,7 +69,7 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
     {
       title: 'TOTAL DEVICES',
       value: Number(totalDevices).toLocaleString(),
-      change: statsData?.devices?.active ? `${statsData.devices.active} active now` : '+2.1% this week',
+      change: statsData?.devices?.active !== undefined ? `${statsData.devices.active} active now` : 'Fleet status',
       isUp: true,
       color: 'secondary',
       icon: 'motorcycle',
@@ -78,7 +78,7 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
     {
       title: 'PAIRED DEVICES',
       value: Number(pairedDevices).toLocaleString(),
-      change: statsData?.devices?.available ? `${statsData.devices.available} ready to pair` : '+4.8% this week',
+      change: statsData?.devices?.available !== undefined ? `${statsData.devices.available} available` : 'Paired units',
       isUp: true,
       color: 'tertiary',
       icon: 'link',
@@ -87,7 +87,7 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
     {
       title: 'OPEN TICKETS',
       value: Number(openTickets).toLocaleString(),
-      change: statsData?.overview?.urgent_tickets ? `${statsData.overview.urgent_tickets} critical/urgent` : '-12% this week',
+      change: statsData?.overview?.urgent_tickets !== undefined ? `${statsData.overview.urgent_tickets} critical/urgent` : 'Queue',
       isUp: false,
       color: 'error',
       icon: 'support_agent',
@@ -98,11 +98,11 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
   // Device Breakdown from real backend
   const dStats = statsData?.devices || {};
   const deviceStatuses = [
-    { label: 'Active', count: Number(dStats.active || 5230).toLocaleString(), colorClass: 'dot-primary', glow: 'glow-online' },
-    { label: 'Available', count: Number(dStats.available || 2100).toLocaleString(), colorClass: 'dot-secondary', glow: '' },
-    { label: 'Offline', count: Number(dStats.offline || 1405).toLocaleString(), colorClass: 'dot-neutral', glow: '' },
-    { label: 'Retired', count: Number(dStats.retired || 150).toLocaleString(), colorClass: 'dot-tertiary', glow: 'glow-warning' },
-    { label: 'Blocked', count: Number(dStats.blocked || 35).toLocaleString(), colorClass: 'dot-error', glow: 'glow-error' },
+    { label: 'Active', count: Number(dStats.active || 0).toLocaleString(), colorClass: 'dot-primary', glow: 'glow-online' },
+    { label: 'Available', count: Number(dStats.available || 0).toLocaleString(), colorClass: 'dot-secondary', glow: '' },
+    { label: 'Offline', count: Number(dStats.offline || 0).toLocaleString(), colorClass: 'dot-neutral', glow: '' },
+    { label: 'Retired', count: Number(dStats.retired || 0).toLocaleString(), colorClass: 'dot-tertiary', glow: 'glow-warning' },
+    { label: 'Blocked', count: Number(dStats.blocked || 0).toLocaleString(), colorClass: 'dot-error', glow: 'glow-error' },
   ];
 
   // Pairing Activity Feed
@@ -115,12 +115,7 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
         time: p.linked_date ? new Date(p.linked_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recently',
         rawId: p.id,
       }))
-    : [
-        { id: 'JR-990-2A', customer: 'Alex Mercer', status: 'Paired', type: 'paired', time: '2 mins ago' },
-        { id: 'JR-845-1B', customer: 'Sarah Chen', status: 'Pending', type: 'pending', time: '15 mins ago' },
-        { id: 'JR-772-9C', customer: 'Marcus Johnson', status: 'Failed', type: 'failed', time: '1 hr ago' },
-        { id: 'JR-610-4D', customer: 'Elena Rodriguez', status: 'Paired', type: 'paired', time: '3 hrs ago' },
-      ];
+    : [];
 
   const systemActivities = [
     {
@@ -187,10 +182,7 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
           </div>
 
           <div className="header-right">
-            <div className="system-pill" title={`Node uptime: ${healthData?.process?.uptime_seconds || 0}s`}>
-              <div className={`live-dot ${healthData?.status === 'healthy' || !healthData ? 'pulse' : 'glow-warning'}`} />
-              <span>{healthData?.status === 'healthy' || !healthData ? 'SYSTEM OPERATIONAL' : 'SYSTEM DEGRADED'}</span>
-            </div>
+
 
             <button
               type="button"

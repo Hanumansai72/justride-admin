@@ -89,5 +89,6 @@ export const notificationsApi = {
 // ── 10. Audit Logs & System Activity ─────────────────────────────────
 export const auditApi = {
   getLogs: (params = {}) => api.get('/admin/audit-logs', params),
+  getLogById: (id) => api.get(`/admin/audit-logs/${id}`),
   getStats: () => api.get('/admin/audit-logs/stats'),
 };

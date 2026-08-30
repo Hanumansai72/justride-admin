@@ -16,11 +16,11 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
   const [actionLoadingId, setActionLoadingId] = useState(null);
 
   const [stats, setStats] = useState({
-    total: '8,920',
-    paired: '7,105',
-    available: '1,405',
-    offline: '375',
-    blocked: '35',
+    total: '0',
+    paired: '0',
+    available: '0',
+    offline: '0',
+    blocked: '0',
   });
 
   const fetchDevices = useCallback(async () => {
@@ -58,14 +58,24 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
         }));
 
         setDevices(mapped);
+        const total = res.pagination?.total ?? mapped.length;
+        const pairedCount = mapped.filter((d) => d.pairing === 'Paired').length;
+        const availableCount = mapped.filter((d) => d.status === 'AVAILABLE').length;
+        const blockedCount = mapped.filter((d) => d.status === 'BLOCKED').length;
+        const offlineCount = mapped.filter((d) => d.status === 'OFFLINE').length;
+
         if (res.pagination) {
           setTotalDevices(res.pagination.total || mapped.length);
           setTotalPages(res.pagination.pages || 1);
-          setStats((prev) => ({
-            ...prev,
-            total: Number(res.pagination.total).toLocaleString(),
-          }));
         }
+
+        setStats({
+          total: Number(total).toLocaleString(),
+          paired: Number(pairedCount).toLocaleString(),
+          available: Number(availableCount).toLocaleString(),
+          offline: Number(offlineCount).toLocaleString(),
+          blocked: Number(blockedCount).toLocaleString(),
+        });
       }
     } catch (err) {
       console.warn('Could not fetch devices from backend:', err.message);
@@ -277,18 +287,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
             <button
               type="button"
               className="btn-provision"
-              onClick={() => {
-                const deviceName = window.prompt('Enter Device Name:', 'JustRide Tracker X1');
-                const bleAddress = window.prompt('Enter BLE Address (e.g. AA:BB:CC:11:22:33):');
-                if (deviceName && bleAddress) {
-                  devicesApi.registerDevice({ devicename: deviceName, BLE_ADDRESS: bleAddress })
-                    .then(() => {
-                      alert('Device registered successfully');
-                      fetchDevices();
-                    })
-                    .catch((err) => alert(`Registration failed: ${err.message}`));
-                }
-              }}
+              onClick={() => onNavigate && onNavigate('register-device')}
             >
               <span className="material-symbols-outlined icon-18">add</span>
               <span>Register Device</span>

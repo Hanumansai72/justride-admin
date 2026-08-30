@@ -13,9 +13,11 @@ import SupportStaff from './pages/admin/SupportStaff';
 import HelperStaffDetail from './pages/admin/HelperStaffDetail';
 import DeviceInventory from './pages/admin/DeviceInventory';
 import DeviceDetail from './pages/admin/DeviceDetail';
+import RegisterDevice from './pages/admin/RegisterDevice';
 import FirmwareManagement from './pages/admin/FirmwareManagement';
 import NewFirmwareRelease from './pages/admin/NewFirmwareRelease';
 import AuditLogs from './pages/admin/AuditLogs';
+import AuditLogDetail from './pages/admin/AuditLogDetail';
 import NotificationsAlerts from './pages/admin/NotificationsAlerts';
 import ProvisionStaff from './pages/admin/ProvisionStaff';
 
@@ -82,6 +84,7 @@ export default function App() {
     else if (key === 'user-detail') navigate(entityId ? `/users/${entityId}` : '/users');
     else if (key === 'user-activity' || key === 'audit log') navigate(entityId ? `/users/${entityId}/activity` : '/users');
     else if (key === 'devices') navigate('/devices');
+    else if (key === 'register-device' || key === 'provision-device' || key === 'new-device') navigate('/devices/new');
     else if (key === 'device-detail') navigate(entityId ? `/devices/${entityId}` : '/devices');
     else if (key === 'pairing') navigate('/devices');
     else if (key === 'firmware') navigate('/firmware');
@@ -90,6 +93,7 @@ export default function App() {
     else if (key === 'provision-staff' || key === 'add-helper' || key === 'new-helper') navigate('/helpers/new');
     else if (key === 'helper-detail') navigate(entityId ? `/helpers/${entityId}` : '/helpers');
     else if (key === 'audit-logs' || key === 'staff logs') navigate('/audit-logs');
+    else if (key === 'audit-detail' || key === 'audit-log-detail') navigate(entityId ? `/audit-logs/${entityId}` : '/audit-logs');
     else if (key === 'notifications' || key === 'alerts') navigate('/notifications');
     else if (key === 'support') navigate('/support');
     else if (key === 'ticket-detail') navigate(entityId ? `/support/${entityId}` : '/support');
@@ -137,65 +141,6 @@ export default function App() {
 
   return (
     <div className="justride-application-root">
-      {/* Floating Demo Role Switcher to toggle between Admin and Staff sessions */}
-      {user && (
-        <div
-          style={{
-            position: 'fixed',
-            bottom: '16px',
-            right: '16px',
-            zIndex: 9999,
-            backgroundColor: '#151A17',
-            border: '1px solid #27312B',
-            borderRadius: '24px',
-            padding: '4px 8px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '8px',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.6)',
-          }}
-        >
-          <span style={{ fontSize: '11px', color: '#94A3A8', fontWeight: '600', paddingLeft: '6px' }}>
-            User: <strong style={{ color: '#fff' }}>{user.name || user.email}</strong> • Role:{' '}
-            <strong style={{ color: role === 'ADMIN' ? '#4be277' : '#7bd0ff' }}>{role}</strong>
-          </span>
-          <button
-            type="button"
-            onClick={() => {
-              const nextRole = role === 'ADMIN' ? 'HELPER' : 'ADMIN';
-              setRole(nextRole);
-              navigate(nextRole === 'ADMIN' ? '/dashboard' : '/support');
-            }}
-            style={{
-              background: role === 'ADMIN' ? '#22C55E' : '#7bd0ff',
-              color: '#0B0F0D',
-              border: 'none',
-              borderRadius: '16px',
-              padding: '4px 10px',
-              fontSize: '11px',
-              fontWeight: '700',
-              cursor: 'pointer',
-            }}
-          >
-            Switch to {role === 'ADMIN' ? 'Helper' : 'Admin'} Mode
-          </button>
-          <button
-            type="button"
-            onClick={handleLogout}
-            style={{
-              background: 'transparent',
-              color: '#ffb4ab',
-              border: 'none',
-              fontSize: '11px',
-              cursor: 'pointer',
-              padding: '4px 6px',
-            }}
-          >
-            Logout
-          </button>
-        </div>
-      )}
-
       {/* React Router Routes */}
       <Routes>
         {/* Public Login Route */}
@@ -300,6 +245,14 @@ export default function App() {
           }
         />
         <Route
+          path="/devices/new"
+          element={
+            <ProtectedRoute>
+              <RegisterDevice onNavigate={handleNavigate} onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/devices/:id"
           element={
             <ProtectedRoute>
@@ -332,6 +285,14 @@ export default function App() {
           element={
             <ProtectedRoute>
               <AuditLogs onNavigate={handleNavigate} onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/audit-logs/:id"
+          element={
+            <ProtectedRoute>
+              <AuditLogDetail onNavigate={handleNavigate} onLogout={handleLogout} />
             </ProtectedRoute>
           }
         />

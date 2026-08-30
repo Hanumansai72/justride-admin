@@ -53,19 +53,7 @@ export default function Sidebar({
         </div>
       </div>
 
-      {/* New Support Ticket Button */}
-      <div className="sidebar-cta-btn-wrap">
-        <button
-          type="button"
-          className="btn-new-ticket"
-          onClick={() => navigate('/support')}
-        >
-          <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
-            add
-          </span>
-          <span>New Support Ticket</span>
-        </button>
-      </div>
+
 
       {/* Main Navigation Links */}
       <nav className="sidebar-nav-section">
