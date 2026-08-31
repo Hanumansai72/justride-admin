@@ -125,10 +125,11 @@ class ApiClient {
    * Universal HTTP Request method
    */
   async request(endpoint, options = {}) {
-    const url = new URL(
-      endpoint.startsWith('http') ? endpoint : `${this.baseURL}${endpoint.startsWith('/') ? '' : '/'}${endpoint}`,
-      window.location.origin
-    );
+    const fullUrl = endpoint.startsWith('http')
+      ? endpoint
+      : `${this.baseURL.replace(/\/$/, '')}/${endpoint.replace(/^\//, '')}`;
+
+    const url = new URL(fullUrl, window.location.origin);
 
     // Append query params if present
     if (options.params) {
