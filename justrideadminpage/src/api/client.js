@@ -4,7 +4,20 @@
  */
 import Cookies from 'js-cookie';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const DEFAULT_PRODUCTION_API = 'https://justfai-backend.vercel.app/api';
+
+const resolveBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== '/api') {
+    return import.meta.env.VITE_API_URL;
+  }
+  // When running on production domain (e.g. Vercel) and no explicit VITE_API_URL is configured
+  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    return DEFAULT_PRODUCTION_API;
+  }
+  return import.meta.env.VITE_API_URL || '/api';
+};
+
+const API_BASE_URL = resolveBaseUrl();
 
 class ApiClient {
   constructor() {
