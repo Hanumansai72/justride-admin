@@ -35,6 +35,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
           releaseDate: r.release_date ? new Date(r.release_date).toLocaleDateString() : 'Recent',
           devicesUsing: r.channel === 'stable' ? 'Fleet-wide' : 'Staged rollout',
           mandatory: !!r.min_supported_version,
+          isFeatured: !!r.is_featured,
           hasEdit: true,
         }));
 
@@ -54,6 +55,18 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
   useEffect(() => {
     fetchReleases();
   }, [fetchReleases]);
+
+  const handleSetFeatured = async (release) => {
+    try {
+      const res = await firmwareApi.featureRelease(release.id);
+      if (res?.success) {
+        alert(`Firmware release ${release.version} is now set as the active Featured firmware on the Website & Mobile OTA!`);
+        fetchReleases();
+      }
+    } catch (err) {
+      alert(`Failed to set featured firmware: ${err.message}`);
+    }
+  };
 
   const handleDelete = async (release) => {
     if (window.confirm(`Are you sure you want to deprecate / delete firmware release ${release.version}?`)) {
@@ -256,7 +269,28 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
                     ) : (
                       filteredReleases.map((row) => (
                         <tr key={row.id} className="firmware-tr">
-                          <td className="font-mono font-medium text-white">{row.version}</td>
+                          <td>
+                            <div className="font-mono font-medium text-white" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <span>{row.version}</span>
+                              {row.isFeatured && (
+                                <span
+                                  style={{
+                                    fontSize: '9px',
+                                    fontWeight: '800',
+                                    padding: '2px 6px',
+                                    borderRadius: '4px',
+                                    background: 'rgba(75, 226, 119, 0.2)',
+                                    color: '#4be277',
+                                    border: '1px solid rgba(75, 226, 119, 0.4)',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
+                                  }}
+                                >
+                                  Active on Website
+                                </span>
+                              )}
+                            </div>
+                          </td>
                           <td className="text-muted">{row.hwRev}</td>
                           <td>
                             <span className={`channel-pill pill-${row.channelType}`}>
@@ -286,6 +320,28 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
                           </td>
                           <td className="text-right">
                             <div className="row-action-btns">
+                              {!row.isFeatured ? (
+                                <button
+                                  type="button"
+                                  className="action-link-btn"
+                                  title="Set as Active Featured Firmware on Website & Mobile OTA"
+                                  onClick={() => handleSetFeatured(row)}
+                                  style={{ color: '#bccbb9' }}
+                                >
+                                  <span className="material-symbols-outlined icon-18">
+                                    star_border
+                                  </span>
+                                </button>
+                              ) : (
+                                <span
+                                  title="Currently Featured on Website & OTA"
+                                  style={{ display: 'inline-flex', alignItems: 'center', padding: '0 4px' }}
+                                >
+                                  <span className="material-symbols-outlined icon-18" style={{ color: '#f59e0b' }}>
+                                    star
+                                  </span>
+                                </span>
+                              )}
                               <button
                                 type="button"
                                 className="action-link-btn hover-red"

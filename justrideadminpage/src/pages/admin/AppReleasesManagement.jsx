@@ -38,6 +38,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
           releaseDate: r.release_date ? new Date(r.release_date).toLocaleDateString() : 'Recent',
           fileSizeMb: r.file_size_bytes ? (r.file_size_bytes / (1024 * 1024)).toFixed(1) : '—',
           mandatory: !!r.is_mandatory,
+          isFeatured: !!r.is_featured,
           downloadUrl: r.file_url,
           notes: r.release_notes || '—',
         }));
@@ -56,6 +57,18 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
   useEffect(() => {
     fetchReleases();
   }, [fetchReleases]);
+
+  const handleSetFeatured = async (release) => {
+    try {
+      const res = await appReleasesApi.featureRelease(release.id);
+      if (res?.success) {
+        alert(`v${release.version} (Build #${release.buildNumber}) is now set as the active release for the Website & App!`);
+        fetchReleases();
+      }
+    } catch (err) {
+      alert(`Failed to set featured release: ${err.message}`);
+    }
+  };
 
   const handleDelete = async (release) => {
     if (window.confirm(`Are you sure you want to delete APK release ${release.version} (Build ${release.buildNumber})?`)) {
@@ -301,8 +314,25 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                       filteredReleases.map((row) => (
                         <tr key={row.id} className="firmware-tr">
                           <td>
-                            <div className="font-mono font-medium text-white">
-                              {row.version}
+                            <div className="font-mono font-medium text-white" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                              <span>{row.version}</span>
+                              {row.isFeatured && (
+                                <span
+                                  style={{
+                                    fontSize: '9px',
+                                    fontWeight: '800',
+                                    padding: '2px 6px',
+                                    borderRadius: '4px',
+                                    background: 'rgba(75, 226, 119, 0.2)',
+                                    color: '#4be277',
+                                    border: '1px solid rgba(75, 226, 119, 0.4)',
+                                    textTransform: 'uppercase',
+                                    letterSpacing: '0.05em',
+                                  }}
+                                >
+                                  Active on Website
+                                </span>
+                              )}
                             </div>
                             <div style={{ fontSize: '11px', color: '#88988e' }}>Build #{row.buildNumber}</div>
                           </td>
@@ -347,6 +377,28 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                           </td>
                           <td className="text-right">
                             <div className="row-action-btns">
+                              {!row.isFeatured ? (
+                                <button
+                                  type="button"
+                                  className="action-link-btn"
+                                  title="Set as Active release on Website & Mobile App"
+                                  onClick={() => handleSetFeatured(row)}
+                                  style={{ color: '#bccbb9' }}
+                                >
+                                  <span className="material-symbols-outlined icon-18">
+                                    star_border
+                                  </span>
+                                </button>
+                              ) : (
+                                <span
+                                  title="Currently Featured on Website & App"
+                                  style={{ display: 'inline-flex', alignItems: 'center', padding: '0 4px' }}
+                                >
+                                  <span className="material-symbols-outlined icon-18" style={{ color: '#f59e0b' }}>
+                                    star
+                                  </span>
+                                </span>
+                              )}
                               <a
                                 href={row.downloadUrl}
                                 target="_blank"

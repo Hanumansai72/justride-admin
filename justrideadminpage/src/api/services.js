@@ -64,6 +64,7 @@ export const firmwareApi = {
   getReleases: (params = {}) => api.get('/admin/firmware', params),
   createRelease: (data) => api.post('/admin/firmware', data),
   updateRelease: (id, data) => api.put(`/admin/firmware/${id}`, data),
+  featureRelease: (id) => api.patch(`/admin/firmware/${id}/feature`),
   deleteRelease: (id) => api.delete(`/admin/firmware/${id}`),
 };
 
@@ -73,6 +74,7 @@ export const appReleasesApi = {
   getUploadUrl: (data) => api.post('/admin/app-releases/upload-url', data),
   createRelease: (data) => api.post('/admin/app-releases', data),
   updateRelease: (id, data) => api.put(`/admin/app-releases/${id}`, data),
+  featureRelease: (id) => api.patch(`/admin/app-releases/${id}/feature`),
   deleteRelease: (id) => api.delete(`/admin/app-releases/${id}`),
 };
 
