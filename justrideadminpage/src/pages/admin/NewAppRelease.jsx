@@ -58,13 +58,14 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
         const uploadRes = await fetch(uploadUrl, {
           method: 'PUT',
           headers: {
-            'Content-Type': selectedFile.type || 'application/vnd.android.package-archive',
+            'Content-Type': 'application/vnd.android.package-archive',
           },
           body: selectedFile,
         });
 
         if (!uploadRes.ok) {
-          throw new Error(`Direct Cloudflare R2 upload failed with HTTP status ${uploadRes.status}`);
+          const errText = await uploadRes.text().catch(() => '');
+          throw new Error(`Direct Cloudflare R2 upload failed (HTTP ${uploadRes.status}): ${errText || uploadRes.statusText}`);
         }
 
         finalFileUrl = publicUrl;
