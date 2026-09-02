@@ -36,32 +36,58 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
     setIsSubmitting(true);
 
     try {
-      let res;
-      if (selectedFile) {
-        const formData = new FormData();
-        formData.append('apk_file', selectedFile);
-        formData.append('version', version.trim().replace(/^v/i, ''));
-        formData.append('build_number', buildNumber.trim());
-        formData.append('platform', platform);
-        formData.append('channel', channel);
-        if (minSupportedVersion) formData.append('min_supported_version', minSupportedVersion.trim());
-        formData.append('is_mandatory', String(isMandatory));
-        formData.append('release_notes', releaseNotes.trim());
+      let finalFileUrl = fileUrl.trim();
+      let fileSize = 0;
 
-        res = await appReleasesApi.createRelease(formData);
-      } else {
-        const payload = {
-          version: version.trim().replace(/^v/i, ''),
-          build_number: Number(buildNumber),
-          platform,
-          channel,
-          min_supported_version: minSupportedVersion.trim() || undefined,
-          is_mandatory: isMandatory,
-          release_notes: releaseNotes.trim(),
-          file_url: fileUrl.trim(),
-        };
-        res = await appReleasesApi.createRelease(payload);
+      if (selectedFile) {
+        fileSize = selectedFile.size;
+
+        // Step 1: Request presigned upload URL from backend (takes <100ms, payload <1KB)
+        const presignedRes = await appReleasesApi.getUploadUrl({
+          filename: selectedFile.name,
+          content_type: selectedFile.type || 'application/vnd.android.package-archive',
+        });
+
+        if (!presignedRes?.success || !presignedRes?.data?.uploadUrl) {
+          throw new Error(presignedRes?.message || 'Failed to acquire Cloudflare R2 upload authorization');
+        }
+
+        const { uploadUrl, publicUrl } = presignedRes.data;
+
+        // Step 2: Upload file DIRECTLY from browser to Cloudflare R2 (Bypasses Vercel 4.5MB payload limit completely)
+        const uploadRes = await fetch(uploadUrl, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': selectedFile.type || 'application/vnd.android.package-archive',
+          },
+          body: selectedFile,
+        });
+
+        if (!uploadRes.ok) {
+          throw new Error(`Direct Cloudflare R2 upload failed with HTTP status ${uploadRes.status}`);
+        }
+
+        finalFileUrl = publicUrl;
       }
+
+      if (!finalFileUrl) {
+        throw new Error('Please select an APK file or specify a valid file URL.');
+      }
+
+      // Step 3: Register release in database with final Cloudflare R2 URL
+      const payload = {
+        version: version.trim().replace(/^v/i, ''),
+        build_number: Number(buildNumber),
+        platform,
+        channel,
+        min_supported_version: minSupportedVersion.trim() || undefined,
+        is_mandatory: isMandatory,
+        release_notes: releaseNotes.trim(),
+        file_url: finalFileUrl,
+        file_size_bytes: fileSize || undefined,
+      };
+
+      const res = await appReleasesApi.createRelease(payload);
 
       if (res?.success) {
         alert(`Mobile App Release v${res.data?.version || version} published successfully to Cloudflare R2!`);

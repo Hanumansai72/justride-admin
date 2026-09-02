@@ -70,6 +70,7 @@ export const firmwareApi = {
 // ── 7B. Mobile App APK Releases & Lifecycle Services ──────────────────
 export const appReleasesApi = {
   getReleases: (params = {}) => api.get('/admin/app-releases', params),
+  getUploadUrl: (data) => api.post('/admin/app-releases/upload-url', data),
   createRelease: (data) => api.post('/admin/app-releases', data),
   updateRelease: (id, data) => api.put(`/admin/app-releases/${id}`, data),
   deleteRelease: (id) => api.delete(`/admin/app-releases/${id}`),
