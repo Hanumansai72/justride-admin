@@ -17,6 +17,7 @@ export default function Sidebar({
     { id: 'support', label: 'Support', icon: 'support_agent', path: '/support' },
     { id: 'devices', label: 'Devices', icon: 'motorcycle', path: '/devices' },
     { id: 'firmware', label: 'Firmware', icon: 'system_update_alt', path: '/firmware' },
+    { id: 'app-releases', label: 'App APKs', icon: 'android', path: '/app-releases' },
   ];
 
   const bottomNavItems = [

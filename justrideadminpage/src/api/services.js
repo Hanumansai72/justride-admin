@@ -67,6 +67,14 @@ export const firmwareApi = {
   deleteRelease: (id) => api.delete(`/admin/firmware/${id}`),
 };
 
+// ── 7B. Mobile App APK Releases & Lifecycle Services ──────────────────
+export const appReleasesApi = {
+  getReleases: (params = {}) => api.get('/admin/app-releases', params),
+  createRelease: (data) => api.post('/admin/app-releases', data),
+  updateRelease: (id, data) => api.put(`/admin/app-releases/${id}`, data),
+  deleteRelease: (id) => api.delete(`/admin/app-releases/${id}`),
+};
+
 // ── 8. Support Tickets & Troubleshooting Services ────────────────────
 export const supportApi = {
   getTickets: (params = {}) => api.get('/admin/support', params),

@@ -16,6 +16,8 @@ import DeviceDetail from './pages/admin/DeviceDetail';
 import RegisterDevice from './pages/admin/RegisterDevice';
 import FirmwareManagement from './pages/admin/FirmwareManagement';
 import NewFirmwareRelease from './pages/admin/NewFirmwareRelease';
+import AppReleasesManagement from './pages/admin/AppReleasesManagement';
+import NewAppRelease from './pages/admin/NewAppRelease';
 import AuditLogs from './pages/admin/AuditLogs';
 import AuditLogDetail from './pages/admin/AuditLogDetail';
 import NotificationsAlerts from './pages/admin/NotificationsAlerts';
@@ -89,6 +91,8 @@ export default function App() {
     else if (key === 'pairing') navigate('/devices');
     else if (key === 'firmware') navigate('/firmware');
     else if (key === 'new-firmware' || key === 'create-release') navigate('/firmware/new');
+    else if (key === 'app-releases' || key === 'apk-releases') navigate('/app-releases');
+    else if (key === 'new-app-release' || key === 'upload-apk') navigate('/app-releases/new');
     else if (key === 'helpers') navigate('/helpers');
     else if (key === 'provision-staff' || key === 'add-helper' || key === 'new-helper') navigate('/helpers/new');
     else if (key === 'helper-detail') navigate(entityId ? `/helpers/${entityId}` : '/helpers');
@@ -275,6 +279,24 @@ export default function App() {
           element={
             <ProtectedRoute>
               <NewFirmwareRelease onNavigate={handleNavigate} onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Mobile App APK Releases */}
+        <Route
+          path="/app-releases"
+          element={
+            <ProtectedRoute>
+              <AppReleasesManagement onNavigate={handleNavigate} onLogout={handleLogout} />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/app-releases/new"
+          element={
+            <ProtectedRoute>
+              <NewAppRelease onNavigate={handleNavigate} onLogout={handleLogout} />
             </ProtectedRoute>
           }
         />
