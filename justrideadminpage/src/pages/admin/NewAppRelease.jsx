@@ -165,10 +165,10 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} className="provision-form-grid">
-              {/* Left: Release Configuration (8 cols) */}
-              <div className="form-left-col">
-                <div className="form-sections-stack">
+            <form onSubmit={handleSubmit}>
+              <div className="provision-bento-grid">
+                {/* Left: Form Controls (8 cols) */}
+                <div className="form-left-col">
                   {/* Version & Build Section */}
                   <section className="form-card-section">
                     <div className="section-header-row">
@@ -280,7 +280,7 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
                           <p style={{ margin: 0, fontSize: '12px', color: '#88988e' }}>
                             {selectedFile
                               ? `Size: ${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB — Automatically streams to Cloudflare R2`
-                              : 'Flutter release APK (e.g. build/app/outputs/flutter-apk/app-release.apk)'}
+                              : 'Flutter release APK (e.g. build/app/outputs/flutter-apk/app-arm64-v8a-release.apk)'}
                           </p>
                         </div>
                       </div>
@@ -321,93 +321,95 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
                     </div>
                   </section>
                 </div>
-              </div>
 
-              {/* Right: Deployment Summary Card (4 cols) */}
-              <div className="preview-right-col">
-                <div className="sticky-preview-wrapper">
-                  <h3 className="preview-heading">Release Preview</h3>
+                {/* Right: Deployment Summary Card (4 cols) */}
+                <div className="form-right-col">
+                  <div className="sticky-preview-wrapper">
+                    <h3 className="preview-heading">Release Preview</h3>
 
-                  <div className="profile-preview-card">
-                    <div className="preview-banner-bg">
-                      <div className="banner-diagonal-pattern" />
-                    </div>
-
-                    <div className="preview-card-body">
-                      <div className="preview-avatar-circle">
-                        <span className="material-symbols-outlined text-primary" style={{ fontSize: '32px' }}>
-                          android
-                        </span>
+                    <div className="profile-preview-card">
+                      <div className="preview-banner-bg">
+                        <div className="banner-diagonal-pattern" />
                       </div>
 
-                      <div className="preview-name-center">
-                        <h4 className="preview-full-name font-mono">v{version} (Build #{buildNumber})</h4>
-                        <p className="preview-role-dept">
-                          {channel.toUpperCase()} • {platform.toUpperCase()}
-                        </p>
-                        <div
-                          className="preview-status-pill"
-                          style={{
-                            backgroundColor:
-                              channel === 'stable'
-                                ? 'rgba(74, 222, 128, 0.1)'
-                                : 'rgba(245, 158, 11, 0.1)',
-                            color: channel === 'stable' ? '#4be277' : '#f59e0b',
-                            marginTop: '6px',
-                          }}
-                        >
-                          <span
-                            className="live-pulse-dot"
+                      <div className="preview-card-body">
+                        <div className="preview-avatar-circle">
+                          <span className="material-symbols-outlined text-primary" style={{ fontSize: '32px' }}>
+                            android
+                          </span>
+                        </div>
+
+                        <div className="preview-name-center">
+                          <h4 className="preview-full-name font-mono">v{version} (Build #{buildNumber})</h4>
+                          <p className="preview-role-dept">
+                            {channel.toUpperCase()} • {platform.toUpperCase()}
+                          </p>
+                          <div
+                            className="preview-status-pill"
                             style={{
-                              backgroundColor: channel === 'stable' ? '#4be277' : '#f59e0b',
+                              backgroundColor:
+                                channel === 'stable'
+                                  ? 'rgba(74, 222, 128, 0.1)'
+                                  : 'rgba(245, 158, 11, 0.1)',
+                              color: channel === 'stable' ? '#4be277' : '#f59e0b',
+                              marginTop: '6px',
                             }}
-                          />
-                          <span>{isMandatory ? 'Mandatory Rollout' : 'Optional Update'}</span>
+                          >
+                            <span
+                              className="live-pulse-dot"
+                              style={{
+                                backgroundColor: channel === 'stable' ? '#4be277' : '#f59e0b',
+                              }}
+                            />
+                            <span>{isMandatory ? 'Mandatory Rollout' : 'Optional Update'}</span>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="preview-divider" />
+                        <div className="preview-divider" />
 
-                      <div className="preview-details-list">
-                        <div className="detail-row">
-                          <span className="detail-label font-mono">STORAGE:</span>
-                          <span className="detail-value text-primary">Cloudflare R2</span>
+                        <div className="preview-meta-rows">
+                          <div className="meta-row">
+                            <span className="material-symbols-outlined icon-16">cloud</span>
+                            <span className="font-mono">Storage: Cloudflare R2</span>
+                          </div>
+                          <div className="meta-row">
+                            <span className="material-symbols-outlined icon-16">attach_file</span>
+                            <span className="font-mono">
+                              File: {selectedFile ? `${(selectedFile.size / (1024 * 1024)).toFixed(1)} MB` : 'Manual URL'}
+                            </span>
+                          </div>
+                          <div className="meta-row">
+                            <span className="material-symbols-outlined icon-16">payments</span>
+                            <span className="font-mono" style={{ color: '#4be277' }}>
+                              Egress: $0.00 (Zero Fee)
+                            </span>
+                          </div>
                         </div>
-                        <div className="detail-row">
-                          <span className="detail-label font-mono">FILE:</span>
-                          <span className="detail-value font-mono">
-                            {selectedFile ? `${(selectedFile.size / (1024 * 1024)).toFixed(1)} MB` : 'Manual URL'}
-                          </span>
-                        </div>
-                        <div className="detail-row">
-                          <span className="detail-label font-mono">EGRESS:</span>
-                          <span className="detail-value text-primary">$0.00 (Zero Fee)</span>
-                        </div>
-                      </div>
-
-                      <div className="action-buttons-stack" style={{ marginTop: '1.5rem' }}>
-                        <button
-                          type="submit"
-                          className="submit-action-btn"
-                          disabled={isSubmitting}
-                          style={{ opacity: isSubmitting ? 0.7 : 1 }}
-                        >
-                          <span className="material-symbols-outlined">
-                            {isSubmitting ? 'sync' : 'publish'}
-                          </span>
-                          <span>{isSubmitting ? 'Uploading to Cloudflare R2...' : 'Publish APK Release'}</span>
-                        </button>
-
-                        <button
-                          type="button"
-                          className="cancel-action-btn"
-                          onClick={() => onNavigate && onNavigate('app-releases')}
-                        >
-                          Cancel
-                        </button>
                       </div>
                     </div>
                   </div>
+                </div>
+
+                {/* Bottom Action Bar */}
+                <div className="provision-action-bar">
+                  <button
+                    type="button"
+                    className="btn-cancel-action"
+                    onClick={() => onNavigate && onNavigate('app-releases')}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="btn-create-action btn-glow"
+                    style={{ opacity: isSubmitting ? 0.7 : 1 }}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
+                      {isSubmitting ? 'sync' : 'publish'}
+                    </span>
+                    <span>{isSubmitting ? 'Uploading to Cloudflare R2...' : 'Publish APK Release'}</span>
+                  </button>
                 </div>
               </div>
             </form>
@@ -417,3 +419,4 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
     </div>
   );
 }
+

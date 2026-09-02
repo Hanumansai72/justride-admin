@@ -160,205 +160,257 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
         </header>
 
         {/* Content Canvas */}
-        <main className="firmware-canvas-content">
-          {/* Page Heading & Actions */}
-          <div className="page-heading-row">
-            <div>
-              <h1 className="page-main-heading">Mobile App Releases (APK)</h1>
-              <p className="page-sub-heading">
-                Deploy, host, and distribute Android APK application binaries via zero-egress Cloudflare R2 CDN.
-              </p>
-            </div>
-            <div style={{ display: 'flex', gap: '12px' }}>
-              <button
-                type="button"
-                className="action-btn-secondary"
-                onClick={() => onNavigate && onNavigate('firmware')}
-              >
-                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
-                  system_update_alt
-                </span>
-                <span>ESP32 Firmware</span>
-              </button>
-              <button
-                type="button"
-                className="action-btn-primary"
-                onClick={() => onNavigate && onNavigate('new-app-release')}
-              >
-                <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
-                  upload_file
-                </span>
-                <span>Publish New APK</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Metrics Overview Cards */}
-          <section className="metrics-grid-3col">
-            {metrics.map((m, idx) => (
-              <div key={idx} className="metric-card-item">
-                <div className="metric-header-line">
-                  <span className="metric-title-label">{m.title}</span>
-                  <span className={`material-symbols-outlined metric-badge-icon ${m.iconBg}`}>
-                    {m.icon}
+        <main className="firmware-content-canvas">
+          <div className="canvas-max-wrap">
+            {/* Page Heading & Actions */}
+            <div className="page-header-row">
+              <div>
+                <h2 className="page-heading">Mobile App Releases (APK)</h2>
+                <p className="page-subheading">
+                  Deploy, host, and distribute Android APK application binaries via zero-egress Cloudflare R2 CDN.
+                </p>
+              </div>
+              <div style={{ display: 'flex', gap: '12px' }}>
+                <button
+                  type="button"
+                  className="btn-create-release"
+                  style={{ backgroundColor: '#1B211E', color: '#bccbb9', border: '1px solid #27312B' }}
+                  onClick={() => onNavigate && onNavigate('firmware')}
+                >
+                  <span className="material-symbols-outlined icon-20">
+                    system_update_alt
                   </span>
-                </div>
-                <div className="metric-main-val">{m.value}</div>
-                <div className="metric-trend-subtext">
-                  {m.trendIcon && (
-                    <span className={`material-symbols-outlined trend-icon ${m.trendColor}`}>
-                      {m.trendIcon}
+                  <span>ESP32 Firmware</span>
+                </button>
+                <button
+                  type="button"
+                  className="btn-create-release btn-glow"
+                  onClick={() => onNavigate && onNavigate('new-app-release')}
+                >
+                  <span className="material-symbols-outlined icon-20">
+                    upload_file
+                  </span>
+                  <span>Publish New APK</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Top Summary Metrics Bento */}
+            <div className="firmware-bento-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+              {metrics.map((m, idx) => (
+                <div key={idx} className="bento-metric-card">
+                  <div className="watermark-icon">
+                    <span className={`material-symbols-outlined big-glyph ${m.iconBg}`}>
+                      {m.icon}
                     </span>
-                  )}
-                  <span className={m.trendColor}>{m.subtext}</span>
+                  </div>
+                  <p className="metric-caption">{m.title}</p>
+                  <h3 className="metric-value">{m.value}</h3>
+                  <p className={`metric-sub ${m.trendColor}`}>
+                    {m.trendIcon && (
+                      <span className="material-symbols-outlined icon-14">{m.trendIcon}</span>
+                    )}
+                    <span>{m.subtext}</span>
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Table Container */}
+            <div className="firmware-table-card">
+              {/* Filters Bar */}
+              <div className="table-filters-header">
+                <div className="left-filters-group">
+                  <div className="search-box-wrap">
+                    <span className="material-symbols-outlined search-icon">search</span>
+                    <input
+                      type="text"
+                      placeholder="Search version, notes..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      className="search-versions-input"
+                    />
+                  </div>
+
+                  <div className="select-wrap">
+                    <select
+                      className="custom-select"
+                      value={channelFilter}
+                      onChange={(e) => setChannelFilter(e.target.value)}
+                    >
+                      <option value="">All Release Channels</option>
+                      <option value="stable">Stable Production</option>
+                      <option value="beta">Beta Testing</option>
+                      <option value="alpha">Alpha Internal</option>
+                    </select>
+                  </div>
+
+                  <div className="select-wrap">
+                    <select
+                      className="custom-select"
+                      value={platformFilter}
+                      onChange={(e) => setPlatformFilter(e.target.value)}
+                    >
+                      <option value="">All Platforms</option>
+                      <option value="android">Android (.apk)</option>
+                      <option value="ios">iOS Package</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style={{ fontSize: '12px', color: '#bccbb9', fontFamily: 'monospace' }}>
+                  Showing {filteredReleases.length} of {totalCount} builds
                 </div>
               </div>
-            ))}
-          </section>
 
-          {/* Filter Bar */}
-          <div className="filter-controls-card">
-            <div className="filter-inputs-group">
-              <select
-                className="filter-select-input"
-                value={channelFilter}
-                onChange={(e) => setChannelFilter(e.target.value)}
-              >
-                <option value="">All Release Channels</option>
-                <option value="stable">Stable Production</option>
-                <option value="beta">Beta Testing</option>
-                <option value="alpha">Alpha Internal</option>
-              </select>
-
-              <select
-                className="filter-select-input"
-                value={platformFilter}
-                onChange={(e) => setPlatformFilter(e.target.value)}
-              >
-                <option value="">All Platforms</option>
-                <option value="android">Android (.apk)</option>
-                <option value="ios">iOS Package</option>
-              </select>
-            </div>
-
-            <div className="filter-count-label">
-              Showing {filteredReleases.length} of {totalCount} builds
-            </div>
-          </div>
-
-          {/* Releases Table Card */}
-          <div className="table-card-container">
-            <table className="firmware-table">
-              <thead>
-                <tr>
-                  <th>VERSION &amp; BUILD</th>
-                  <th>PLATFORM</th>
-                  <th>CHANNEL</th>
-                  <th>SIZE</th>
-                  <th>RELEASE DATE</th>
-                  <th>POLICY</th>
-                  <th>STATUS</th>
-                  <th style={{ textAlign: 'right' }}>ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody>
-                {isLoading ? (
-                  <tr>
-                    <td colSpan="8" style={{ textAlign: 'center', padding: '3rem' }}>
-                      <span
-                        className="material-symbols-outlined"
-                        style={{ fontSize: '32px', animation: 'spin 1s linear infinite', color: '#4be277' }}
-                      >
-                        sync
-                      </span>
-                      <p style={{ marginTop: '8px', color: '#bccbb9' }}>Loading APK releases from Cloudflare R2...</p>
-                    </td>
-                  </tr>
-                ) : filteredReleases.length === 0 ? (
-                  <tr>
-                    <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#bccbb9' }}>
-                      No APK releases found. Click <strong>"Publish New APK"</strong> to upload your first Android package!
-                    </td>
-                  </tr>
-                ) : (
-                  filteredReleases.map((row) => (
-                    <tr key={row.id}>
-                      <td>
-                        <div style={{ fontWeight: '600', color: '#fff', fontFamily: 'monospace' }}>
-                          {row.version}
-                        </div>
-                        <div style={{ fontSize: '11px', color: '#88988e' }}>Build #{row.buildNumber}</div>
-                      </td>
-                      <td>
-                        <span
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '4px',
-                            fontSize: '12px',
-                            fontWeight: '600',
-                            color: '#4be277',
-                          }}
-                        >
-                          <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>
-                            android
-                          </span>
-                          {row.platform}
-                        </span>
-                      </td>
-                      <td>
-                        <span className={`channel-pill-tag ${row.channelType}`}>{row.channel}</span>
-                      </td>
-                      <td>
-                        <span style={{ fontFamily: 'monospace', fontSize: '12px' }}>{row.fileSizeMb} MB</span>
-                      </td>
-                      <td>{row.releaseDate}</td>
-                      <td>
-                        {row.mandatory ? (
-                          <span style={{ color: '#ff857a', fontWeight: '600', fontSize: '12px' }}>
-                            Mandatory Update
-                          </span>
-                        ) : (
-                          <span style={{ color: '#bccbb9', fontSize: '12px' }}>Optional</span>
-                        )}
-                      </td>
-                      <td>
-                        <span className={`status-pill-badge ${row.statusType}`}>{row.status}</span>
-                      </td>
-                      <td style={{ textAlign: 'right' }}>
-                        <div style={{ display: 'inline-flex', gap: '8px' }}>
-                          <a
-                            href={row.downloadUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="table-action-icon-btn"
-                            title="Download APK from Cloudflare R2"
-                            style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                          >
-                            <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#4be277' }}>
-                              download
-                            </span>
-                          </a>
-                          <button
-                            type="button"
-                            className="table-action-icon-btn"
-                            title="Delete Release"
-                            onClick={() => handleDelete(row)}
-                          >
-                            <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#ff857a' }}>
-                              delete
-                            </span>
-                          </button>
-                        </div>
-                      </td>
+              {/* Data Table */}
+              <div className="table-scroll-container">
+                <table className="firmware-table">
+                  <thead>
+                    <tr>
+                      <th style={{ width: '160px' }}>VERSION &amp; BUILD</th>
+                      <th>PLATFORM</th>
+                      <th>CHANNEL</th>
+                      <th>SIZE</th>
+                      <th>RELEASE DATE</th>
+                      <th>POLICY</th>
+                      <th>STATUS</th>
+                      <th className="text-right" style={{ width: '120px' }}>ACTIONS</th>
                     </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
+                  </thead>
+                  <tbody>
+                    {isLoading ? (
+                      <tr>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                          <span
+                            className="material-symbols-outlined"
+                            style={{ fontSize: '32px', animation: 'spin 1s linear infinite', color: '#4be277' }}
+                          >
+                            sync
+                          </span>
+                          <p style={{ marginTop: '8px', color: '#bccbb9' }}>Loading APK releases from Cloudflare R2...</p>
+                        </td>
+                      </tr>
+                    ) : filteredReleases.length === 0 ? (
+                      <tr>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#bccbb9' }}>
+                          No APK releases found. Click <strong>"Publish New APK"</strong> to upload your first Android package!
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredReleases.map((row) => (
+                        <tr key={row.id} className="firmware-tr">
+                          <td>
+                            <div className="font-mono font-medium text-white">
+                              {row.version}
+                            </div>
+                            <div style={{ fontSize: '11px', color: '#88988e' }}>Build #{row.buildNumber}</div>
+                          </td>
+                          <td>
+                            <span
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                fontSize: '12px',
+                                fontWeight: '600',
+                                color: '#4be277',
+                              }}
+                            >
+                              <span className="material-symbols-outlined icon-18">
+                                android
+                              </span>
+                              {row.platform}
+                            </span>
+                          </td>
+                          <td>
+                            <span className={`channel-pill pill-${row.channelType}`}>{row.channel}</span>
+                          </td>
+                          <td className="font-mono text-muted">
+                            {row.fileSizeMb} MB
+                          </td>
+                          <td className="text-muted">{row.releaseDate}</td>
+                          <td>
+                            {row.mandatory ? (
+                              <span style={{ color: '#ff857a', fontWeight: '600', fontSize: '12px' }}>
+                                Mandatory
+                              </span>
+                            ) : (
+                              <span className="text-muted" style={{ fontSize: '12px' }}>Optional</span>
+                            )}
+                          </td>
+                          <td>
+                            <div className="status-flex-item">
+                              <span className={`dot-indicator dot-${row.statusType}`} />
+                              <span>{row.status}</span>
+                            </div>
+                          </td>
+                          <td className="text-right">
+                            <div className="row-action-btns">
+                              <a
+                                href={row.downloadUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="action-link-btn"
+                                title="Download APK from Cloudflare R2"
+                                style={{ textDecoration: 'none' }}
+                              >
+                                <span className="material-symbols-outlined icon-18" style={{ color: '#4be277' }}>
+                                  download
+                                </span>
+                              </a>
+                              <button
+                                type="button"
+                                className="action-link-btn hover-red"
+                                title="Delete Release"
+                                onClick={() => handleDelete(row)}
+                              >
+                                <span className="material-symbols-outlined icon-18" style={{ color: '#ff857a' }}>
+                                  delete
+                                </span>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Table Footer / Pagination */}
+              <div className="table-pagination-footer">
+                <span className="pagination-text">Showing {filteredReleases.length} of {totalCount} releases</span>
+                <div className="pagination-group">
+                  <button
+                    type="button"
+                    className="p-btn"
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  >
+                    <span className="material-symbols-outlined icon-18">chevron_left</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="p-btn num-btn active"
+                  >
+                    {currentPage}
+                  </button>
+                  <button
+                    type="button"
+                    className="p-btn"
+                    disabled={currentPage >= totalPages}
+                    onClick={() => setCurrentPage((p) => p + 1)}
+                  >
+                    <span className="material-symbols-outlined icon-18">chevron_right</span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </main>
       </div>
     </div>
   );
 }
+
