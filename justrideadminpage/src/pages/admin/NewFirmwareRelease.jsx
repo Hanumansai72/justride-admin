@@ -4,17 +4,30 @@ import { firmwareApi } from '../../api/services';
 import './ProvisionStaff.css';
 
 export default function NewFirmwareRelease({ onNavigate, onLogout }) {
-  const [version, setVersion] = useState('2.5.0');
+  const [version, setVersion] = useState('2.2.0');
   const [channel, setChannel] = useState('stable'); // stable, beta, deprecated
-  const [deviceType, setDeviceType] = useState('Tracker X1 Pro');
-  const [minSupportedVersion, setMinSupportedVersion] = useState('2.4.0');
+  const [deviceType, setDeviceType] = useState('JustRide-V1');
+  const [minSupportedVersion, setMinSupportedVersion] = useState('1.0.0');
   const [releaseNotes, setReleaseNotes] = useState(
-    'Enhanced BLE reconnect handshake, reduced idle current by 12%, and added CRC-32 packet validation.'
+    'Initial OTA release: Enhanced BLE reconnect handshake, battery ADC monitoring, and live status UI.'
   );
-  const [fileUrl, setFileUrl] = useState('https://storage.justride.io/firmware/v2.5.0.bin');
-  const [checksum, setChecksum] = useState('e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855');
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [fileUrl, setFileUrl] = useState('');
+  const [checksum, setChecksum] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+
+  const handleFileChange = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.name.endsWith('.bin')) {
+        setErrorMsg('Please select a valid compiled firmware .bin file (e.g. justride_firmware.bin)');
+        return;
+      }
+      setSelectedFile(file);
+      setErrorMsg('');
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,19 +35,34 @@ export default function NewFirmwareRelease({ onNavigate, onLogout }) {
     setIsSubmitting(true);
 
     try {
-      const payload = {
-        version: version.trim().replace(/^v/, ''),
-        channel: channel.toLowerCase(),
-        device_type: deviceType.trim(),
-        min_supported_version: minSupportedVersion.trim() || undefined,
-        release_notes: releaseNotes.trim(),
-        file_url: fileUrl.trim(),
-        checksum: checksum.trim(),
-      };
+      let res;
+      if (selectedFile) {
+        // Upload physical .bin file directly to Cloudflare R2 via Backend multipart/form-data
+        const formData = new FormData();
+        formData.append('firmware_file', selectedFile);
+        formData.append('version', version.trim().replace(/^v/i, ''));
+        formData.append('channel', channel.toLowerCase());
+        formData.append('device_type', deviceType.trim());
+        if (minSupportedVersion) formData.append('min_supported_version', minSupportedVersion.trim());
+        formData.append('release_notes', releaseNotes.trim());
 
-      const res = await firmwareApi.createRelease(payload);
+        res = await firmwareApi.createRelease(formData);
+      } else {
+        // Manual URL payload
+        const payload = {
+          version: version.trim().replace(/^v/i, ''),
+          channel: channel.toLowerCase(),
+          device_type: deviceType.trim(),
+          min_supported_version: minSupportedVersion.trim() || undefined,
+          release_notes: releaseNotes.trim(),
+          file_url: fileUrl.trim(),
+          checksum: checksum.trim(),
+        };
+        res = await firmwareApi.createRelease(payload);
+      }
+
       if (res?.success) {
-        alert(`Firmware Release v${res.data?.version || version} published successfully!`);
+        alert(`Firmware Release v${res.data?.version || version} published successfully to Cloudflare R2!`);
         if (onNavigate) onNavigate('firmware');
       }
     } catch (err) {
@@ -170,27 +198,51 @@ export default function NewFirmwareRelease({ onNavigate, onLogout }) {
                       </div>
 
                       <div className="field-group" style={{ gridColumn: 'span 2' }}>
-                        <label className="field-label">Binary Storage URL / Cloud Asset</label>
-                        <input
-                          type="url"
-                          className="custom-form-input font-mono"
-                          placeholder="https://..."
-                          value={fileUrl}
-                          onChange={(e) => setFileUrl(e.target.value)}
-                          required
-                        />
+                        <label className="field-label">Upload Firmware Binary (.bin file)</label>
+                        <div
+                          style={{
+                            border: selectedFile ? '2px solid #22c55e' : '2px dashed #27312b',
+                            borderRadius: '10px',
+                            padding: '1.25rem',
+                            textAlign: 'center',
+                            background: '#151a17',
+                            cursor: 'pointer',
+                          }}
+                          onClick={() => document.getElementById('firmware-bin-file-input').click()}
+                        >
+                          <input
+                            id="firmware-bin-file-input"
+                            type="file"
+                            accept=".bin"
+                            style={{ display: 'none' }}
+                            onChange={handleFileChange}
+                          />
+                          <span className="material-symbols-outlined text-primary" style={{ fontSize: '32px', marginBottom: '8px' }}>
+                            {selectedFile ? 'task_alt' : 'cloud_upload'}
+                          </span>
+                          <p style={{ margin: '4px 0', fontWeight: '600', color: selectedFile ? '#22c55e' : '#fff' }}>
+                            {selectedFile ? selectedFile.name : 'Click to select justride_firmware.bin'}
+                          </p>
+                          <p style={{ margin: 0, fontSize: '12px', color: '#88988e' }}>
+                            {selectedFile
+                              ? `Size: ${(selectedFile.size / 1024).toFixed(1)} KB — Auto-streams to Cloudflare R2 on submit`
+                              : 'ESP-IDF compiled binary from build/ directory'}
+                          </p>
+                        </div>
                       </div>
 
-                      <div className="field-group" style={{ gridColumn: 'span 2' }}>
-                        <label className="field-label">SHA-256 Checksum</label>
-                        <input
-                          type="text"
-                          className="custom-form-input font-mono"
-                          placeholder="64-character hex checksum"
-                          value={checksum}
-                          onChange={(e) => setChecksum(e.target.value)}
-                        />
-                      </div>
+                      {!selectedFile && (
+                        <div className="field-group" style={{ gridColumn: 'span 2' }}>
+                          <label className="field-label">Or Manual Storage URL (Optional)</label>
+                          <input
+                            type="url"
+                            className="custom-form-input font-mono"
+                            placeholder="https://..."
+                            value={fileUrl}
+                            onChange={(e) => setFileUrl(e.target.value)}
+                          />
+                        </div>
+                      )}
                     </div>
                   </section>
 
