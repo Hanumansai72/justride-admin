@@ -74,7 +74,7 @@ function ProtectedRoute({ children, allowedRoles }) {
 }
 
 export default function App() {
-  const { user, role, setRole, logout, isLoading } = useAuth();
+  const { user, role, logout, isLoading } = useAuth();
   const navigate = useNavigate();
 
   // Route Navigator helper for backward compatibility with existing component callbacks

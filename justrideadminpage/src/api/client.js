@@ -4,20 +4,7 @@
  */
 import Cookies from 'js-cookie';
 
-const DEFAULT_PRODUCTION_API = 'https://justfai-backend.vercel.app/api';
-
-const resolveBaseUrl = () => {
-  if (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL !== '/api') {
-    return import.meta.env.VITE_API_URL;
-  }
-  // When running on production domain (e.g. Vercel) and no explicit VITE_API_URL is configured
-  if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
-    return DEFAULT_PRODUCTION_API;
-  }
-  return import.meta.env.VITE_API_URL || '/api';
-};
-
-const API_BASE_URL = resolveBaseUrl();
+const API_BASE_URL = import.meta.env.DEV ? '/api' : 'https://backend.justride.cc/api';
 
 class ApiClient {
   constructor() {
@@ -29,11 +16,7 @@ class ApiClient {
 
   getToken() {
     try {
-      // First check cookies
-      const token = Cookies.get(this.tokenCookieName);
-      if (token) return token;
-      // Fallback to localStorage
-      return localStorage.getItem(this.tokenCookieName);
+      return Cookies.get(this.tokenCookieName);
     } catch {
       return null;
     }
@@ -49,75 +32,12 @@ class ApiClient {
           sameSite: 'lax',
           path: '/',
         });
-        localStorage.setItem(this.tokenCookieName, token);
       } else {
         Cookies.remove(this.tokenCookieName, { path: '/' });
         localStorage.removeItem(this.tokenCookieName);
       }
     } catch (e) {
       console.error('Failed to set token in cookies/storage', e);
-    }
-  }
-
-  getUser() {
-    try {
-      const userCookie = Cookies.get(this.userCookieName);
-      if (userCookie) {
-        return JSON.parse(decodeURIComponent(userCookie));
-      }
-      const stored = localStorage.getItem(this.userCookieName);
-      return stored ? JSON.parse(stored) : null;
-    } catch {
-      return null;
-    }
-  }
-
-  setUser(user) {
-    try {
-      const isHttps = window.location.protocol === 'https:';
-      if (user) {
-        const userStr = encodeURIComponent(JSON.stringify(user));
-        Cookies.set(this.userCookieName, userStr, {
-          expires: 7,
-          secure: isHttps,
-          sameSite: 'lax',
-          path: '/',
-        });
-        localStorage.setItem(this.userCookieName, JSON.stringify(user));
-      } else {
-        Cookies.remove(this.userCookieName, { path: '/' });
-        localStorage.removeItem(this.userCookieName);
-      }
-    } catch (e) {
-      console.error('Failed to set user in cookies/storage', e);
-    }
-  }
-
-  getRole() {
-    try {
-      return Cookies.get(this.roleCookieName) || localStorage.getItem(this.roleCookieName) || 'ADMIN';
-    } catch {
-      return 'ADMIN';
-    }
-  }
-
-  setRole(role) {
-    try {
-      const isHttps = window.location.protocol === 'https:';
-      if (role) {
-        Cookies.set(this.roleCookieName, role, {
-          expires: 7,
-          secure: isHttps,
-          sameSite: 'lax',
-          path: '/',
-        });
-        localStorage.setItem(this.roleCookieName, role);
-      } else {
-        Cookies.remove(this.roleCookieName, { path: '/' });
-        localStorage.removeItem(this.roleCookieName);
-      }
-    } catch (e) {
-      console.error('Failed to set role in cookies/storage', e);
     }
   }
 

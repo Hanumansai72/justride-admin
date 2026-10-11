@@ -5,22 +5,10 @@ import api from '../api/client';
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(() => api.getUser());
-  const [role, setRoleState] = useState(() => {
-    const savedRole = api.getRole();
-    const user = api.getUser();
-    if (user?.role === 'ADMIN') return 'ADMIN';
-    if (user?.role === 'HELPER' || user?.employee_id) return 'HELPER';
-    return savedRole || 'ADMIN';
-  });
+  const [currentUser, setCurrentUser] = useState(null);
+  const role = currentUser?.role;
   const [isLoading, setIsLoading] = useState(true);
   const [authError, setAuthError] = useState(null);
-
-  const setRole = useCallback((newRole) => {
-    const normalized = (newRole || 'ADMIN').toUpperCase();
-    setRoleState(normalized);
-    api.setRole(normalized);
-  }, []);
 
   // Validate session on mount with /api/admin/me
   useEffect(() => {
@@ -34,15 +22,10 @@ export function AuthProvider({ children }) {
 
       try {
         const response = await authApi.getProfile();
-        if (isMounted && response?.success && response?.data) {
-          const user = response.data;
-          setCurrentUser(user);
-          api.setUser(user);
-          const computedRole = user.role === 'ADMIN' ? 'ADMIN' : 'HELPER';
-          setRole(computedRole);
-        }
+        if (!response?.success || !['ADMIN', 'HELPER'].includes(response.data?.role)) throw new Error('Invalid staff session.');
+        if (isMounted) setCurrentUser(response.data);
       } catch (err) {
-        console.warn('Session verification failed, continuing with cached session or logout', err.message);
+        if (isMounted) setAuthError('Could not verify your session. Please sign in again.');
         if (err.status === 401) {
           api.clearSession();
           if (isMounted) {
@@ -59,7 +42,6 @@ export function AuthProvider({ children }) {
     // Listen for unauthorized events from api client
     const handleUnauthorized = () => {
       setCurrentUser(null);
-      setRole('ADMIN');
     };
     window.addEventListener('auth:unauthorized', handleUnauthorized);
 
@@ -67,9 +49,9 @@ export function AuthProvider({ children }) {
       isMounted = false;
       window.removeEventListener('auth:unauthorized', handleUnauthorized);
     };
-  }, [setRole]);
+  }, []);
 
-  const login = useCallback(async ({ identifier, password, role: requestedRole }) => {
+  const login = useCallback(async ({ identifier, password }) => {
     setIsLoading(true);
     setAuthError(null);
     try {
@@ -79,17 +61,13 @@ export function AuthProvider({ children }) {
       };
       const response = await authApi.login(payload);
 
-      if (response?.success && response?.data) {
+      if (response?.success && response.accessToken && ['ADMIN', 'HELPER'].includes(response.data?.role)) {
         const user = response.data;
         const accessToken = response.accessToken;
 
         api.setToken(accessToken);
-        api.setUser(user);
-
         setCurrentUser(user);
-        const resolvedRole = user.role === 'ADMIN' ? 'ADMIN' : 'HELPER';
-        setRole(resolvedRole);
-        return { success: true, user, role: resolvedRole };
+        return { success: true, user, role: user.role };
       } else {
         throw new Error(response?.message || 'Login failed');
       }
@@ -100,7 +78,7 @@ export function AuthProvider({ children }) {
     } finally {
       setIsLoading(false);
     }
-  }, [setRole]);
+  }, []);
 
   const logout = useCallback(async () => {
     try {
@@ -118,7 +96,6 @@ export function AuthProvider({ children }) {
       const response = await authApi.getProfile();
       if (response?.success && response?.data) {
         setCurrentUser(response.data);
-        api.setUser(response.data);
       }
     } catch (err) {
       console.error('Failed to refresh profile', err);
@@ -129,7 +106,6 @@ export function AuthProvider({ children }) {
     user: currentUser,
     currentUser,
     role,
-    setRole,
     isAuthenticated: !!currentUser,
     isLoading,
     authError,

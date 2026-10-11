@@ -4,10 +4,16 @@ import DataTable from '../../components/common/DataTable';
 import { interestApi } from '../../api/services';
 import './InterestedUsers.css';
 
+function emailStatus(row) {
+  if (row.confirmationEmailStatus === 'sent') return 'Sent';
+  if (row.confirmationEmailStatus === 'failed') return `Failed (${row.confirmationEmailCode || 'delivery error'})`;
+  return 'Pending / not recorded';
+}
+
 const columns = [
   { header: 'Name', accessor: 'name' },
   { header: 'Email', accessor: 'email' },
-  { header: 'Confirmation email', render: (row) => row.confirmationEmailStatus === 'sent' ? 'Sent' : row.confirmationEmailStatus === 'failed' ? `Failed (${row.confirmationEmailCode || 'delivery error'})` : 'Pending / not recorded' },
+  { header: 'Confirmation email', render: emailStatus },
   { header: 'City', accessor: 'city' },
   { header: 'Purchase interest', render: (row) => row.purchaseIntent || '—' },
   { header: 'Expectations / notes', render: (row) => <span className="interested-users__notes">{row.notes || '—'}</span> },
