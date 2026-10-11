@@ -8,7 +8,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'https://justfai-backend.vercel.app',
+        target: process.env.JUSTRIDE_API_PROXY_TARGET || 'https://justfai-backend.vercel.app',
         changeOrigin: true,
         secure: true,
       },

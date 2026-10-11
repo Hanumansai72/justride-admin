@@ -7,6 +7,7 @@ export default function TopBar({
   onRoleChange,
   activeTab = 'Operations',
   onTabChange,
+  onNavigate,
   userProfile = {
     avatar:
       'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80',

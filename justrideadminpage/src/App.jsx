@@ -6,6 +6,7 @@ import LoginPage from './pages/auth/LoginPage';
 // Admin Modules
 import AdminDashboard from './pages/admin/AdminDashboard';
 import UsersManagement from './pages/admin/UsersManagement';
+import InterestedUsers from './pages/admin/InterestedUsers';
 import CreateUser from './pages/admin/CreateUser';
 import UserDetail from './pages/admin/UserDetail';
 import UserActivityLog from './pages/admin/UserActivityLog';
@@ -180,6 +181,7 @@ export default function App() {
         />
 
         {/* Users Management */}
+        <Route path="/interested-users" element={<ProtectedRoute allowedRoles={['ADMIN', 'HELPER']}><InterestedUsers onNavigate={handleNavigate} onLogout={handleLogout} /></ProtectedRoute>} />
         <Route
           path="/users"
           element={

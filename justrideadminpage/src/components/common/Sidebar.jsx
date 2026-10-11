@@ -22,6 +22,7 @@ export default function Sidebar({
 
   const bottomNavItems = [
     { id: 'users', label: 'Users', icon: 'group', path: '/users' },
+    { id: 'interested-users', label: 'Interested Users', icon: 'person_add', path: '/interested-users' },
     { id: 'helpers', label: 'Helpers', icon: 'build', path: '/helpers' },
     { id: 'audit-logs', label: 'Audit Logs', icon: 'admin_panel_settings', path: '/audit-logs' },
     { id: 'notifications', label: 'Alerts', icon: 'notifications', path: '/notifications' },

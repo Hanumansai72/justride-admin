@@ -1,6 +1,6 @@
 import React from 'react';
-import Sidebar from '../../components/common/Sidebar';
-import TopBar from '../../components/common/TopBar';
+import Sidebar from '../components/common/Sidebar';
+import TopBar from '../components/common/TopBar';
 
 export default function AdminLayout({
   children,
@@ -22,10 +22,11 @@ export default function AdminLayout({
       />
 
       {/* Main Content Pane */}
-      <div style={{ marginLeft: '260px', flex: 1, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <div style={{ marginLeft: '260px', minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         {/* Reusable TopBar */}
         <TopBar
           title={pageTitle}
+          onNavigate={onNavigate}
           role="admin"
           onRoleChange={onRoleChange}
           onTabChange={(tab) => console.log('Tab switched:', tab)}

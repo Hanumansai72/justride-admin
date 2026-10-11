@@ -31,6 +31,10 @@ export const usersApi = {
   getUserActivity: (id) => api.get(`/admin/users/${id}/activity`),
 };
 
+export const interestApi = {
+  getUsers: (page = 1) => api.get('/early-interest', { page }),
+};
+
 // ── 4. Helper / Support Staff Management Services ────────────────────
 export const helpersApi = {
   getHelpers: (params = {}) => api.get('/admin/helpers', params),

@@ -1,5 +1,18 @@
 # React + Vite
 
+## Interested Users
+
+`/interested-users` shows early-interest submissions from the customer homepage. It uses the protected `/api/early-interest` endpoint and requires an ADMIN or HELPER login. The table shows name, email, city, purchase interest, notes, and submission time.
+
+For local development with the backend running on port 5000, start the admin frontend in PowerShell with:
+
+```powershell
+$env:JUSTRIDE_API_PROXY_TARGET='http://127.0.0.1:5000'
+npm run dev
+```
+
+Production uses the existing API URL; deploy the backend changes with the frontend to enable this endpoint there.
+
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:
