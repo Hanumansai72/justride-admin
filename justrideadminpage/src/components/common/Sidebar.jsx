@@ -42,12 +42,7 @@ export default function Sidebar({
       {/* Brand Header */}
       <div className="sidebar-header" onClick={() => navigate('/dashboard')} style={{ cursor: 'pointer' }}>
         <div className="sidebar-brand-icon">
-          <span
-            className="material-symbols-outlined brand-motorcycle-icon"
-            style={{ fontVariationSettings: "'FILL' 1" }}
-          >
-            motorcycle
-          </span>
+          <img src="/favicon.svg" alt="JustRide" style={{ width: '24px', height: '24px' }} />
         </div>
         <div>
           <h1 className="brand-text-title">JustRide</h1>

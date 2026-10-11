@@ -62,12 +62,7 @@ export default function LoginPage({ onLoginSuccess }) {
         {/* Header */}
         <div className="card-header">
           <div className="logo-badge">
-            <span
-              className="material-symbols-outlined logo-icon"
-              style={{ fontVariationSettings: "'FILL' 1" }}
-            >
-              motorcycle
-            </span>
+            <img src="/favicon.svg" alt="JustRide" style={{ width: '28px', height: '28px' }} />
           </div>
           <h1 className="brand-title">JustRide</h1>
           <h2 className="portal-title">
