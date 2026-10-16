@@ -13,6 +13,8 @@ function emailStatus(row) {
 const columns = [
   { header: 'Name', accessor: 'name' },
   { header: 'Email', accessor: 'email' },
+  { header: 'Future email consent', render: (row) => row.emailConsent === true ? 'Opted in' : 'Not opted in' },
+  { header: 'Consent recorded', render: (row) => row.emailConsentAt ? new Date(row.emailConsentAt).toLocaleString() : '—' },
   { header: 'Confirmation email', render: emailStatus },
   { header: 'City', accessor: 'city' },
   { header: 'Purchase interest', render: (row) => row.purchaseIntent || '—' },
