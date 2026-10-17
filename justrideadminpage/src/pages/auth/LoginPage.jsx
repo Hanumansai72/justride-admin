@@ -3,7 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import '../../App.css';
 
 export default function LoginPage({ onLoginSuccess }) {
-  const { login } = useAuth();
+  const { login, authError } = useAuth();
   const [identifier, setIdentifier] = useState('admin@justride.io');
   const [password, setPassword] = useState('');
   const [role, setRole] = useState('admin'); // 'admin' | 'staff'
@@ -121,7 +121,7 @@ export default function LoginPage({ onLoginSuccess }) {
           </button>
         </div>
 
-        {errorMsg && (
+        {(errorMsg || authError) && (
           <div
             style={{
               padding: '10px 14px',
@@ -139,7 +139,7 @@ export default function LoginPage({ onLoginSuccess }) {
             <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>
               error
             </span>
-            <span>{errorMsg}</span>
+            <span>{errorMsg || authError}</span>
           </div>
         )}
 

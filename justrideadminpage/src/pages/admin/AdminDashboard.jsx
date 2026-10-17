@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
+import RequestError from '../../components/common/RequestError';
 import { dashboardApi } from '../../api/services';
 import { useAuth } from '../../context/AuthContext';
 import './Dashboard.css';
@@ -13,34 +14,33 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
   const [statsData, setStatsData] = useState(null);
   const [healthData, setHealthData] = useState(null);
   const [error, setError] = useState(null);
+  const [healthError, setHealthError] = useState(null);
+  const requestRef = useRef(null);
 
   // Fetch Dashboard Stats & Health
   const loadDashboardData = useCallback(async (showRefreshing = false) => {
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const signal = controller.signal;
     if (showRefreshing) setIsRefreshing(true);
     setError(null);
+    setHealthError(null);
 
-    try {
-      const [statsRes, healthRes] = await Promise.allSettled([
-        dashboardApi.getStats(),
-        currentUser?.role === 'ADMIN' ? dashboardApi.getHealth() : Promise.resolve(null),
-      ]);
-
-      if (statsRes.status === 'fulfilled' && statsRes.value?.success) {
-        setStatsData(statsRes.value.data);
-      }
-
-      if (healthRes.status === 'fulfilled' && healthRes.value?.success) {
-        setHealthData(healthRes.value.data);
-      }
-      const failed = [statsRes, healthRes].find(result => result.status === 'rejected');
-      if (failed) setError(failed.reason?.message || 'Could not load dashboard metrics.');
-    } catch (err) {
-      console.warn('Dashboard fetch issue', err);
-      setError('Could not load real-time metrics. Showing offline state.');
-    } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
-    }
+    const stats = dashboardApi.getStats({ signal }).then(response => {
+      if (signal.aborted) return;
+      if (!response?.success) throw new Error('Could not load dashboard metrics.');
+      setStatsData(response.data);
+    }).catch(cause => { if (!signal.aborted) setError(cause.message); })
+      .finally(() => { if (!signal.aborted) setIsLoading(false); });
+    const health = currentUser?.role === 'ADMIN' ? dashboardApi.getHealth({ signal }).then(response => {
+      if (signal.aborted) return;
+      if (!response?.success) throw new Error('Could not load system health.');
+      setHealthData(response.data);
+    }).catch(cause => { if (!signal.aborted) setHealthError(cause.message); }) : Promise.resolve();
+    // Stats can render immediately; a slow health probe must not hold up the KPIs.
+    await Promise.allSettled([stats, health]);
+    if (!signal.aborted) setIsRefreshing(false);
   }, [currentUser?.role]);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
     const interval = setInterval(() => {
       if (document.visibilityState === 'visible') loadDashboardData();
     }, 60000);
-    return () => clearInterval(interval);
+    return () => { clearInterval(interval); requestRef.current?.abort(); };
   }, [loadDashboardData]);
 
   // Derived KPI Cards (Real DB Metrics)
@@ -131,8 +131,8 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
       type: 'Database Health',
       icon: 'database',
       color: 'secondary',
-      time: healthData?.database?.ping_ms ? `${healthData.database.ping_ms}ms ping` : 'Connected',
-      description: `MongoDB Cluster: ${healthData?.database?.state || 'connected'} (${healthData?.database?.name || 'justride'}).`,
+      time: healthError ? 'Unavailable' : healthData?.database?.ping_ms != null ? `${healthData.database.ping_ms}ms ping` : healthData?.database?.state || (currentUser?.role === 'ADMIN' ? 'Checking…' : 'Not requested'),
+      description: healthData ? `MongoDB Cluster: ${healthData.database?.state || 'unknown'} (${healthData.database?.name || 'unknown'}).` : 'Waiting for verified health information.',
     },
     {
       type: 'Support Workload',
@@ -220,6 +220,7 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
         {/* Dashboard Canvas */}
         <main className="dashboard-content">
           <div className="content-container">
+            <RequestError message={error || healthError} loading={isRefreshing} onRetry={() => loadDashboardData(true)} />
             {/* Title & Action */}
             <div className="page-header">
               <div>

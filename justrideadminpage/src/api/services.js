@@ -7,7 +7,7 @@ import api from './client';
 // ── 1. Authentication & Profile Services ─────────────────────────────
 export const authApi = {
   login: (credentials) => api.post('/admin/login', credentials),
-  getProfile: () => api.get('/admin/me'),
+  getProfile: (options = {}) => api.get('/admin/me', {}, options),
   updateCredentials: (data) => api.put('/admin/credentials', data),
   logout: () => {
     api.clearSession();
@@ -17,28 +17,28 @@ export const authApi = {
 
 // ── 2. Dashboard & System Health Services ────────────────────────────
 export const dashboardApi = {
-  getStats: () => api.get('/admin/dashboard/stats'),
-  getHealth: () => api.get('/admin/dashboard/health'),
+  getStats: (options = {}) => api.get('/admin/dashboard/stats', {}, options),
+  getHealth: (options = {}) => api.get('/admin/dashboard/health', {}, options),
 };
 
 // ── 3. User Management Services ──────────────────────────────────────
 export const usersApi = {
-  getUsers: (params = {}) => api.get('/admin/users', params),
-  getUserById: (id) => api.get(`/admin/users/${id}`),
+  getUsers: (params = {}, options = {}) => api.get('/admin/users', params, options),
+  getUserById: (id, options = {}) => api.get(`/admin/users/${id}`, {}, options),
   updateStatus: (id, status, reason = '') =>
     api.patch(`/admin/users/${id}/status`, { status, reason }),
   deleteUser: (id) => api.delete(`/admin/users/${id}`),
-  getUserActivity: (id) => api.get(`/admin/users/${id}/activity`),
+  getUserActivity: (id, options = {}) => api.get(`/admin/users/${id}/activity`, {}, options),
 };
 
 export const interestApi = {
-  getUsers: (page = 1) => api.get('/early-interest', { page }),
+  getUsers: (page = 1, options = {}) => api.get('/early-interest', { page }, options),
 };
 
 // ── 4. Helper / Support Staff Management Services ────────────────────
 export const helpersApi = {
-  getHelpers: (params = {}) => api.get('/admin/helpers', params),
-  getHelperById: (id) => api.get(`/admin/helpers/${id}`),
+  getHelpers: (params = {}, options = {}) => api.get('/admin/helpers', params, options),
+  getHelperById: (id, options = {}) => api.get(`/admin/helpers/${id}`, {}, options),
   createHelper: (data) => api.post('/admin/helpers', data),
   updateStatus: (id, status, reason = '', role) =>
     api.patch(`/admin/helpers/${id}/status`, { status, status_reason: reason, role }),
@@ -47,8 +47,8 @@ export const helpersApi = {
 
 // ── 5. Device Fleet & Hardware Services ──────────────────────────────
 export const devicesApi = {
-  getDevices: (params = {}) => api.get('/admin/devices', params),
-  getDeviceById: (id) => api.get(`/admin/devices/${id}`),
+  getDevices: (params = {}, options = {}) => api.get('/admin/devices', params, options),
+  getDeviceById: (id, options = {}) => api.get(`/admin/devices/${id}`, {}, options),
   registerDevice: (data) => api.post('/admin/devices', data),
   updateDevice: (id, data) => api.put(`/admin/devices/${id}`, data),
   blockDevice: (id, reason = '') => api.patch(`/admin/devices/${id}/block`, { reason }),
@@ -59,13 +59,13 @@ export const devicesApi = {
 
 // ── 6. Pairing & Bluetooth Operations ────────────────────────────────
 export const pairingApi = {
-  getPairingLogs: (params = {}) => api.get('/admin/pairing', params),
+  getPairingLogs: (params = {}, options = {}) => api.get('/admin/pairing', params, options),
   forceUnpair: (id, reason = '') => api.patch(`/admin/pairing/${id}/force-unpair`, { reason }),
 };
 
 // ── 7. Firmware Rollout & Lifecycle Services ─────────────────────────
 export const firmwareApi = {
-  getReleases: (params = {}) => api.get('/admin/firmware', params),
+  getReleases: (params = {}, options = {}) => api.get('/admin/firmware', params, options),
   createRelease: (data) => api.post('/admin/firmware', data),
   updateRelease: (id, data) => api.put(`/admin/firmware/${id}`, data),
   featureRelease: (id) => api.patch(`/admin/firmware/${id}/feature`),
@@ -74,7 +74,7 @@ export const firmwareApi = {
 
 // ── 7B. Mobile App APK Releases & Lifecycle Services ──────────────────
 export const appReleasesApi = {
-  getReleases: (params = {}) => api.get('/admin/app-releases', params),
+  getReleases: (params = {}, options = {}) => api.get('/admin/app-releases', params, options),
   getUploadUrl: (data) => api.post('/admin/app-releases/upload-url', data),
   createRelease: (data) => api.post('/admin/app-releases', data),
   updateRelease: (id, data) => api.put(`/admin/app-releases/${id}`, data),
@@ -84,8 +84,8 @@ export const appReleasesApi = {
 
 // ── 8. Support Tickets & Troubleshooting Services ────────────────────
 export const supportApi = {
-  getTickets: (params = {}) => api.get('/admin/support', params),
-  getTicketById: (id) => api.get(`/admin/support/${id}`),
+  getTickets: (params = {}, options = {}) => api.get('/admin/support', params, options),
+  getTicketById: (id, options = {}) => api.get(`/admin/support/${id}`, {}, options),
   updateTicket: (id, data) => api.patch(`/admin/support/${id}`, data),
   blockDeviceFromTicket: (id, reason = '') =>
     api.post(`/admin/support/${id}/block-device`, { reason }),
@@ -95,15 +95,15 @@ export const supportApi = {
 
 // ── 9. Staff Notifications & Live Alerts ─────────────────────────────
 export const notificationsApi = {
-  getNotifications: (params = {}) => api.get('/admin/notifications', params),
-  getUnreadCount: () => api.get('/admin/notifications/unread-count'),
+  getNotifications: (params = {}, options = {}) => api.get('/admin/notifications', params, options),
+  getUnreadCount: (options = {}) => api.get('/admin/notifications/unread-count', {}, options),
   markRead: (id) => api.patch(`/admin/notifications/${id}/read`),
   markAllRead: () => api.patch('/admin/notifications/mark-all-read'),
 };
 
 // ── 10. Audit Logs & System Activity ─────────────────────────────────
 export const auditApi = {
-  getLogs: (params = {}) => api.get('/admin/audit-logs', params),
-  getLogById: (id) => api.get(`/admin/audit-logs/${id}`),
-  getStats: () => api.get('/admin/audit-logs/stats'),
+  getLogs: (params = {}, options = {}) => api.get('/admin/audit-logs', params, options),
+  getLogById: (id, options = {}) => api.get(`/admin/audit-logs/${id}`, {}, options),
+  getStats: (options = {}) => api.get('/admin/audit-logs/stats', {}, options),
 };

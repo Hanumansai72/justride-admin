@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import RequestError from '../../components/common/RequestError';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { usersApi } from '../../api/services';
 import './UsersManagement.css';
@@ -16,6 +17,8 @@ export default function UsersManagement({ onNavigate, onLogout }) {
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const requestRef = useRef(null);
   const [actionLoadingId, setActionLoadingId] = useState(null);
 
   const [stats, setStats] = useState({
@@ -29,7 +32,12 @@ export default function UsersManagement({ onNavigate, onLogout }) {
   });
 
   const fetchUsers = useCallback(async () => {
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const signal = controller.signal;
     setIsLoading(true);
+    setLoadError('');
     try {
       const params = {
         page: currentPage,
@@ -39,7 +47,8 @@ export default function UsersManagement({ onNavigate, onLogout }) {
         status: statusFilter || undefined,
       };
 
-      const res = await usersApi.getUsers(params);
+      const res = await usersApi.getUsers(params, { signal });
+      if (signal.aborted) return;
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map((u) => ({
           id: u._id || u.id,
@@ -81,17 +90,18 @@ export default function UsersManagement({ onNavigate, onLogout }) {
         });
       }
     } catch (err) {
-      console.warn('Could not fetch real users from backend, using current list:', err.message);
+      if (signal.aborted) return;
+      setLoadError(err.message || 'Could not load this page. Please try again.');
     } finally {
-      setIsLoading(false);
+      if (!signal.aborted) setIsLoading(false);
     }
   }, [currentPage, limit, searchQuery, roleFilter, statusFilter]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
       fetchUsers();
-    }, 250);
-    return () => clearTimeout(handler);
+    }, requestRef.current ? 250 : 0);
+    return () => { clearTimeout(handler); requestRef.current?.abort(); };
   }, [fetchUsers]);
 
   const handleToggleStatus = async (userId, currentStatus, e) => {
@@ -180,6 +190,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
 
         {/* Content Canvas */}
         <main className="users-canvas-content">
+          <RequestError message={loadError} loading={isLoading} onRetry={fetchUsers} />
           <div className="canvas-wrapper">
             {/* Header Section */}
             <div className="page-header-row">
@@ -347,7 +358,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {isLoading ? (
+                    {isLoading && users.length === 0 ? (
                       <tr>
                         <td colSpan="7" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>

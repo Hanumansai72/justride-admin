@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import RequestError from '../../components/common/RequestError';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { supportApi } from '../../api/services';
 import './SupportManagement.css';
@@ -16,9 +17,16 @@ export default function SupportManagement({ onNavigate, onLogout }) {
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const requestRef = useRef(null);
 
   const fetchTickets = useCallback(async () => {
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const signal = controller.signal;
     setIsLoading(true);
+    setLoadError('');
     try {
       const params = {
         page: currentPage,
@@ -30,7 +38,8 @@ export default function SupportManagement({ onNavigate, onLogout }) {
       if (priorityFilter !== 'All Priorities') params.priority = priorityFilter.toLowerCase();
       if (assignedFilter === 'My Tickets') params.assigned_to = 'me';
 
-      const res = await supportApi.getTickets(params);
+      const res = await supportApi.getTickets(params, { signal });
+      if (signal.aborted) return;
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map((t) => ({
           id: t.ticket_number || `#TK-${t._id.slice(-4)}`,
@@ -54,17 +63,18 @@ export default function SupportManagement({ onNavigate, onLogout }) {
         }
       }
     } catch (err) {
-      console.warn('Could not fetch tickets from backend:', err.message);
+      if (signal.aborted) return;
+      setLoadError(err.message || 'Could not load this page. Please try again.');
     } finally {
-      setIsLoading(false);
+      if (!signal.aborted) setIsLoading(false);
     }
   }, [currentPage, limit, searchQuery, statusFilter, priorityFilter, assignedFilter]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
       fetchTickets();
-    }, 250);
-    return () => clearTimeout(handler);
+    }, requestRef.current ? 250 : 0);
+    return () => { clearTimeout(handler); requestRef.current?.abort(); };
   }, [fetchTickets]);
 
   const openCount = tickets.filter((t) => t.status.toLowerCase() === 'open').length;
@@ -160,6 +170,7 @@ export default function SupportManagement({ onNavigate, onLogout }) {
 
         {/* Canvas Body */}
         <main className="support-canvas">
+          <RequestError message={loadError} loading={isLoading} onRetry={fetchTickets} />
           <div className="canvas-wrapper">
             {/* Title */}
             <div>
@@ -260,7 +271,7 @@ export default function SupportManagement({ onNavigate, onLogout }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {isLoading ? (
+                    {isLoading && tickets.length === 0 ? (
                       <tr>
                         <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
                           <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>

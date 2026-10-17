@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import RequestError from '../../components/common/RequestError';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/common/Sidebar';
 import { usersApi } from '../../api/services';
@@ -10,6 +11,8 @@ export default function UserDetail({ userId: propUserId, onNavigate, onLogout })
   const userId = propUserId || params.id;
   const [activeTab, setActiveTab] = useState('Operations');
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const requestRef = useRef(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [user, setUser] = useState(null);
 
@@ -19,21 +22,29 @@ export default function UserDetail({ userId: propUserId, onNavigate, onLogout })
       return;
     }
 
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const signal = controller.signal;
     setIsLoading(true);
+    setLoadError('');
     try {
-      const res = await usersApi.getUserById(userId);
+      const res = await usersApi.getUserById(userId, { signal });
+      if (signal.aborted) return;
       if (res?.success && res?.data) {
         setUser(res.data);
       }
     } catch (err) {
-      console.warn('Could not fetch user details from backend:', err.message);
+      if (signal.aborted) return;
+      setLoadError(err.message || 'Could not load this page. Please try again.');
     } finally {
-      setIsLoading(false);
+      if (!signal.aborted) setIsLoading(false);
     }
   }, [userId]);
 
   useEffect(() => {
     fetchUserDetails();
+    return () => requestRef.current?.abort();
   }, [fetchUserDetails]);
 
   const userStatus = user?.status ? (user.status.charAt(0).toUpperCase() + user.status.slice(1)) : 'Active';
@@ -128,6 +139,7 @@ export default function UserDetail({ userId: propUserId, onNavigate, onLogout })
 
         {/* Content Canvas */}
         <main className="user-content-canvas">
+          <RequestError message={loadError} loading={isLoading} onRetry={fetchUserDetails} />
           {isLoading ? (
             <div style={{ textAlign: 'center', padding: '5rem', color: '#94A3A8' }}>
               <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite', fontSize: '32px' }}>

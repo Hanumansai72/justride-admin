@@ -41,16 +41,16 @@ export default function InterestedUsers({ onNavigate, onLogout }) {
   }
 
   useEffect(() => {
-    let active = true;
-    interestApi.getUsers(page).then((response) => {
+    const controller = new AbortController();
+    interestApi.getUsers(page, { signal: controller.signal }).then((response) => {
       if (!response.success || !Array.isArray(response.data?.items)) throw new Error('Could not load interested users.');
-      if (active) setResult(response.data);
+      if (!controller.signal.aborted) setResult(response.data);
     }).catch((cause) => {
-      if (active) setError(cause.message);
+      if (!controller.signal.aborted) setError(cause.message);
     }).finally(() => {
-      if (active) setLoading(false);
+      if (!controller.signal.aborted) setLoading(false);
     });
-    return () => { active = false; };
+    return () => controller.abort();
   }, [page, revision]);
 
   const pages = Math.max(1, Math.ceil(result.total / result.limit));

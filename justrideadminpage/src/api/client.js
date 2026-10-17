@@ -92,12 +92,19 @@ class ApiClient {
       body = JSON.stringify(body);
     }
 
+    const controller = new AbortController();
+    const cancel = () => controller.abort(options.signal?.reason);
+    if (options.signal?.aborted) cancel();
+    else options.signal?.addEventListener('abort', cancel, { once: true });
+    let timedOut = false;
+    const timeoutMs = options.timeoutMs ?? (body instanceof FormData ? 300000 : (options.method || 'GET') === 'GET' ? 15000 : 30000);
+    const timer = setTimeout(() => { timedOut = true; controller.abort(); }, timeoutMs);
     const config = {
       method: options.method || 'GET',
       headers,
       body,
       credentials: 'include',
-      signal: options.signal,
+      signal: controller.signal,
     };
 
     try {
@@ -133,11 +140,21 @@ class ApiClient {
 
       return data;
     } catch (error) {
+      if (timedOut) {
+        const timeout = new Error(config.method === 'GET'
+          ? 'The request took too long. Please try again.'
+          : 'The request took too long. Check whether your change was saved before trying again.');
+        timeout.code = 'REQUEST_TIMEOUT';
+        throw timeout;
+      }
       // Re-throw with consistent structure
       if (!error.status && error.name === 'TypeError') {
         error.message = 'Network error: Backend server is unreachable. Please ensure the backend is running.';
       }
       throw error;
+    } finally {
+      clearTimeout(timer);
+      options.signal?.removeEventListener('abort', cancel);
     }
   }
 

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import RequestError from '../../components/common/RequestError';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { auditApi } from '../../api/services';
 import './AuditLogs.css';
@@ -16,6 +17,9 @@ export default function AuditLogs({ onNavigate, onLogout }) {
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const [statsError, setStatsError] = useState('');
+  const requestRef = useRef(null);
 
   const [stats, setStats] = useState({
     total24h: '14,208',
@@ -26,6 +30,7 @@ export default function AuditLogs({ onNavigate, onLogout }) {
 
   // Fetch Audit Stats
   const fetchStats = useCallback(async () => {
+    setStatsError('');
     try {
       const res = await auditApi.getStats();
       if (res?.success && res.data) {
@@ -37,13 +42,18 @@ export default function AuditLogs({ onNavigate, onLogout }) {
         });
       }
     } catch (e) {
-      console.warn('Could not fetch audit stats:', e.message);
+      setStatsError(e.message || 'Could not load audit statistics.');
     }
   }, []);
 
   // Fetch Audit Logs with filters
   const fetchLogs = useCallback(async () => {
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const signal = controller.signal;
     setIsLoading(true);
+    setLoadError('');
     try {
       const params = {
         page: currentPage,
@@ -54,7 +64,8 @@ export default function AuditLogs({ onNavigate, onLogout }) {
         module: moduleFilter !== 'All Modules' ? moduleFilter : undefined,
       };
 
-      const res = await auditApi.getLogs(params);
+      const res = await auditApi.getLogs(params, { signal });
+      if (signal.aborted) return;
       if (res?.success && Array.isArray(res.data)) {
         setLogs(res.data);
         if (res.pagination) {
@@ -63,9 +74,10 @@ export default function AuditLogs({ onNavigate, onLogout }) {
         }
       }
     } catch (err) {
-      console.warn('Could not fetch real audit logs from backend:', err.message);
+      if (signal.aborted) return;
+      setLoadError(err.message || 'Could not load this page. Please try again.');
     } finally {
-      setIsLoading(false);
+      if (!signal.aborted) setIsLoading(false);
     }
   }, [currentPage, limit, searchQuery, timeFilter, severityFilter, moduleFilter]);
 
@@ -76,8 +88,8 @@ export default function AuditLogs({ onNavigate, onLogout }) {
   useEffect(() => {
     const handler = setTimeout(() => {
       fetchLogs();
-    }, 250);
-    return () => clearTimeout(handler);
+    }, requestRef.current ? 250 : 0);
+    return () => { clearTimeout(handler); requestRef.current?.abort(); };
   }, [fetchLogs]);
 
   const kpis = [
@@ -165,6 +177,7 @@ export default function AuditLogs({ onNavigate, onLogout }) {
 
         {/* Content Canvas */}
         <main className="audit-canvas-body">
+          <RequestError message={loadError || statsError} loading={isLoading} onRetry={() => { fetchLogs(); fetchStats(); }} />
           {/* Top KPI Bento Grid */}
           <div className="audit-kpi-grid">
             {kpis.map((kpi, idx) => (
@@ -285,7 +298,7 @@ export default function AuditLogs({ onNavigate, onLogout }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {isLoading ? (
+                    {isLoading && logs.length === 0 ? (
                       <tr>
                         <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
                           <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>

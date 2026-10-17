@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import RequestError from '../../components/common/RequestError';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { devicesApi } from '../../api/services';
 import './DeviceInventory.css';
@@ -13,6 +14,8 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
   const [totalDevices, setTotalDevices] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const requestRef = useRef(null);
   const [actionLoadingId, setActionLoadingId] = useState(null);
 
   const [stats, setStats] = useState({
@@ -24,7 +27,12 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
   });
 
   const fetchDevices = useCallback(async () => {
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const signal = controller.signal;
     setIsLoading(true);
+    setLoadError('');
     try {
       const params = {
         page: currentPage,
@@ -39,7 +47,8 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
       if (pairingFilter === 'Paired') params.is_paired = true;
       else if (pairingFilter === 'Unpaired') params.is_paired = false;
 
-      const res = await devicesApi.getDevices(params);
+      const res = await devicesApi.getDevices(params, { signal });
+      if (signal.aborted) return;
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map((d) => ({
           id: d.device_id || d.BLE_ADDRESS || 'DEV-NODE',
@@ -78,17 +87,18 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
         });
       }
     } catch (err) {
-      console.warn('Could not fetch devices from backend:', err.message);
+      if (signal.aborted) return;
+      setLoadError(err.message || 'Could not load this page. Please try again.');
     } finally {
-      setIsLoading(false);
+      if (!signal.aborted) setIsLoading(false);
     }
   }, [currentPage, limit, searchQuery, statusFilter, pairingFilter]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
       fetchDevices();
-    }, 250);
-    return () => clearTimeout(handler);
+    }, requestRef.current ? 250 : 0);
+    return () => { clearTimeout(handler); requestRef.current?.abort(); };
   }, [fetchDevices]);
 
   const handleAction = async (type, device, e) => {
@@ -179,6 +189,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
 
       {/* Main Content Viewport */}
       <main className="devices-main-content">
+          <RequestError message={loadError} loading={isLoading} onRetry={fetchDevices} />
         {/* Summary Stats (Bento Grid) */}
         <div className="stats-bento-grid">
           {/* Total Devices Card */}
@@ -308,7 +319,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
               </tr>
             </thead>
             <tbody>
-              {isLoading ? (
+              {isLoading && devices.length === 0 ? (
                 <tr>
                   <td colSpan="5" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
                     <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>

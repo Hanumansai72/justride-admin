@@ -9,51 +9,58 @@ export function AuthProvider({ children }) {
   const role = currentUser?.role;
   const [isLoading, setIsLoading] = useState(true);
   const [authError, setAuthError] = useState(null);
+  const [sessionUnavailable, setSessionUnavailable] = useState(false);
 
-  // Validate session on mount with /api/admin/me
-  useEffect(() => {
-    let isMounted = true;
-    const verifySession = async () => {
+  const verifySession = useCallback(async (signal) => {
+      setIsLoading(true);
+      setAuthError(null);
+      setSessionUnavailable(false);
       const token = api.getToken();
       if (!token) {
-        if (isMounted) setIsLoading(false);
+        setIsLoading(false);
         return;
       }
 
       try {
-        const response = await authApi.getProfile();
+        const response = await authApi.getProfile({ signal });
         if (!response?.success || !['ADMIN', 'HELPER'].includes(response.data?.role)) throw new Error('Invalid staff session.');
-        if (isMounted) setCurrentUser(response.data);
+        if (!signal?.aborted) setCurrentUser(response.data);
       } catch (err) {
-        if (isMounted) setAuthError('Could not verify your session. Please sign in again.');
+        if (signal?.aborted) return;
+        setAuthError(err.message || 'Could not verify your session.');
         if (err.status === 401) {
           api.clearSession();
-          if (isMounted) {
-            setCurrentUser(null);
-          }
+          setCurrentUser(null);
+        } else if (err.status !== 403) {
+          setSessionUnavailable(true);
         }
       } finally {
-        if (isMounted) setIsLoading(false);
+        if (!signal?.aborted) setIsLoading(false);
       }
-    };
+  }, []);
 
-    verifySession();
+  // Keep authorization checks mandatory, with cancellation and a retryable service state.
+  useEffect(() => {
+    const controller = new AbortController();
+    verifySession(controller.signal);
 
     // Listen for unauthorized events from api client
     const handleUnauthorized = () => {
       setCurrentUser(null);
+      setSessionUnavailable(false);
     };
     window.addEventListener('auth:unauthorized', handleUnauthorized);
 
     return () => {
-      isMounted = false;
+      controller.abort();
       window.removeEventListener('auth:unauthorized', handleUnauthorized);
     };
-  }, []);
+  }, [verifySession]);
 
   const login = useCallback(async ({ identifier, password }) => {
     setIsLoading(true);
     setAuthError(null);
+    setSessionUnavailable(false);
     try {
       const payload = {
         identifier: identifier.trim(),
@@ -88,6 +95,7 @@ export function AuthProvider({ children }) {
     } finally {
       api.clearSession();
       setCurrentUser(null);
+      setSessionUnavailable(false);
     }
   }, []);
 
@@ -109,6 +117,8 @@ export function AuthProvider({ children }) {
     isAuthenticated: !!currentUser,
     isLoading,
     authError,
+    sessionUnavailable,
+    retrySession: verifySession,
     login,
     logout,
     refreshProfile,

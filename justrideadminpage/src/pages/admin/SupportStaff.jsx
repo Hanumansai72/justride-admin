@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import RequestError from '../../components/common/RequestError';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { helpersApi } from '../../api/services';
 import './SupportStaff.css';
@@ -7,6 +8,8 @@ export default function SupportStaff({ onNavigate, onLogout }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [staffList, setStaffList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const requestRef = useRef(null);
   const [actionStaffId, setActionStaffId] = useState(null);
 
   const [stats, setStats] = useState({
@@ -18,9 +21,15 @@ export default function SupportStaff({ onNavigate, onLogout }) {
   });
 
   const fetchStaff = useCallback(async () => {
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const signal = controller.signal;
     setIsLoading(true);
+    setLoadError('');
     try {
-      const res = await helpersApi.getHelpers({ search: searchQuery.trim() || undefined });
+      const res = await helpersApi.getHelpers({ search: searchQuery.trim() || undefined }, { signal });
+      if (signal.aborted) return;
       if (res?.success && Array.isArray(res.data)) {
         let activeCount = 0;
         let onLeaveCount = 0;
@@ -61,14 +70,16 @@ export default function SupportStaff({ onNavigate, onLogout }) {
         });
       }
     } catch (err) {
-      console.warn('Could not fetch staff from backend, using fallback:', err.message);
+      if (signal.aborted) return;
+      setLoadError(err.message || 'Could not load this page. Please try again.');
     } finally {
-      setIsLoading(false);
+      if (!signal.aborted) setIsLoading(false);
     }
   }, [searchQuery]);
 
   useEffect(() => {
     fetchStaff();
+    return () => requestRef.current?.abort();
   }, [fetchStaff]);
 
   const handleTerminate = async (staffMember) => {
@@ -148,6 +159,7 @@ export default function SupportStaff({ onNavigate, onLogout }) {
 
         {/* Main Canvas */}
         <main className="staff-canvas-body">
+          <RequestError message={loadError} loading={isLoading} onRetry={fetchStaff} />
           <div className="canvas-wrapper">
             {/* Top Section: Stats Cards & Action */}
             <div className="staff-top-section">
@@ -241,7 +253,7 @@ export default function SupportStaff({ onNavigate, onLogout }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {isLoading ? (
+                    {isLoading && staffList.length === 0 ? (
                       <tr>
                         <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
                           <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>

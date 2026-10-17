@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import RequestError from '../../components/common/RequestError';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { firmwareApi } from '../../api/services';
 import './FirmwareManagement.css';
@@ -12,9 +13,16 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const requestRef = useRef(null);
 
   const fetchReleases = useCallback(async () => {
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const signal = controller.signal;
     setIsLoading(true);
+    setLoadError('');
     try {
       const params = {
         page: currentPage,
@@ -22,7 +30,8 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
         channel: channelFilter || undefined,
       };
 
-      const res = await firmwareApi.getReleases(params);
+      const res = await firmwareApi.getReleases(params, { signal });
+      if (signal.aborted) return;
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map((r) => ({
           id: r._id,
@@ -46,14 +55,16 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
         }
       }
     } catch (err) {
-      console.warn('Could not fetch releases from backend:', err.message);
+      if (signal.aborted) return;
+      setLoadError(err.message || 'Could not load this page. Please try again.');
     } finally {
-      setIsLoading(false);
+      if (!signal.aborted) setIsLoading(false);
     }
   }, [currentPage, limit, channelFilter]);
 
   useEffect(() => {
     fetchReleases();
+    return () => requestRef.current?.abort();
   }, [fetchReleases]);
 
   const handleSetFeatured = async (release) => {
@@ -163,6 +174,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
 
         {/* Content Canvas */}
         <main className="firmware-content-canvas">
+          <RequestError message={loadError} loading={isLoading} onRetry={fetchReleases} />
           <div className="canvas-max-wrap">
             {/* Header / Title */}
             <div className="page-header-row">
@@ -251,7 +263,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
                     </tr>
                   </thead>
                   <tbody>
-                    {isLoading ? (
+                    {isLoading && releases.length === 0 ? (
                       <tr>
                         <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
                           <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>

@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import RequestError from '../../components/common/RequestError';
+import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { notificationsApi } from '../../api/services';
 import './NotificationsAlerts.css';
@@ -7,11 +8,19 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
   const [filterCategory, setFilterCategory] = useState('ALL');
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const requestRef = useRef(null);
 
   const fetchAlerts = useCallback(async () => {
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const signal = controller.signal;
     setIsLoading(true);
+    setLoadError('');
     try {
-      const res = await notificationsApi.getNotifications();
+      const res = await notificationsApi.getNotifications({}, { signal });
+      if (signal.aborted) return;
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map((n) => {
           const typeUpper = (n.type || 'SYSTEM').toUpperCase();
@@ -51,14 +60,16 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
         setAlerts(mapped);
       }
     } catch (err) {
-      console.warn('Could not fetch notifications from backend, using default alerts:', err.message);
+      if (signal.aborted) return;
+      setLoadError(err.message || 'Could not load this page. Please try again.');
     } finally {
-      setIsLoading(false);
+      if (!signal.aborted) setIsLoading(false);
     }
   }, []);
 
   useEffect(() => {
     fetchAlerts();
+    return () => requestRef.current?.abort();
   }, [fetchAlerts]);
 
   const markAllAsRead = async () => {
@@ -125,6 +136,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
 
         {/* Content Canvas */}
         <main className="notif-content-canvas">
+          <RequestError message={loadError} loading={isLoading} onRetry={fetchAlerts} />
           <div className="canvas-wrapper">
             {/* Header & Primary Controls */}
             <div className="notif-header-row">
@@ -167,7 +179,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
                 </div>
 
                 <div className="alerts-card-list">
-                  {isLoading ? (
+                  {isLoading && alerts.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
                       <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>
                         sync

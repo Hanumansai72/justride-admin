@@ -74,7 +74,7 @@ function ProtectedRoute({ children, allowedRoles }) {
 }
 
 export default function App() {
-  const { user, role, logout, isLoading } = useAuth();
+  const { user, role, logout, isLoading, sessionUnavailable, retrySession, authError } = useAuth();
   const navigate = useNavigate();
 
   // Route Navigator helper for backward compatibility with existing component callbacks
@@ -142,6 +142,14 @@ export default function App() {
         </p>
       </div>
     );
+  }
+
+  if (sessionUnavailable) {
+    return <div role="alert" style={{ minHeight: '100vh', display: 'grid', placeContent: 'center', gap: 16, padding: 24, background: '#0B0F0D', color: '#d6e5ea' }}>
+      <h1>Unable to verify your session</h1>
+      <p>{authError || 'The service is temporarily unavailable. Please try again.'}</p>
+      <button type="button" onClick={() => retrySession()}>Try again</button>
+    </div>;
   }
 
   return (

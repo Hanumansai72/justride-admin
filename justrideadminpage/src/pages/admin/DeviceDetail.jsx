@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import RequestError from '../../components/common/RequestError';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/common/Sidebar';
 import { devicesApi } from '../../api/services';
@@ -10,6 +11,8 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
   const deviceId = propDeviceId || params.id;
   const [device, setDevice] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const requestRef = useRef(null);
   const [isUpdating, setIsUpdating] = useState(false);
   const [firmwareUpdating, setFirmwareUpdating] = useState(false);
 
@@ -18,21 +21,29 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
       setIsLoading(false);
       return;
     }
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const signal = controller.signal;
     setIsLoading(true);
+    setLoadError('');
     try {
-      const res = await devicesApi.getDeviceById(deviceId);
+      const res = await devicesApi.getDeviceById(deviceId, { signal });
+      if (signal.aborted) return;
       if (res?.success && res?.data) {
         setDevice(res.data);
       }
     } catch (err) {
-      console.warn('Could not fetch device by ID:', err.message);
+      if (signal.aborted) return;
+      setLoadError(err.message || 'Could not load this page. Please try again.');
     } finally {
-      setIsLoading(false);
+      if (!signal.aborted) setIsLoading(false);
     }
   }, [deviceId]);
 
   useEffect(() => {
     fetchDeviceDetails();
+    return () => requestRef.current?.abort();
   }, [fetchDeviceDetails]);
 
   const deviceStatus = device?.is_blocked
@@ -161,6 +172,7 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
 
         {/* Content Canvas */}
         <main className="dev-detail-content">
+          <RequestError message={loadError} loading={isLoading} onRetry={fetchDeviceDetails} />
           {isLoading ? (
             <div style={{ textAlign: 'center', padding: '5rem', color: '#94A3A8' }}>
               <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite', fontSize: '32px' }}>

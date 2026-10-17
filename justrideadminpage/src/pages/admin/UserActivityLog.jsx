@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import RequestError from '../../components/common/RequestError';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Sidebar from '../../components/common/Sidebar';
 import { usersApi } from '../../api/services';
@@ -12,15 +13,23 @@ export default function UserActivityLog({ userId: propUserId, onNavigate, onLogo
   const [timelineGroups, setTimelineGroups] = useState([]);
   const [userProfile, setUserProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState('');
+  const requestRef = useRef(null);
 
   const fetchActivity = useCallback(async () => {
     if (!userId) {
       setIsLoading(false);
       return;
     }
+    requestRef.current?.abort();
+    const controller = new AbortController();
+    requestRef.current = controller;
+    const signal = controller.signal;
     setIsLoading(true);
+    setLoadError('');
     try {
-      const res = await usersApi.getUserActivity(userId);
+      const res = await usersApi.getUserActivity(userId, { signal });
+      if (signal.aborted) return;
       if (res?.success) {
         if (res.user) setUserProfile(res.user);
         if (Array.isArray(res.data) && res.data.length > 0) {
@@ -46,14 +55,16 @@ export default function UserActivityLog({ userId: propUserId, onNavigate, onLogo
         }
       }
     } catch (err) {
-      console.warn('Could not fetch user activity from backend:', err.message);
+      if (signal.aborted) return;
+      setLoadError(err.message || 'Could not load this page. Please try again.');
     } finally {
-      setIsLoading(false);
+      if (!signal.aborted) setIsLoading(false);
     }
   }, [userId]);
 
   useEffect(() => {
     fetchActivity();
+    return () => requestRef.current?.abort();
   }, [fetchActivity]);
 
   const filteredGroups = useMemo(() => {
@@ -112,6 +123,7 @@ export default function UserActivityLog({ userId: propUserId, onNavigate, onLogo
 
         {/* Main Canvas */}
         <main className="activity-canvas-content">
+          <RequestError message={loadError} loading={isLoading} onRetry={fetchActivity} />
           <div className="canvas-constrained-wrap">
             {/* Header / Back Section */}
             <div className="activity-header-section">
@@ -178,7 +190,7 @@ export default function UserActivityLog({ userId: propUserId, onNavigate, onLogo
 
               {/* Timeline Items Feed */}
               <div className="timeline-feed-wrap">
-                {isLoading ? (
+                {isLoading && timelineGroups.length === 0 ? (
                   <div style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
                     <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>
                       sync
