@@ -85,10 +85,10 @@ export default function CreateUser({ onNavigate, onLogout }) {
               <div
                 style={{
                   padding: '12px 16px',
-                  backgroundColor: 'rgba(255, 84, 73, 0.15)',
-                  border: '1px solid rgba(255, 84, 73, 0.4)',
+                  backgroundColor: 'rgba(var(--rgb-danger), 0.15)',
+                  border: '1px solid rgba(var(--rgb-danger), 0.4)',
                   borderRadius: '8px',
-                  color: '#ff857a',
+                  color: 'var(--color-danger-light)',
                   marginBottom: '1.5rem',
                   display: 'flex',
                   alignItems: 'center',

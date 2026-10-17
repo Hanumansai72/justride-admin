@@ -255,7 +255,7 @@ export default function SupportStaff({ onNavigate, onLogout }) {
                   <tbody>
                     {isLoading && staffList.length === 0 ? (
                       <tr>
-                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                           <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>
                             sync
                           </span>
@@ -264,7 +264,7 @@ export default function SupportStaff({ onNavigate, onLogout }) {
                       </tr>
                     ) : filteredStaff.length === 0 ? (
                       <tr>
-                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                           No staff employees found. Click "Provision Staff" above to add new customer care personnel.
                         </td>
                       </tr>

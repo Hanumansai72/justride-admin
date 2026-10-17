@@ -43,8 +43,8 @@ function ProtectedRoute({ children, allowedRoles }) {
           width: '100vw',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#0B0F0D',
-          color: '#4be277',
+          backgroundColor: 'var(--bg-layer-0)',
+          color: 'var(--color-primary)',
           flexDirection: 'column',
           gap: '16px',
         }}
@@ -55,7 +55,7 @@ function ProtectedRoute({ children, allowedRoles }) {
         >
           sync
         </span>
-        <p style={{ color: '#d6e5ea', fontFamily: 'monospace' }}>
+        <p style={{ color: 'var(--text-body)', fontFamily: 'monospace' }}>
           Verifying session credentials...
         </p>
       </div>
@@ -138,8 +138,8 @@ export default function App() {
           width: '100vw',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: '#0B0F0D',
-          color: '#4be277',
+          backgroundColor: 'var(--bg-layer-0)',
+          color: 'var(--color-primary)',
           flexDirection: 'column',
           gap: '16px',
         }}
@@ -150,7 +150,7 @@ export default function App() {
         >
           sync
         </span>
-        <p style={{ color: '#d6e5ea', fontFamily: 'monospace' }}>
+        <p style={{ color: 'var(--text-body)', fontFamily: 'monospace' }}>
           Loading JustRide Operations Portal...
         </p>
       </div>
@@ -158,7 +158,7 @@ export default function App() {
   }
 
   if (sessionUnavailable) {
-    return <div role="alert" style={{ minHeight: '100vh', display: 'grid', placeContent: 'center', gap: 16, padding: 24, background: '#0B0F0D', color: '#d6e5ea' }}>
+    return <div role="alert" style={{ minHeight: '100vh', display: 'grid', placeContent: 'center', gap: 16, padding: 24, background: 'var(--bg-layer-0)', color: 'var(--text-body)' }}>
       <h1>Unable to verify your session</h1>
       <p>{authError || 'The service is temporarily unavailable. Please try again.'}</p>
       <button type="button" onClick={() => retrySession()}>Try again</button>

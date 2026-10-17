@@ -141,7 +141,7 @@ export default function UserDetail({ userId: propUserId, onNavigate, onLogout })
         <main className="user-content-canvas">
           <RequestError message={loadError} loading={isLoading} onRetry={fetchUserDetails} />
           {isLoading ? (
-            <div style={{ textAlign: 'center', padding: '5rem', color: '#94A3A8' }}>
+            <div style={{ textAlign: 'center', padding: '5rem', color: 'var(--text-muted)' }}>
               <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite', fontSize: '32px' }}>
                 sync
               </span>
@@ -230,7 +230,7 @@ export default function UserDetail({ userId: propUserId, onNavigate, onLogout })
                     </div>
                     <div className="detail-row no-border">
                       <span className="detail-key">Account Status</span>
-                      <span className="detail-val" style={{ color: userStatus === 'Active' ? '#22C55E' : '#ffb4ab' }}>
+                      <span className="detail-val" style={{ color: userStatus === 'Active' ? 'var(--color-primary)' : 'var(--color-danger-light)' }}>
                         {userStatus}
                       </span>
                     </div>
@@ -284,7 +284,7 @@ export default function UserDetail({ userId: propUserId, onNavigate, onLogout })
                         </div>
                       </div>
                     ) : (
-                      <div style={{ padding: '1.5rem', textAlign: 'center', color: '#94A3A8' }}>
+                      <div style={{ padding: '1.5rem', textAlign: 'center', color: 'var(--text-muted)' }}>
                         <span className="material-symbols-outlined" style={{ fontSize: '32px', marginBottom: '8px' }}>
                           link_off
                         </span>

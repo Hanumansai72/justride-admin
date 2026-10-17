@@ -1,6 +1,6 @@
 .custom-datatable-card {
-  background-color: #111613;
-  border: 1px solid #27312B;
+  background-color: var(--bg-layer-1);
+  border: 1px solid var(--border-standard);
   border-radius: 0.5rem;
   overflow: hidden;
   display: flex;
@@ -18,23 +18,23 @@
 }
 
 .custom-datatable th {
-  background-color: #111613;
-  color: #94A3A8;
+  background-color: var(--bg-layer-1);
+  color: var(--text-muted);
   padding: 0.75rem 1rem;
   font-size: 12px;
   letter-spacing: 0.05em;
   font-weight: 600;
-  border-bottom: 1px solid #27312B;
+  border-bottom: 1px solid var(--border-standard);
 }
 
 .table-data-row {
-  border-bottom: 1px solid #27312B;
+  border-bottom: 1px solid var(--border-standard);
   transition: background-color 0.15s ease;
   cursor: pointer;
 }
 
 .table-data-row:hover {
-  background-color: #1B211E;
+  background-color: var(--bg-layer-3);
 }
 
 .table-data-row td {
@@ -45,13 +45,13 @@
 .no-data-cell {
   padding: 3rem 1rem;
   text-align: center;
-  color: #94A3A8;
+  color: var(--text-muted);
 }
 
 .table-pagination-bar {
   padding: 0.75rem 1rem;
-  border-top: 1px solid #27312B;
-  background-color: #111613;
+  border-top: 1px solid var(--border-standard);
+  background-color: var(--bg-layer-1);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -59,11 +59,11 @@
 
 .pagination-info {
   font-size: 12px;
-  color: #94A3A8;
+  color: var(--text-muted);
 }
 
 .text-highlight {
-  color: #d6e5ea;
+  color: var(--text-body);
   font-weight: 600;
 }
 
@@ -77,9 +77,9 @@
   width: 2rem;
   height: 2rem;
   border-radius: 0.25rem;
-  border: 1px solid #27312B;
-  background-color: #151A17;
-  color: #94A3A8;
+  border: 1px solid var(--border-standard);
+  background-color: var(--bg-layer-2);
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -90,14 +90,14 @@
 }
 
 .page-btn:hover:not(:disabled) {
-  border-color: #4be277;
-  color: #d6e5ea;
+  border-color: var(--color-primary);
+  color: var(--text-body);
 }
 
 .page-btn.active {
-  border-color: #4be277;
-  background-color: rgba(75, 226, 119, 0.1);
-  color: #4be277;
+  border-color: var(--color-primary);
+  background-color: rgba(var(--rgb-primary), 0.1);
+  color: var(--color-primary);
 }
 
 .page-btn:disabled {

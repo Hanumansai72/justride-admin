@@ -54,7 +54,7 @@ export default function LoginPage({ onLoginSuccess }) {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', width: '100vw', background: '#0B0F0D' }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', width: '100vw', background: 'var(--bg-layer-0)' }}>
       <main className="login-card">
         {/* Subtle Top Accent */}
         <div className="top-accent" />
@@ -77,10 +77,10 @@ export default function LoginPage({ onLoginSuccess }) {
             display: 'flex',
             gap: '0.5rem',
             marginBottom: '1.5rem',
-            background: '#151A17',
+            background: 'var(--bg-layer-2)',
             padding: '0.25rem',
             borderRadius: '0.5rem',
-            border: '1px solid #27312B',
+            border: '1px solid var(--border-standard)',
           }}
         >
           <button
@@ -90,8 +90,8 @@ export default function LoginPage({ onLoginSuccess }) {
               padding: '0.5rem',
               borderRadius: '0.375rem',
               border: 'none',
-              background: role === 'admin' ? '#22C55E' : 'transparent',
-              color: role === 'admin' ? '#0B0F0D' : '#bccbb9',
+              background: role === 'admin' ? 'var(--color-primary)' : 'transparent',
+              color: role === 'admin' ? 'var(--bg-layer-0)' : 'var(--text-muted)',
               fontWeight: '700',
               fontSize: '12px',
               cursor: 'pointer',
@@ -108,8 +108,8 @@ export default function LoginPage({ onLoginSuccess }) {
               padding: '0.5rem',
               borderRadius: '0.375rem',
               border: 'none',
-              background: role === 'staff' ? '#7bd0ff' : 'transparent',
-              color: role === 'staff' ? '#00354a' : '#bccbb9',
+              background: role === 'staff' ? 'var(--color-primary)' : 'transparent',
+              color: role === 'staff' ? 'var(--color-on-primary)' : 'var(--text-muted)',
               fontWeight: '700',
               fontSize: '12px',
               cursor: 'pointer',
@@ -125,10 +125,10 @@ export default function LoginPage({ onLoginSuccess }) {
           <div
             style={{
               padding: '10px 14px',
-              backgroundColor: 'rgba(255, 84, 73, 0.15)',
-              border: '1px solid rgba(255, 84, 73, 0.4)',
+              backgroundColor: 'rgba(var(--rgb-danger), 0.15)',
+              border: '1px solid rgba(var(--rgb-danger), 0.4)',
               borderRadius: '8px',
-              color: '#ff857a',
+              color: 'var(--color-danger-light)',
               fontSize: '12px',
               marginBottom: '1rem',
               display: 'flex',
@@ -234,7 +234,7 @@ export default function LoginPage({ onLoginSuccess }) {
               className="submit-btn btn-glow"
               style={
                 role === 'staff'
-                  ? { backgroundColor: '#7bd0ff', color: '#00354a', opacity: isSubmitting ? 0.7 : 1 }
+                  ? { backgroundColor: 'var(--color-primary)', color: 'var(--color-on-primary)', opacity: isSubmitting ? 0.7 : 1 }
                   : { opacity: isSubmitting ? 0.7 : 1 }
               }
             >

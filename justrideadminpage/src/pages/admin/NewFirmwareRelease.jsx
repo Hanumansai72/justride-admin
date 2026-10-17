@@ -121,10 +121,10 @@ export default function NewFirmwareRelease({ onNavigate, onLogout }) {
               <div
                 style={{
                   padding: '12px 16px',
-                  backgroundColor: 'rgba(255, 84, 73, 0.15)',
-                  border: '1px solid rgba(255, 84, 73, 0.4)',
+                  backgroundColor: 'rgba(var(--rgb-danger), 0.15)',
+                  border: '1px solid rgba(var(--rgb-danger), 0.4)',
                   borderRadius: '8px',
-                  color: '#ff857a',
+                  color: 'var(--color-danger-light)',
                   marginBottom: '1.5rem',
                   display: 'flex',
                   alignItems: 'center',
@@ -201,11 +201,11 @@ export default function NewFirmwareRelease({ onNavigate, onLogout }) {
                         <label className="field-label">Upload Firmware Binary (.bin file)</label>
                         <div
                           style={{
-                            border: selectedFile ? '2px solid #22c55e' : '2px dashed #27312b',
+                            border: selectedFile ? '2px solid var(--color-primary)' : '2px dashed var(--border-standard)',
                             borderRadius: '10px',
                             padding: '1.25rem',
                             textAlign: 'center',
-                            background: '#151a17',
+                            background: 'var(--bg-layer-2)',
                             cursor: 'pointer',
                           }}
                           onClick={() => document.getElementById('firmware-bin-file-input').click()}
@@ -220,10 +220,10 @@ export default function NewFirmwareRelease({ onNavigate, onLogout }) {
                           <span className="material-symbols-outlined text-primary" style={{ fontSize: '32px', marginBottom: '8px' }}>
                             {selectedFile ? 'task_alt' : 'cloud_upload'}
                           </span>
-                          <p style={{ margin: '4px 0', fontWeight: '600', color: selectedFile ? '#22c55e' : '#fff' }}>
+                          <p style={{ margin: '4px 0', fontWeight: '600', color: selectedFile ? 'var(--color-primary)' : 'var(--text-white)' }}>
                             {selectedFile ? selectedFile.name : 'Click to select justride_firmware.bin'}
                           </p>
-                          <p style={{ margin: 0, fontSize: '12px', color: '#88988e' }}>
+                          <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-dim)' }}>
                             {selectedFile
                               ? `Size: ${(selectedFile.size / 1024).toFixed(1)} KB — Auto-streams to Cloudflare R2 on submit`
                               : 'ESP-IDF compiled binary from build/ directory'}
@@ -297,12 +297,12 @@ export default function NewFirmwareRelease({ onNavigate, onLogout }) {
                             style={{
                               backgroundColor:
                                 channel === 'stable'
-                                  ? 'rgba(74, 222, 128, 0.1)'
-                                  : 'rgba(245, 158, 11, 0.1)',
+                                  ? 'rgba(var(--rgb-primary), 0.1)'
+                                  : 'rgba(var(--rgb-warning), 0.1)',
                               color:
                                 channel === 'stable'
-                                  ? '#4ADE80'
-                                  : '#F59E0B',
+                                  ? 'var(--color-primary-light)'
+                                  : 'var(--color-warning)',
                               border: '1px solid currentColor',
                             }}
                           >

@@ -150,10 +150,10 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
               <div
                 style={{
                   padding: '12px 16px',
-                  backgroundColor: 'rgba(255, 84, 73, 0.15)',
-                  border: '1px solid rgba(255, 84, 73, 0.4)',
+                  backgroundColor: 'rgba(var(--rgb-danger), 0.15)',
+                  border: '1px solid rgba(var(--rgb-danger), 0.4)',
                   borderRadius: '8px',
-                  color: '#ff857a',
+                  color: 'var(--color-danger-light)',
                   marginBottom: '1.5rem',
                   display: 'flex',
                   alignItems: 'center',
@@ -243,9 +243,9 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
                           id="is-mandatory-toggle"
                           checked={isMandatory}
                           onChange={(e) => setIsMandatory(e.target.checked)}
-                          style={{ width: '18px', height: '18px', accentColor: '#22c55e', cursor: 'pointer' }}
+                          style={{ width: '18px', height: '18px', accentColor: 'var(--color-primary)', cursor: 'pointer' }}
                         />
-                        <label htmlFor="is-mandatory-toggle" style={{ color: '#fff', fontSize: '13px', cursor: 'pointer' }}>
+                        <label htmlFor="is-mandatory-toggle" style={{ color: 'var(--text-white)', fontSize: '13px', cursor: 'pointer' }}>
                           Force Mandatory Update (Blocks older versions)
                         </label>
                       </div>
@@ -255,11 +255,11 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
                         <label className="field-label">Upload Android APK Package (.apk)</label>
                         <div
                           style={{
-                            border: selectedFile ? '2px solid #22c55e' : '2px dashed #27312b',
+                            border: selectedFile ? '2px solid var(--color-primary)' : '2px dashed var(--border-standard)',
                             borderRadius: '10px',
                             padding: '1.5rem',
                             textAlign: 'center',
-                            background: '#151a17',
+                            background: 'var(--bg-layer-2)',
                             cursor: 'pointer',
                           }}
                           onClick={() => document.getElementById('apk-file-input').click()}
@@ -274,10 +274,10 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
                           <span className="material-symbols-outlined text-primary" style={{ fontSize: '36px', marginBottom: '8px' }}>
                             {selectedFile ? 'task_alt' : 'cloud_upload'}
                           </span>
-                          <p style={{ margin: '4px 0', fontWeight: '600', color: selectedFile ? '#22c55e' : '#fff' }}>
+                          <p style={{ margin: '4px 0', fontWeight: '600', color: selectedFile ? 'var(--color-primary)' : 'var(--text-white)' }}>
                             {selectedFile ? selectedFile.name : 'Click to select JustRide Android .apk package'}
                           </p>
-                          <p style={{ margin: 0, fontSize: '12px', color: '#88988e' }}>
+                          <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-dim)' }}>
                             {selectedFile
                               ? `Size: ${(selectedFile.size / (1024 * 1024)).toFixed(2)} MB — Automatically streams to Cloudflare R2`
                               : 'Flutter release APK (e.g. build/app/outputs/flutter-apk/app-arm64-v8a-release.apk)'}
@@ -349,16 +349,16 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
                             style={{
                               backgroundColor:
                                 channel === 'stable'
-                                  ? 'rgba(74, 222, 128, 0.1)'
-                                  : 'rgba(245, 158, 11, 0.1)',
-                              color: channel === 'stable' ? '#4be277' : '#f59e0b',
+                                  ? 'rgba(var(--rgb-primary), 0.1)'
+                                  : 'rgba(var(--rgb-warning), 0.1)',
+                              color: channel === 'stable' ? 'var(--color-primary)' : 'var(--color-warning)',
                               marginTop: '6px',
                             }}
                           >
                             <span
                               className="live-pulse-dot"
                               style={{
-                                backgroundColor: channel === 'stable' ? '#4be277' : '#f59e0b',
+                                backgroundColor: channel === 'stable' ? 'var(--color-primary)' : 'var(--color-warning)',
                               }}
                             />
                             <span>{isMandatory ? 'Mandatory Rollout' : 'Optional Update'}</span>
@@ -380,7 +380,7 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
                           </div>
                           <div className="meta-row">
                             <span className="material-symbols-outlined icon-16">payments</span>
-                            <span className="font-mono" style={{ color: '#4be277' }}>
+                            <span className="font-mono" style={{ color: 'var(--color-primary)' }}>
                               Egress: $0.00 (Zero Fee)
                             </span>
                           </div>

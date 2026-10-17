@@ -140,7 +140,7 @@ export default function HelperStaffDetail({ helperId: propHelperId, onNavigate, 
         <main className="helper-canvas-content">
           <RequestError message={loadError} loading={isLoading} onRetry={fetchHelper} />
           {isLoading ? (
-            <div style={{ textAlign: 'center', padding: '5rem', color: '#94A3A8' }}>
+            <div style={{ textAlign: 'center', padding: '5rem', color: 'var(--text-muted)' }}>
               <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite', fontSize: '32px' }}>
                 sync
               </span>

@@ -273,7 +273,7 @@ export default function SupportManagement({ onNavigate, onLogout }) {
                   <tbody>
                     {isLoading && tickets.length === 0 ? (
                       <tr>
-                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                           <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>
                             sync
                           </span>
@@ -282,7 +282,7 @@ export default function SupportManagement({ onNavigate, onLogout }) {
                       </tr>
                     ) : tickets.length === 0 ? (
                       <tr>
-                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                           No support tickets matching your filters.
                         </td>
                       </tr>

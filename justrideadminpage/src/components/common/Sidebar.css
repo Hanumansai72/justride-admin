@@ -2,8 +2,8 @@
 .app-sidebar {
   width: 260px;
   height: 100vh;
-  background-color: #111613;
-  border-right: 1px solid #27312B;
+  background-color: var(--bg-layer-1);
+  border-right: 1px solid var(--border-standard);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -26,25 +26,25 @@
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 0.5rem;
-  background-color: #151A17;
-  border: 1px solid #27312B;
+  background-color: var(--bg-layer-2);
+  border: 1px solid var(--border-standard);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #4be277;
+  color: var(--color-primary);
   flex-shrink: 0;
 }
 
 .brand-motorcycle-icon {
   font-size: 24px;
-  color: #4be277;
+  color: var(--color-primary);
 }
 
 .brand-text-title {
   font-size: 22px;
   line-height: 28px;
   font-weight: 700;
-  color: #4be277;
+  color: var(--color-primary);
   letter-spacing: -0.01em;
 }
 
@@ -52,7 +52,7 @@
   font-size: 11px;
   letter-spacing: 0.08em;
   font-weight: 600;
-  color: #bccbb9;
+  color: var(--text-muted);
   text-transform: uppercase;
 }
 
@@ -63,8 +63,8 @@
 .btn-new-ticket {
   width: 100%;
   padding: 0.625rem 1rem;
-  background-color: #22c55e;
-  color: #0B0F0D;
+  background-color: var(--color-primary);
+  color: var(--bg-layer-0);
   font-size: 12px;
   letter-spacing: 0.05em;
   font-weight: 700;
@@ -79,8 +79,8 @@
 }
 
 .btn-new-ticket:hover {
-  background-color: #4ADE80;
-  box-shadow: 0 0 16px rgba(74, 222, 128, 0.35);
+  background-color: var(--color-primary-light);
+  box-shadow: 0 0 16px rgba(var(--rgb-primary), 0.35);
 }
 
 .sidebar-nav-section {
@@ -101,7 +101,7 @@
   background: transparent;
   border: none;
   border-left: 3px solid transparent;
-  color: #bccbb9;
+  color: var(--text-muted);
   font-size: 13px;
   font-weight: 500;
   cursor: pointer;
@@ -111,19 +111,19 @@
 }
 
 .nav-link-btn:hover {
-  background-color: #1B211E;
-  color: #d6e5ea;
+  background-color: var(--bg-layer-3);
+  color: var(--text-body);
 }
 
 .nav-link-btn.active {
-  border-left-color: #4be277;
-  background-color: rgba(75, 226, 119, 0.1);
-  color: #d6e5ea;
+  border-left-color: var(--color-primary);
+  background-color: rgba(var(--rgb-primary), 0.1);
+  color: var(--text-body);
   font-weight: 700;
 }
 
 .nav-link-btn.active .nav-icon {
-  color: #4be277;
+  color: var(--color-primary);
 }
 
 .nav-icon {
@@ -131,7 +131,7 @@
 }
 
 .sidebar-footer-section {
-  border-top: 1px solid #27312B;
+  border-top: 1px solid var(--border-standard);
   padding: 1rem 0.75rem 0 0.75rem;
   display: flex;
   flex-direction: column;
@@ -139,11 +139,11 @@
 }
 
 .nav-link-btn.logout-btn {
-  color: #ffb4ab;
+  color: var(--color-danger-light);
   margin-top: 0.5rem;
 }
 
 .nav-link-btn.logout-btn:hover {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #ffdad6;
+  background-color: rgba(var(--rgb-danger), 0.1);
+  color: var(--text-white);
 }

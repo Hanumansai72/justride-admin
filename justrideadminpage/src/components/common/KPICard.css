@@ -1,6 +1,6 @@
 .custom-kpi-card {
-  background-color: #151A17;
-  border: 1px solid #27312B;
+  background-color: var(--bg-layer-2);
+  border: 1px solid var(--border-standard);
   border-radius: 0.5rem;
   padding: 1.25rem;
   position: relative;
@@ -12,7 +12,7 @@
 }
 
 .custom-kpi-card:hover {
-  background-color: #1B211E;
+  background-color: var(--bg-layer-3);
 }
 
 .kpi-watermark-bg {
@@ -38,7 +38,7 @@
   font-size: 11px;
   letter-spacing: 0.05em;
   font-weight: 600;
-  color: #94A3A8;
+  color: var(--text-muted);
   text-transform: uppercase;
 }
 
@@ -57,7 +57,7 @@
   line-height: 40px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #d6e5ea;
+  color: var(--text-body);
 }
 
 .kpi-trend-pill {
@@ -69,20 +69,20 @@
 }
 
 .trend-up {
-  color: #4ADE80;
+  color: var(--color-primary-light);
 }
 
 .trend-down {
-  color: #EF4444;
+  color: var(--color-danger);
 }
 
 .kpi-subtext-msg {
   font-size: 11px;
-  color: #bccbb9;
+  color: var(--text-muted);
   margin-top: 0.25rem;
 }
 
-.text-primary { color: #4be277; }
-.text-secondary { color: #7bd0ff; }
-.text-amber { color: #F59E0B; }
-.text-red { color: #EF4444; }
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-primary); }
+.text-amber { color: var(--color-warning); }
+.text-red { color: var(--color-danger); }

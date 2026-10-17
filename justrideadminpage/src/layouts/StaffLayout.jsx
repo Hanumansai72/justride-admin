@@ -11,7 +11,7 @@ export default function StaffLayout({
   pageTitle = 'Support Desk',
 }) {
   return (
-    <div style={{ display: 'flex', width: '100vw', minHeight: '100vh', backgroundColor: '#0B0F0D', color: '#d6e5ea', overflowX: 'hidden' }}>
+    <div style={{ display: 'flex', width: '100vw', minHeight: '100vh', backgroundColor: 'var(--bg-layer-0)', color: 'var(--text-body)', overflowX: 'hidden' }}>
       {/* Reusable Staff Sidebar */}
       <Sidebar
         role="staff"
@@ -32,7 +32,7 @@ export default function StaffLayout({
         />
 
         {/* Page Canvas Slot */}
-        <div style={{ marginTop: '72px', flex: 1, padding: '2rem', backgroundColor: '#0B0F0D' }}>
+        <div style={{ marginTop: '72px', flex: 1, padding: '2rem', backgroundColor: 'var(--bg-layer-0)' }}>
           {children}
         </div>
       </div>

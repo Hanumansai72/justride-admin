@@ -124,7 +124,7 @@
 }
 
 .form-input::placeholder {
-  color: rgba(134, 149, 133, 0.5);
+  color: var(--text-dim);
 }
 
 .form-input:focus {

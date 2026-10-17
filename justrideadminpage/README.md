@@ -1,5 +1,11 @@
 # React + Vite
 
+## Shared JustRide colours
+
+`src/index.css` owns the palette used by every admin/helper page, shared component, and login screen. Background, surface, primary emerald, text, border, and warning colours match the mobile app's `AppColors` and the customer site. Red status text uses a lighter shade for readability on dark surfaces; solid danger actions use the app's red.
+
+Use the existing CSS variables for colours and inline styles. Browser form controls and autofill also use the dark palette. Update the shared tokens to change the theme throughout the portal.
+
 ## Interested Users
 
 `/interested-users` shows early-interest submissions from the customer homepage. It uses the protected `/api/early-interest` endpoint and requires an ADMIN or HELPER login. The table shows name, email, city, purchase interest, notes, and submission time.

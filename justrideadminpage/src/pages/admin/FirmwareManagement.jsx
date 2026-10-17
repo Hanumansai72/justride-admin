@@ -265,7 +265,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
                   <tbody>
                     {isLoading && releases.length === 0 ? (
                       <tr>
-                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                           <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>
                             sync
                           </span>
@@ -274,7 +274,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
                       </tr>
                     ) : filteredReleases.length === 0 ? (
                       <tr>
-                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                           No firmware releases found. Click "Publish Release" to publish your first OTA binary.
                         </td>
                       </tr>
@@ -291,9 +291,9 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
                                     fontWeight: '800',
                                     padding: '2px 6px',
                                     borderRadius: '4px',
-                                    background: 'rgba(75, 226, 119, 0.2)',
-                                    color: '#4be277',
-                                    border: '1px solid rgba(75, 226, 119, 0.4)',
+                                    background: 'rgba(var(--rgb-primary), 0.2)',
+                                    color: 'var(--color-primary)',
+                                    border: '1px solid rgba(var(--rgb-primary), 0.4)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.05em',
                                   }}
@@ -338,7 +338,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
                                   className="action-link-btn"
                                   title="Set as Active Featured Firmware on Website & Mobile OTA"
                                   onClick={() => handleSetFeatured(row)}
-                                  style={{ color: '#bccbb9' }}
+                                  style={{ color: 'var(--text-muted)' }}
                                 >
                                   <span className="material-symbols-outlined icon-18">
                                     star_border
@@ -349,7 +349,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
                                   title="Currently Featured on Website & OTA"
                                   style={{ display: 'inline-flex', alignItems: 'center', padding: '0 4px' }}
                                 >
-                                  <span className="material-symbols-outlined icon-18" style={{ color: '#f59e0b' }}>
+                                  <span className="material-symbols-outlined icon-18" style={{ color: 'var(--color-warning)' }}>
                                     star
                                   </span>
                                 </span>

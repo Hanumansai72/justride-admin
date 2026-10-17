@@ -180,14 +180,14 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
 
                 <div className="alerts-card-list">
                   {isLoading && alerts.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                    <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                       <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>
                         sync
                       </span>
                       <p>Loading notification feed...</p>
                     </div>
                   ) : filteredAlerts.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                    <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                       No notifications matching the selected filter.
                     </div>
                   ) : (

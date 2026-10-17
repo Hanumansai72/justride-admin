@@ -182,7 +182,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
             style={{ cursor: 'pointer' }}
             title="Staff Accounts"
           >
-            <span style={{ color: '#fff', fontWeight: '700', fontSize: '12px' }}>H</span>
+            <span style={{ color: 'var(--text-white)', fontWeight: '700', fontSize: '12px' }}>H</span>
           </div>
         </div>
       </header>
@@ -321,7 +321,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
             <tbody>
               {isLoading && devices.length === 0 ? (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                  <td colSpan="5" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                     <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>
                       sync
                     </span>
@@ -330,7 +330,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
                 </tr>
               ) : devices.length === 0 ? (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                  <td colSpan="5" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                     No devices found matching current filters.
                   </td>
                 </tr>
@@ -350,7 +350,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
                       </td>
                       <td className="text-white">
                         <div>{d.name}</div>
-                        <div style={{ fontSize: '11px', color: '#94A3A8' }}>FW: v{d.firmware}</div>
+                        <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>FW: v{d.firmware}</div>
                       </td>
                       <td>
                         {d.owner ? (

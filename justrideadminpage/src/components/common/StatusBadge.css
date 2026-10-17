@@ -18,25 +18,25 @@
 }
 
 .badge-active {
-  background-color: rgba(74, 222, 128, 0.1);
-  color: #4ADE80;
-  border: 1px solid rgba(74, 222, 128, 0.2);
+  background-color: rgba(var(--rgb-primary), 0.1);
+  color: var(--color-primary-light);
+  border: 1px solid rgba(var(--rgb-primary), 0.2);
 }
 
 .badge-warning {
-  background-color: rgba(245, 158, 11, 0.1);
-  color: #F59E0B;
-  border: 1px solid rgba(245, 158, 11, 0.2);
+  background-color: rgba(var(--rgb-warning), 0.1);
+  color: var(--color-warning);
+  border: 1px solid rgba(var(--rgb-warning), 0.2);
 }
 
 .badge-critical {
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #EF4444;
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background-color: rgba(var(--rgb-danger), 0.1);
+  color: var(--color-danger);
+  border: 1px solid rgba(var(--rgb-danger), 0.2);
 }
 
 .badge-neutral {
-  background-color: #27312B;
-  color: #94A3A8;
-  border: 1px solid #27312B;
+  background-color: var(--border-standard);
+  color: var(--text-muted);
+  border: 1px solid var(--border-standard);
 }

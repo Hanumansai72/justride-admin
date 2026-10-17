@@ -360,7 +360,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                   <tbody>
                     {isLoading && users.length === 0 ? (
                       <tr>
-                        <td colSpan="7" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                        <td colSpan="7" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                             <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>
                               sync
@@ -371,7 +371,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                       </tr>
                     ) : filteredUsers.length === 0 ? (
                       <tr>
-                        <td colSpan="7" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                        <td colSpan="7" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                           No users found matching your search and filter criteria.
                         </td>
                       </tr>
@@ -449,7 +449,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                                 </span>
                               )}
                               {u.status === 'BANNED' && (
-                                <span className="status-pill" style={{ background: 'rgba(255,84,73,0.15)', color: '#ff5449' }}>
+                                <span className="status-pill" style={{ background: 'rgba(var(--rgb-danger), 0.15)', color: 'var(--color-danger)' }}>
                                   <span className="status-dot red" />
                                   BANNED
                                 </span>

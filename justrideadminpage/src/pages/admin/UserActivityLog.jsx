@@ -191,14 +191,14 @@ export default function UserActivityLog({ userId: propUserId, onNavigate, onLogo
               {/* Timeline Items Feed */}
               <div className="timeline-feed-wrap">
                 {isLoading && timelineGroups.length === 0 ? (
-                  <div style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                  <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                     <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>
                       sync
                     </span>
                     <p>Loading activity trail...</p>
                   </div>
                 ) : filteredGroups.length === 0 ? (
-                  <div style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                  <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                     No activity records found for this category.
                   </div>
                 ) : (

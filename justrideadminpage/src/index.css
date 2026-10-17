@@ -1,48 +1,57 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* ==========================================================================
-   JUSTRIDE GLOBAL UNIFIED DESIGN SYSTEM (SUPPORT & ADMIN CONSISTENT PALETTE)
-   Strictly standardized tonal layering across all Admin & Staff/Helper views:
-   - Canvas / Base: #0B0F0D (Layer 0)
-   - Sidebar / Level 1: #111613 (Layer 1)
-   - Cards / Containers: #151A17 (Layer 2)
-   - Hover / Active / Drawer: #1B211E (Layer 3)
-   - Border / Lines: #27312B (Border Standard)
-   - Primary Accent: #22C55E / #4be277 (Neon Emerald)
-   - Secondary Accent: #7BD0FF (Cyan Telemetry)
-   - Warning: #F59E0B / #ffba61 (Amber)
-   - Danger / Error: #EF4444 / #ffb4ab (Red Alert)
-   - Text Hierarchy: #F8FAFC (High), #d6e5ea (Body), #94A3A8 / #bccbb9 (Muted)
-   ========================================================================== */
-
+/* Shared JustRide palette: matches the mobile app's AppColors and customer site.
+   All admin/helper pages use these tokens, including inline component styles. */
 :root {
-  /* Tonal Layers */
-  --bg-layer-0: #0B0F0D;
-  --bg-layer-1: #111613;
-  --bg-layer-2: #151A17;
-  --bg-layer-3: #1B211E;
-  
-  /* Borders */
-  --border-standard: #27312B;
-  --border-subtle: rgba(39, 49, 43, 0.6);
-  --border-focus: #22C55E;
-  
-  /* Accents */
-  --color-primary: #22C55E;
-  --color-primary-light: #4be277;
-  --color-primary-dim: rgba(75, 226, 119, 0.1);
-  --color-secondary: #7BD0FF;
-  --color-secondary-dim: rgba(123, 208, 255, 0.1);
-  --color-warning: #F59E0B;
-  --color-warning-dim: rgba(245, 158, 11, 0.1);
-  --color-danger: #EF4444;
-  --color-danger-dim: rgba(239, 68, 68, 0.1);
-  
-  /* Text */
-  --text-white: #F8FAFC;
-  --text-body: #d6e5ea;
-  --text-muted: #94A3A8;
-  --text-dim: #869585;
+  color-scheme: dark;
+  --bg-layer-0: #0B100D;
+  --bg-layer-1: #101812;
+  --bg-layer-2: #141A16;
+  --bg-layer-3: #1A211C;
+  --border-standard: #354438;
+  --border-subtle: rgba(var(--rgb-border), 0.6);
+  --border-focus: var(--color-primary);
+
+  --color-primary: #34D399;
+  --color-primary-light: #6EE7B7;
+  --color-primary-dark: #087C59;
+  --color-primary-dim: rgba(var(--rgb-primary), 0.1);
+  --color-on-primary: var(--bg-layer-0);
+  --color-secondary: var(--color-primary);
+  --color-secondary-dim: var(--color-primary-dim);
+  --color-warning: #FFAB00;
+  --color-warning-light: #FFD166;
+  --color-warning-dim: rgba(var(--rgb-warning), 0.1);
+  /* Bright status text stays legible on dark surfaces; solid actions use app red. */
+  --color-danger: #FF6B6B;
+  --color-danger-light: #FFB4AB;
+  --color-danger-solid: #D50000;
+  --color-danger-dim: rgba(var(--rgb-danger), 0.1);
+  --bg-danger: #2A1718;
+
+  --text-white: #F5F7F5;
+  --text-body: var(--text-white);
+  --text-muted: #AAB5AD;
+  --text-dim: #86978A;
+  --rgb-primary: 52, 211, 153;
+  --rgb-warning: 255, 171, 0;
+  --rgb-danger: 255, 107, 107;
+  --rgb-border: 53, 68, 56;
+  --rgb-muted: 170, 181, 173;
+  --rgb-surface: 20, 26, 22;
+
+  /* Existing login/form names resolve to the same shared palette. */
+  --color-surface-container: var(--bg-layer-2);
+  --color-surface-container-high: var(--bg-layer-3);
+  --color-surface-container-highest: var(--bg-layer-3);
+  --color-on-surface: var(--text-white);
+  --color-on-surface-variant: var(--text-muted);
+  --color-outline: var(--text-dim);
+  --color-outline-variant: var(--border-standard);
+  --color-primary-container: var(--color-primary);
+  --color-on-primary-container: var(--color-on-primary);
+  --color-primary-fixed: var(--color-primary-light);
+  --color-surface-tint: var(--color-primary);
 }
 
 * {
@@ -83,13 +92,13 @@ input, select, textarea {
 input:focus, select:focus, textarea:focus {
   border-color: var(--color-primary);
   outline: none;
-  box-shadow: 0 0 8px rgba(34, 197, 94, 0.2);
+  box-shadow: 0 0 8px rgba(var(--rgb-primary), 0.2);
 }
 
 /* Universal Button Styles */
 .btn-primary {
-  background-color: #22C55E;
-  color: #0B0F0D;
+  background-color: var(--color-primary);
+  color: var(--bg-layer-0);
   font-weight: 700;
   border-radius: 0.375rem;
   border: none;
@@ -98,8 +107,8 @@ input:focus, select:focus, textarea:focus {
 }
 
 .btn-primary:hover {
-  background-color: #4ADE80;
-  box-shadow: 0 0 16px rgba(74, 222, 128, 0.35);
+  background-color: var(--color-primary-light);
+  box-shadow: 0 0 16px rgba(var(--rgb-primary), 0.35);
 }
 
 .btn-secondary {
@@ -113,16 +122,16 @@ input:focus, select:focus, textarea:focus {
 
 .btn-secondary:hover {
   background-color: var(--bg-layer-3);
-  border-color: #27312B;
+  border-color: var(--border-standard);
 }
 
 /* Glow Effects */
 .input-glow:focus-within {
-  box-shadow: 0 0 0 1px var(--color-primary), 0 0 16px 0 rgba(34, 197, 94, 0.2);
+  box-shadow: 0 0 0 1px var(--color-primary), 0 0 16px 0 rgba(var(--rgb-primary), 0.2);
 }
 
 .btn-glow:hover {
-  box-shadow: 0 0 20px 0 rgba(34, 197, 94, 0.35);
+  box-shadow: 0 0 20px 0 rgba(var(--rgb-primary), 0.35);
 }
 
 /* Material Symbols */
@@ -130,3 +139,19 @@ input:focus, select:focus, textarea:focus {
   font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
   user-select: none;
 }
+
+/* Keep browser-managed controls consistent with the app's dark theme. */
+input[type="checkbox"], input[type="radio"], progress {
+  accent-color: var(--color-primary);
+}
+input::placeholder, textarea::placeholder { color: var(--text-dim); }
+select option { background: var(--bg-layer-2); color: var(--text-white); }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--text-white);
+  caret-color: var(--text-white);
+  -webkit-box-shadow: 0 0 0 1000px var(--bg-layer-2) inset;
+}
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+::selection { background: var(--color-primary); color: var(--color-on-primary); }

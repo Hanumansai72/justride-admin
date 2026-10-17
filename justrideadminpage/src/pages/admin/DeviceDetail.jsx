@@ -174,7 +174,7 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
         <main className="dev-detail-content">
           <RequestError message={loadError} loading={isLoading} onRetry={fetchDeviceDetails} />
           {isLoading ? (
-            <div style={{ textAlign: 'center', padding: '5rem', color: '#94A3A8' }}>
+            <div style={{ textAlign: 'center', padding: '5rem', color: 'var(--text-muted)' }}>
               <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite', fontSize: '32px' }}>
                 sync
               </span>
@@ -284,7 +284,7 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
                         </div>
                       </div>
                     ) : (
-                      <div style={{ padding: '1rem 0', color: '#94A3A8', fontSize: '13px' }}>
+                      <div style={{ padding: '1rem 0', color: 'var(--text-muted)', fontSize: '13px' }}>
                         No user account currently paired with this device.
                       </div>
                     )}

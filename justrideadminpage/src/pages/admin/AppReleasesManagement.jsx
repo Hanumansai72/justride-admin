@@ -199,7 +199,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                 <button
                   type="button"
                   className="btn-create-release"
-                  style={{ backgroundColor: '#1B211E', color: '#bccbb9', border: '1px solid #27312B' }}
+                  style={{ backgroundColor: 'var(--bg-layer-3)', color: 'var(--text-muted)', border: '1px solid var(--border-standard)' }}
                   onClick={() => onNavigate && onNavigate('firmware')}
                 >
                   <span className="material-symbols-outlined icon-20">
@@ -283,7 +283,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                   </div>
                 </div>
 
-                <div style={{ fontSize: '12px', color: '#bccbb9', fontFamily: 'monospace' }}>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontFamily: 'monospace' }}>
                   Showing {filteredReleases.length} of {totalCount} builds
                 </div>
               </div>
@@ -306,19 +306,19 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                   <tbody>
                     {isLoading && releases.length === 0 ? (
                       <tr>
-                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#94A3A8' }}>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                           <span
                             className="material-symbols-outlined"
-                            style={{ fontSize: '32px', animation: 'spin 1s linear infinite', color: '#4be277' }}
+                            style={{ fontSize: '32px', animation: 'spin 1s linear infinite', color: 'var(--color-primary)' }}
                           >
                             sync
                           </span>
-                          <p style={{ marginTop: '8px', color: '#bccbb9' }}>Loading APK releases from Cloudflare R2...</p>
+                          <p style={{ marginTop: '8px', color: 'var(--text-muted)' }}>Loading APK releases from Cloudflare R2...</p>
                         </td>
                       </tr>
                     ) : filteredReleases.length === 0 ? (
                       <tr>
-                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: '#bccbb9' }}>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                           No APK releases found. Click <strong>"Publish New APK"</strong> to upload your first Android package!
                         </td>
                       </tr>
@@ -335,9 +335,9 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                                     fontWeight: '800',
                                     padding: '2px 6px',
                                     borderRadius: '4px',
-                                    background: 'rgba(75, 226, 119, 0.2)',
-                                    color: '#4be277',
-                                    border: '1px solid rgba(75, 226, 119, 0.4)',
+                                    background: 'rgba(var(--rgb-primary), 0.2)',
+                                    color: 'var(--color-primary)',
+                                    border: '1px solid rgba(var(--rgb-primary), 0.4)',
                                     textTransform: 'uppercase',
                                     letterSpacing: '0.05em',
                                   }}
@@ -346,7 +346,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                                 </span>
                               )}
                             </div>
-                            <div style={{ fontSize: '11px', color: '#88988e' }}>Build #{row.buildNumber}</div>
+                            <div style={{ fontSize: '11px', color: 'var(--text-dim)' }}>Build #{row.buildNumber}</div>
                           </td>
                           <td>
                             <span
@@ -356,7 +356,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                                 gap: '4px',
                                 fontSize: '12px',
                                 fontWeight: '600',
-                                color: '#4be277',
+                                color: 'var(--color-primary)',
                               }}
                             >
                               <span className="material-symbols-outlined icon-18">
@@ -374,7 +374,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                           <td className="text-muted">{row.releaseDate}</td>
                           <td>
                             {row.mandatory ? (
-                              <span style={{ color: '#ff857a', fontWeight: '600', fontSize: '12px' }}>
+                              <span style={{ color: 'var(--color-danger-light)', fontWeight: '600', fontSize: '12px' }}>
                                 Mandatory
                               </span>
                             ) : (
@@ -395,7 +395,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                                   className="action-link-btn"
                                   title="Set as Active release on Website & Mobile App"
                                   onClick={() => handleSetFeatured(row)}
-                                  style={{ color: '#bccbb9' }}
+                                  style={{ color: 'var(--text-muted)' }}
                                 >
                                   <span className="material-symbols-outlined icon-18">
                                     star_border
@@ -406,7 +406,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                                   title="Currently Featured on Website & App"
                                   style={{ display: 'inline-flex', alignItems: 'center', padding: '0 4px' }}
                                 >
-                                  <span className="material-symbols-outlined icon-18" style={{ color: '#f59e0b' }}>
+                                  <span className="material-symbols-outlined icon-18" style={{ color: 'var(--color-warning)' }}>
                                     star
                                   </span>
                                 </span>
@@ -419,7 +419,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                                 title="Download APK from Cloudflare R2"
                                 style={{ textDecoration: 'none' }}
                               >
-                                <span className="material-symbols-outlined icon-18" style={{ color: '#4be277' }}>
+                                <span className="material-symbols-outlined icon-18" style={{ color: 'var(--color-primary)' }}>
                                   download
                                 </span>
                               </a>
@@ -429,7 +429,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                                 title="Delete Release"
                                 onClick={() => handleDelete(row)}
                               >
-                                <span className="material-symbols-outlined icon-18" style={{ color: '#ff857a' }}>
+                                <span className="material-symbols-outlined icon-18" style={{ color: 'var(--color-danger-light)' }}>
                                   delete
                                 </span>
                               </button>
