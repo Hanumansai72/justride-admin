@@ -22,7 +22,7 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
     try {
       const [statsRes, healthRes] = await Promise.allSettled([
         dashboardApi.getStats(),
-        dashboardApi.getHealth(),
+        currentUser?.role === 'ADMIN' ? dashboardApi.getHealth() : Promise.resolve(null),
       ]);
 
       if (statsRes.status === 'fulfilled' && statsRes.value?.success) {
@@ -32,6 +32,8 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
       if (healthRes.status === 'fulfilled' && healthRes.value?.success) {
         setHealthData(healthRes.value.data);
       }
+      const failed = [statsRes, healthRes].find(result => result.status === 'rejected');
+      if (failed) setError(failed.reason?.message || 'Could not load dashboard metrics.');
     } catch (err) {
       console.warn('Dashboard fetch issue', err);
       setError('Could not load real-time metrics. Showing offline state.');
@@ -39,13 +41,13 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  }, []);
+  }, [currentUser?.role]);
 
   useEffect(() => {
     loadDashboardData();
     // Refresh stats every 60 seconds
     const interval = setInterval(() => {
-      loadDashboardData();
+      if (document.visibilityState === 'visible') loadDashboardData();
     }, 60000);
     return () => clearInterval(interval);
   }, [loadDashboardData]);

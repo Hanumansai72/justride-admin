@@ -12,6 +12,7 @@ class ApiClient {
     this.tokenCookieName = 'justride_admin_token';
     this.userCookieName = 'justride_admin_user';
     this.roleCookieName = 'justride_admin_role';
+    this.pendingGets = new Map();
   }
 
   getToken() {
@@ -42,6 +43,7 @@ class ApiClient {
   }
 
   clearSession() {
+    this.pendingGets.clear();
     try {
       Cookies.remove(this.tokenCookieName, { path: '/' });
       Cookies.remove(this.userCookieName, { path: '/' });
@@ -95,6 +97,7 @@ class ApiClient {
       headers,
       body,
       credentials: 'include',
+      signal: options.signal,
     };
 
     try {
@@ -123,6 +126,7 @@ class ApiClient {
 
         const error = new Error(errorMessage);
         error.status = response.status;
+        error.retryAfter = Number(response.headers.get('Retry-After')) || null;
         error.data = data;
         throw error;
       }
@@ -138,7 +142,13 @@ class ApiClient {
   }
 
   get(endpoint, params = {}, options = {}) {
-    return this.request(endpoint, { ...options, method: 'GET', params });
+    if (options.signal) return this.request(endpoint, { ...options, method: 'GET', params });
+    const key = JSON.stringify([endpoint, params, this.getToken(), options]);
+    if (this.pendingGets.has(key)) return this.pendingGets.get(key);
+    const pending = this.request(endpoint, { ...options, method: 'GET', params })
+      .finally(() => { if (this.pendingGets.get(key) === pending) this.pendingGets.delete(key); });
+    this.pendingGets.set(key, pending);
+    return pending;
   }
 
   post(endpoint, body = {}, options = {}) {

@@ -18,6 +18,7 @@ const columns = [
   { header: 'Confirmation email', render: emailStatus },
   { header: 'City', accessor: 'city' },
   { header: 'Purchase interest', render: (row) => row.purchaseIntent || '—' },
+  { header: 'Preferred price range', render: (row) => row.priceRange ? `₹${row.priceRange.replace('-', '–₹')}` : '—' },
   { header: 'Expectations / notes', render: (row) => <span className="interested-users__notes">{row.notes || '—'}</span> },
   { header: 'Submitted', render: (row) => row.createdAt ? new Date(row.createdAt).toLocaleString() : '—' },
 ];
