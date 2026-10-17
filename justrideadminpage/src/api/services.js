@@ -30,7 +30,7 @@ export const usersApi = {
 };
 
 export const interestApi = {
-  getUsers: (page = 1, options = {}) => api.get('/early-interest', { page }, options),
+  getUsers: (page = 1, options = {}) => api.get('/early-interest', { page, limit: 10 }, options),
 };
 
 // ── 4. Helper / Support Staff Management Services ────────────────────

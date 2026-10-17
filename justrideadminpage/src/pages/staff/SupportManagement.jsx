@@ -11,7 +11,7 @@ export default function SupportManagement({ onNavigate, onLogout }) {
   const [priorityFilter, setPriorityFilter] = useState('All Priorities');
   const [assignedFilter, setAssignedFilter] = useState('Assigned: All');
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit] = useState(15);
+  const [limit] = useState(10);
 
   const [tickets, setTickets] = useState([]);
   const [totalCount, setTotalCount] = useState(0);

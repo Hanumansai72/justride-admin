@@ -1,4 +1,5 @@
 import RequestError from '../../components/common/RequestError';
+import Pagination from '../../components/common/Pagination';
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { helpersApi } from '../../api/services';
@@ -6,6 +7,8 @@ import './SupportStaff.css';
 
 export default function SupportStaff({ onNavigate, onLogout }) {
   const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
   const [staffList, setStaffList] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
@@ -28,22 +31,13 @@ export default function SupportStaff({ onNavigate, onLogout }) {
     setIsLoading(true);
     setLoadError('');
     try {
-      const res = await helpersApi.getHelpers({ search: searchQuery.trim() || undefined }, { signal });
+      const res = await helpersApi.getHelpers({ page: currentPage, limit: 10, search: searchQuery.trim() || undefined }, { signal });
       if (signal.aborted) return;
       if (res?.success && Array.isArray(res.data)) {
-        let activeCount = 0;
-        let onLeaveCount = 0;
-        let suspendedCount = 0;
-        let totalResolved = 0;
-
         const mapped = res.data.map((h) => {
           const statusUpper = (h.status || 'active').toUpperCase();
-          if (statusUpper === 'ACTIVE') activeCount++;
-          else if (statusUpper === 'ON_LEAVE') onLeaveCount++;
-          else if (statusUpper === 'SUSPENDED' || statusUpper === 'TERMINATED') suspendedCount++;
 
           const resolved = h.resolved_tickets_count || 0;
-          totalResolved += resolved;
 
           return {
             id: h.employee_id || `#JR-${h._id.slice(-4)}`,
@@ -61,12 +55,13 @@ export default function SupportStaff({ onNavigate, onLogout }) {
         });
 
         setStaffList(mapped);
+        setTotalCount(res.pagination.total);
         setStats({
-          active: String(activeCount),
-          onLeave: String(onLeaveCount),
-          suspended: String(suspendedCount),
-          resolved: Number(totalResolved).toLocaleString(),
-          resolvedTrend: `${mapped.length} staff members total`,
+          active: String(res.stats.active),
+          onLeave: String(res.stats.onLeave),
+          suspended: String(res.stats.suspended),
+          resolved: Number(res.stats.resolved).toLocaleString(),
+          resolvedTrend: `${res.pagination.total} staff members total`,
         });
       }
     } catch (err) {
@@ -75,7 +70,7 @@ export default function SupportStaff({ onNavigate, onLogout }) {
     } finally {
       if (!signal.aborted) setIsLoading(false);
     }
-  }, [searchQuery]);
+  }, [currentPage, searchQuery]);
 
   useEffect(() => {
     fetchStaff();
@@ -231,7 +226,7 @@ export default function SupportStaff({ onNavigate, onLogout }) {
                     type="text"
                     placeholder="Search staff by Employee ID, name, email..."
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => { setSearchQuery(e.target.value); setCurrentPage(1); }}
                     className="staff-search-input"
                   />
                 </div>
@@ -369,12 +364,7 @@ export default function SupportStaff({ onNavigate, onLogout }) {
               </div>
 
               {/* Table Footer */}
-              <div className="table-footer-bar">
-                <div className="footer-count-text">
-                  Showing <span className="text-white">1-{filteredStaff.length}</span> of{' '}
-                  <span className="text-white">{filteredStaff.length}</span> staff members
-                </div>
-              </div>
+              <Pagination page={currentPage} total={totalCount} loading={isLoading} onChange={setCurrentPage} />
             </div>
           </div>
         </main>

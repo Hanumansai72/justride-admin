@@ -8,6 +8,8 @@ Use the existing CSS variables for colours and inline styles. Browser form contr
 
 ## Interested Users
 
+Admin and helper list pages fetch 10 records per page, newest first. Interested Users refreshes back to page 1 so the latest submissions are visible. Staff and notifications include Previous/Next controls; staff totals cover the complete matching directory.
+
 `/interested-users` shows early-interest submissions from the customer homepage. It uses the protected `/api/early-interest` endpoint and requires an ADMIN or HELPER login. The table shows name, email, city, purchase interest, notes, and submission time.
 
 For local development with the backend running on port 5000, start the admin frontend in PowerShell with:

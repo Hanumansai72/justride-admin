@@ -8,7 +8,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [channelFilter, setChannelFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit] = useState(15);
+  const [limit] = useState(10);
   const [releases, setReleases] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -373,7 +373,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
 
               {/* Table Footer / Pagination */}
               <div className="table-pagination-footer">
-                <span className="pagination-text">Showing 1 to {filteredReleases.length} of {totalCount || filteredReleases.length} releases</span>
+                <span className="pagination-text">Showing {filteredReleases.length ? (currentPage - 1) * limit + 1 : 0} to {Math.min(currentPage * limit, totalCount)} of {totalCount} releases</span>
                 <div className="pagination-group">
                   <button
                     type="button"

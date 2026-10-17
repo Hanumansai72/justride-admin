@@ -1,0 +1,5 @@
+.list-pagination{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:12px;padding:16px;color:var(--text-muted);font-size:14px;border-top:1px solid var(--border-standard)}
+.list-pagination>span{margin-right:auto}
+.list-pagination button{padding:8px 14px;background:var(--bg-layer-2);color:var(--text-body);border:1px solid var(--border-standard);border-radius:6px;cursor:pointer;font:inherit}
+.list-pagination button:hover:not(:disabled){border-color:var(--color-primary)}
+.list-pagination button:disabled{opacity:.5;cursor:default}

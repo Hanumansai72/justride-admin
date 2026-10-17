@@ -11,7 +11,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
   const [statusFilter, setStatusFilter] = useState('');
   const [hasDeviceOnly, setHasDeviceOnly] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit] = useState(15);
+  const [limit] = useState(10);
 
   const [users, setUsers] = useState([]);
   const [totalCount, setTotalCount] = useState(0);

@@ -1,4 +1,5 @@
 import RequestError from '../../components/common/RequestError';
+import Pagination from '../../components/common/Pagination';
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { notificationsApi } from '../../api/services';
@@ -6,6 +7,9 @@ import './NotificationsAlerts.css';
 
 export default function NotificationsAlerts({ onNavigate, onLogout }) {
   const [filterCategory, setFilterCategory] = useState('ALL');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const changeCategory = (value) => { setFilterCategory(value); setCurrentPage(1); };
   const [alerts, setAlerts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
@@ -19,7 +23,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
     setIsLoading(true);
     setLoadError('');
     try {
-      const res = await notificationsApi.getNotifications({}, { signal });
+      const res = await notificationsApi.getNotifications({ page: currentPage, limit: 10, category: filterCategory !== 'ALL' ? filterCategory : undefined }, { signal });
       if (signal.aborted) return;
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map((n) => {
@@ -58,6 +62,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
         });
 
         setAlerts(mapped);
+        setTotalCount(res.pagination.total);
       }
     } catch (err) {
       if (signal.aborted) return;
@@ -65,7 +70,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
     } finally {
       if (!signal.aborted) setIsLoading(false);
     }
-  }, []);
+  }, [currentPage, filterCategory]);
 
   useEffect(() => {
     fetchAlerts();
@@ -152,7 +157,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
                   type="button"
                   className="btn-action-outline"
                   onClick={() =>
-                    setFilterCategory((prev) => (prev === 'ALL' ? 'CRITICAL' : 'ALL'))
+                    changeCategory(filterCategory === 'ALL' ? 'CRITICAL' : 'ALL')
                   }
                 >
                   <span className="material-symbols-outlined icon-18">filter_list</span>
@@ -249,17 +254,18 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
                     ))
                   )}
                 </div>
+                <Pagination page={currentPage} total={totalCount} loading={isLoading} onChange={setCurrentPage} />
               </div>
 
               {/* Sidebar Stats & Volume (4 cols) */}
               <div className="widgets-right-col">
                 {/* Summary Widget */}
                 <div className="widget-card summary-widget">
-                  <h3 className="widget-title">Alert Summary</h3>
+                  <h3 className="widget-title">Alert Summary · This Page</h3>
                   <div className="summary-2x2-grid">
                     <div
                       className="metric-box box-critical cursor-pointer"
-                      onClick={() => setFilterCategory('CRITICAL')}
+                      onClick={() => changeCategory('CRITICAL')}
                     >
                       <span className="metric-large-num text-error">{summary.critical}</span>
                       <span className="metric-cap-label">CRITICAL</span>
@@ -267,7 +273,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
 
                     <div
                       className="metric-box box-warning cursor-pointer"
-                      onClick={() => setFilterCategory('WARNING')}
+                      onClick={() => changeCategory('WARNING')}
                     >
                       <span className="metric-large-num text-amber">{summary.warning}</span>
                       <span className="metric-cap-label">WARNING</span>
@@ -275,7 +281,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
 
                     <div
                       className="metric-box box-unread cursor-pointer"
-                      onClick={() => setFilterCategory('ALL')}
+                      onClick={() => changeCategory('ALL')}
                     >
                       <span className="metric-large-num text-white">{summary.unread}</span>
                       <span className="metric-cap-label">UNREAD</span>
@@ -283,10 +289,10 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
 
                     <div
                       className="metric-box box-total cursor-pointer"
-                      onClick={() => setFilterCategory('ALL')}
+                      onClick={() => changeCategory('ALL')}
                     >
                       <span className="metric-large-num text-muted">{summary.total}</span>
-                      <span className="metric-cap-label">TOTAL NOTIFS</span>
+                      <span className="metric-cap-label">ON THIS PAGE</span>
                     </div>
                   </div>
                 </div>

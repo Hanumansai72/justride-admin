@@ -29,7 +29,7 @@ const columns = [
 export default function InterestedUsers({ onNavigate, onLogout }) {
   const [page, setPage] = useState(1);
   const [revision, setRevision] = useState(0);
-  const [result, setResult] = useState({ items: [], total: 0, limit: 100 });
+  const [result, setResult] = useState({ items: [], total: 0, limit: 10 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -56,7 +56,7 @@ export default function InterestedUsers({ onNavigate, onLogout }) {
   const pages = Math.max(1, Math.ceil(result.total / result.limit));
   return <AdminLayout activeRoute="interested-users" pageTitle="Interested Users" onNavigate={onNavigate} onLogout={onLogout}>
     <section className="interested-users" aria-labelledby="interested-users-title">
-      <div className="interested-users__header"><div><h1 id="interested-users-title">Interested Users</h1><p>Early interest submissions from the JustRide homepage, newest first.</p></div><button type="button" onClick={() => reload()} disabled={loading}>Refresh</button></div>
+      <div className="interested-users__header"><div><h1 id="interested-users-title">Interested Users</h1><p>Early interest submissions from the JustRide homepage, newest first.</p></div><button type="button" onClick={() => reload(1)} disabled={loading}>Refresh</button></div>
       {!loading && !error && <p className="interested-users__count">{result.total} interested {result.total === 1 ? 'rider' : 'riders'}</p>}
       {loading ? <p role="status">Loading interested users…</p> : error ? <p role="alert" className="interested-users__error">{error}</p> : <>
         <DataTable columns={columns} data={result.items.map((row) => ({ ...row, id: row._id }))} pagination={false} />

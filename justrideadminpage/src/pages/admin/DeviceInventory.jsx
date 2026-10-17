@@ -9,7 +9,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
   const [statusFilter, setStatusFilter] = useState('Status: All');
   const [pairingFilter, setPairingFilter] = useState('Pairing: All');
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit] = useState(15);
+  const [limit] = useState(10);
   const [devices, setDevices] = useState([]);
   const [totalDevices, setTotalDevices] = useState(0);
   const [totalPages, setTotalPages] = useState(1);

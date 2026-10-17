@@ -9,7 +9,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
   const [channelFilter, setChannelFilter] = useState('');
   const [platformFilter, setPlatformFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit] = useState(15);
+  const [limit] = useState(10);
   const [releases, setReleases] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -444,7 +444,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
 
               {/* Table Footer / Pagination */}
               <div className="table-pagination-footer">
-                <span className="pagination-text">Showing {filteredReleases.length} of {totalCount} releases</span>
+                <span className="pagination-text">Showing {filteredReleases.length ? (currentPage - 1) * limit + 1 : 0} to {Math.min(currentPage * limit, totalCount)} of {totalCount} releases</span>
                 <div className="pagination-group">
                   <button
                     type="button"
