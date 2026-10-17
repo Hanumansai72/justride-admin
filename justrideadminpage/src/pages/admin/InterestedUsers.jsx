@@ -5,6 +5,7 @@ import { interestApi } from '../../api/services';
 import './InterestedUsers.css';
 
 function emailStatus(row) {
+  if (row.confirmationEmailCode === 'CONSENT_REQUIRED') return 'Not sent — consent required';
   if (row.confirmationEmailStatus === 'queued') return 'Queued';
   if (row.confirmationEmailStatus === 'sending') return 'Sending / awaiting confirmation';
   if (row.confirmationEmailStatus === 'sent') return 'Sent';
@@ -15,7 +16,7 @@ function emailStatus(row) {
 const columns = [
   { header: 'Name', accessor: 'name' },
   { header: 'Email', accessor: 'email' },
-  { header: 'Future email consent', render: (row) => row.emailConsent === true ? 'Opted in' : 'Not opted in' },
+  { header: 'Email consent', render: (row) => row.emailConsent === true ? 'Confirmed' : 'Not confirmed' },
   { header: 'Consent recorded', render: (row) => row.emailConsentAt ? new Date(row.emailConsentAt).toLocaleString() : '—' },
   { header: 'Confirmation email', render: emailStatus },
   { header: 'City', accessor: 'city' },
