@@ -5,6 +5,8 @@ import { interestApi } from '../../api/services';
 import './InterestedUsers.css';
 
 function emailStatus(row) {
+  if (row.confirmationEmailStatus === 'queued') return 'Queued';
+  if (row.confirmationEmailStatus === 'sending') return 'Sending / awaiting confirmation';
   if (row.confirmationEmailStatus === 'sent') return 'Sent';
   if (row.confirmationEmailStatus === 'failed') return `Failed (${row.confirmationEmailCode || 'delivery error'})`;
   return 'Pending / not recorded';
