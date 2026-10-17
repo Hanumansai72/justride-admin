@@ -295,7 +295,6 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                 >
                   <option value="">All Roles</option>
                   <option value="USER">USER</option>
-                  <option value="ADMIN">ADMIN</option>
                 </select>
 
                 <select
