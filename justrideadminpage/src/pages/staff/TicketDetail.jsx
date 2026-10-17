@@ -1,13 +1,12 @@
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import Sidebar from '../../components/common/Sidebar';
 import { supportApi } from '../../api/services';
 import './TicketDetail.css';
 
 export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigate, onLogout }) {
   const params = useParams();
-  const navigate = useNavigate();
   const ticketId = propTicketId || params.id;
   const [replyText, setReplyText] = useState('');
   const [ticket, setTicket] = useState(null);
@@ -126,6 +125,7 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
         isCustomer: m.sender_role !== 'ADMIN',
         time: m.createdAt ? new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recent',
         content: m.body,
+        attachments: (m.attachments || []).filter(url => { try { const parsed = new URL(url); return parsed.protocol === 'https:' && parsed.hostname === 'res.cloudinary.com'; } catch { return false; } }),
         verified: m.sender_role === 'ADMIN',
       }))
     : [
@@ -138,8 +138,8 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
         },
       ];
 
-  const customer = ticket?.user_id || { name: 'Customer', email: 'customer@justride.io' };
-  const device = ticket?.device_id || { devicename: 'JustRide Telemetry Unit', BLE_ADDRESS: '00:1A:2B:3C', firmware_version: '2.4.0' };
+  const customer = ticket?.user_id || { name: 'Customer', email: 'Not supplied' };
+  const device = ticket?.device_id || { devicename: 'No linked device supplied', BLE_ADDRESS: 'Not supplied', firmware_version: 'Not supplied' };
 
   return (
     <div className="ticket-page-container">
@@ -219,6 +219,8 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
                 <h2 className="issue-title">{ticket?.subject || 'Customer Support Request'}</h2>
                 <p className="issue-meta">
                   Opened by {customer.name} • {ticket?.createdAt ? new Date(ticket.createdAt).toLocaleDateString() : 'Today'}
+                  {ticket?.category && <> · {ticket.category.replaceAll('_', ' ')}</>}
+                  {ticket?.help_article_id && <> · Help article: {ticket.help_article_id}</>}
                 </p>
               </div>
 
@@ -226,6 +228,7 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
               <div className="ticket-grid-layout">
                 {/* Left Column: Thread & Reply Box (65%) */}
                 <div className="thread-column">
+                  {ticket?.diagnostics && <section className="ticket-diagnostic-report"><h3>Customer-shared diagnostic report</h3><p>Shared with consent on {new Date(ticket.diagnostics.consented_at).toLocaleString()}. Values are supplied by the customer app.</p><dl>{Object.entries(ticket.diagnostics).filter(([key]) => key !== 'consented_at').map(([key, value]) => <div key={key}><dt>{key.replaceAll('_', ' ')}</dt><dd>{String(value)}</dd></div>)}</dl></section>}
                   {/* Message Thread Box */}
                   <div className="thread-container">
                     {messagesList.map((msg, index) => (
@@ -262,6 +265,7 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
                               <span className="message-time">{msg.time}</span>
                             </div>
                             <p className="message-text">{msg.content}</p>
+                            {msg.attachments?.map((url, attachmentIndex) => <a className="ticket-screenshot" key={url} href={url} target="_blank" rel="noopener noreferrer"><img src={url} alt={`Customer screenshot ${attachmentIndex + 1}`} loading="lazy" /><span>Open screenshot {attachmentIndex + 1}</span></a>)}
                           </div>
                         </div>
                       </div>
@@ -316,18 +320,18 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
                       </h3>
                       <span className="device-offline-pill">
                         <span className="badge-dot-green" />
-                        <span>Paired</span>
+                        <span>{ticket?.device_id ? 'Device on ticket' : 'No device supplied'}</span>
                       </span>
                     </div>
 
                     <div className="device-specs-list">
                       <div className="spec-item">
                         <span className="spec-label">BLE Address</span>
-                        <span className="spec-value font-mono">{device.BLE_ADDRESS || '00:1A:2B:3C'}</span>
+                        <span className="spec-value font-mono">{device.BLE_ADDRESS || 'Not supplied'}</span>
                       </div>
                       <div className="spec-item">
                         <span className="spec-label">Firmware</span>
-                        <span className="spec-value font-mono">{device.firmware_version || '2.4.0'}</span>
+                        <span className="spec-value font-mono">{device.firmware_version || 'Not supplied'}</span>
                       </div>
                     </div>
                   </div>
@@ -337,7 +341,7 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
                     <h3 className="actions-header-title">Customer Care Actions</h3>
                     <button
                       type="button"
-                      disabled={isActing}
+                      disabled={isActing || !ticket?.device_id}
                       className="action-btn-danger"
                       onClick={handleBlockDevice}
                     >
@@ -346,7 +350,7 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
                     </button>
                     <button
                       type="button"
-                      disabled={isActing}
+                      disabled={isActing || !ticket?.device_id}
                       className="action-btn-warning"
                       onClick={handleForceUnlink}
                     >

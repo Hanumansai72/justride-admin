@@ -82,6 +82,7 @@ export const appReleasesApi = {
 
 // ── 8. Support Tickets & Troubleshooting Services ────────────────────
 export const supportApi = {
+  getHelpFeedback: (params = {}, options = {}) => api.get('/admin/support/help-feedback', params, options),
   getTickets: (params = {}, options = {}) => api.get('/admin/support', params, options),
   getTicketById: (id, options = {}) => api.get(`/admin/support/${id}`, {}, options),
   updateTicket: (id, data) => api.patch(`/admin/support/${id}`, data),

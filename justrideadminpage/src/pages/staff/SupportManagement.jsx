@@ -1,8 +1,9 @@
 import RequestError from '../../components/common/RequestError';
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { supportApi } from '../../api/services';
 import './SupportManagement.css';
+import HelpFeedbackPanel from '../../components/support/HelpFeedbackPanel';
 
 export default function SupportManagement({ onNavigate, onLogout }) {
   const [activeTab, setActiveTab] = useState('Operations');
@@ -130,6 +131,7 @@ export default function SupportManagement({ onNavigate, onLogout }) {
             >
               Ticket Queue
             </button>
+            <button type="button" className={`header-tab ${activeTab === 'Help feedback' ? 'active' : ''}`} onClick={() => setActiveTab('Help feedback')}>Help feedback</button>
           </div>
 
           <div className="header-actions-group">
@@ -177,6 +179,7 @@ export default function SupportManagement({ onNavigate, onLogout }) {
               <h2 className="support-page-title">Support Management &amp; Customer Care</h2>
             </div>
 
+            {activeTab === 'Help feedback' ? <HelpFeedbackPanel /> : <>
             {/* Metrics Grid */}
             <div className="support-metrics-grid">
               {metrics.map((m, idx) => (
@@ -369,6 +372,7 @@ export default function SupportManagement({ onNavigate, onLogout }) {
                 </div>
               </div>
             </div>
+            </>}
           </div>
         </main>
       </div>

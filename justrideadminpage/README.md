@@ -1,5 +1,13 @@
 # React + Vite
 
+## Help Center support
+
+Support Management keeps the ticket queue and adds Help feedback with per-article helpful/not-helpful totals, 10 per page. Votes are scoped to a customer and article; the most not-helpful responses appear first. Existing support Redis invalidation refreshes the next fetch after a vote changes.
+
+Ticket details show the issue category, originating article, screenshots and an optional consented diagnostic report. Diagnostics are labelled as customer-supplied. Missing device details are not replaced with sample firmware/MAC values. Staff replies and ticket status use the existing backend workflow; device actions are disabled when no device is supplied.
+
+Deploy the matching backend before these views. Check with `npm run build` and the backend's `node scripts/check-help-center.cjs`. The app has its own offline troubleshooting library; website product FAQs remain separate.
+
 ## Shared JustRide colours
 
 `src/index.css` owns the palette used by every admin/helper page, shared component, and login screen. Background, surface, primary emerald, text, border, and warning colours match the mobile app's `AppColors` and the customer site. Red status text uses a lighter shade for readability on dark surfaces; solid danger actions use the app's red.

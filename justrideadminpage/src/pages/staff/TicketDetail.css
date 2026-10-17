@@ -693,3 +693,5 @@
     grid-template-columns: 1fr;
   }
 }
+/* Explicitly shared support data; no fabricated hardware diagnostics. */
+.ticket-diagnostic-report{padding:20px;margin-bottom:20px;border:1px solid var(--border-standard);border-radius:12px;background:var(--bg-layer-2);color:var(--text-white)}.ticket-diagnostic-report h3{margin:0 0 8px;font-size:16px}.ticket-diagnostic-report p{color:var(--text-muted);font-size:12px;line-height:1.6}.ticket-diagnostic-report dl>div{display:grid;grid-template-columns:1fr 1.5fr;gap:16px;padding:10px 0;border-top:1px solid var(--border-standard)}.ticket-diagnostic-report dt{color:var(--text-muted);text-transform:capitalize}.ticket-diagnostic-report dd{margin:0;overflow-wrap:anywhere}.ticket-screenshot{display:block;max-width:420px;margin-top:16px;color:var(--color-primary);font-size:12px}.ticket-screenshot img{max-width:100%;max-height:400px;object-fit:contain;border:1px solid var(--border-standard);border-radius:8px;display:block;margin-bottom:8px}
