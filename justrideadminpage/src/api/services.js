@@ -9,10 +9,8 @@ export const authApi = {
   login: (credentials) => api.post('/admin/login', credentials),
   getProfile: (options = {}) => api.get('/admin/me', {}, options),
   updateCredentials: (data) => api.put('/admin/credentials', data),
-  logout: () => {
-    api.clearSession();
-    return Promise.resolve({ success: true });
-  },
+  logout: () => api.post('/admin/logout'),
+  recordActivity: (event, path) => api.post('/admin/activity', { event, path }),
 };
 
 // ── 2. Dashboard & System Health Services ────────────────────────────
@@ -105,5 +103,5 @@ export const notificationsApi = {
 export const auditApi = {
   getLogs: (params = {}, options = {}) => api.get('/admin/audit-logs', params, options),
   getLogById: (id, options = {}) => api.get(`/admin/audit-logs/${id}`, {}, options),
-  getStats: (options = {}) => api.get('/admin/audit-logs/stats', {}, options),
+  getStats: (params = {}, options = {}) => api.get('/admin/audit-logs/stats', params, options),
 };

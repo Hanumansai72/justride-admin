@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
+import { authApi } from './api/services';
 import LoginPage from './pages/auth/LoginPage';
 
 // Admin Modules
@@ -76,6 +77,17 @@ function ProtectedRoute({ children, allowedRoles }) {
 export default function App() {
   const { user, role, logout, isLoading, sessionUnavailable, retrySession, authError } = useAuth();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const lastPage = useRef(null);
+
+  useEffect(() => {
+    if (!user) { lastPage.current = null; return; }
+    if (isLoading || sessionUnavailable || pathname === '/login' || pathname === '/') return;
+    const key = `${user.id || user._id}:${pathname}`;
+    if (lastPage.current === key) return;
+    lastPage.current = key;
+    authApi.recordActivity('PAGE_VIEW', pathname).catch(() => console.warn('[Audit] Page activity could not be recorded.'));
+  }, [user, pathname, isLoading, sessionUnavailable]);
 
   // Route Navigator helper for backward compatibility with existing component callbacks
   const handleNavigate = (routeKey, entityId = null) => {
@@ -98,6 +110,7 @@ export default function App() {
     else if (key === 'provision-staff' || key === 'add-helper' || key === 'new-helper') navigate('/helpers/new');
     else if (key === 'helper-detail') navigate(entityId ? `/helpers/${entityId}` : '/helpers');
     else if (key === 'audit-logs' || key === 'staff logs') navigate('/audit-logs');
+    else if (key === 'audit-session') navigate(`/audit-logs?session=${encodeURIComponent(entityId)}`);
     else if (key === 'audit-detail' || key === 'audit-log-detail') navigate(entityId ? `/audit-logs/${entityId}` : '/audit-logs');
     else if (key === 'notifications' || key === 'alerts') navigate('/notifications');
     else if (key === 'support') navigate('/support');

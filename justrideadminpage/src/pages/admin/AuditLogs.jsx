@@ -1,15 +1,17 @@
 import RequestError from '../../components/common/RequestError';
-import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Sidebar from '../../components/common/Sidebar';
-import { auditApi } from '../../api/services';
+import { auditApi, authApi } from '../../api/services';
 import './AuditLogs.css';
 
 export default function AuditLogs({ onNavigate, onLogout }) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams] = useSearchParams();
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('session') || '');
+  const [scope, setScope] = useState('admin');
   const [timeFilter, setTimeFilter] = useState('Last 24 Hours');
   const [severityFilter, setSeverityFilter] = useState('All Severities');
   const [moduleFilter, setModuleFilter] = useState('All Modules');
-  const [selectedLog, setSelectedLog] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [limit] = useState(20);
 
@@ -20,31 +22,39 @@ export default function AuditLogs({ onNavigate, onLogout }) {
   const [loadError, setLoadError] = useState('');
   const [statsError, setStatsError] = useState('');
   const requestRef = useRef(null);
+  const statsRequestRef = useRef(null);
 
   const [stats, setStats] = useState({
-    total24h: '14,208',
-    securityAlerts: '3',
-    adminChanges: '42',
-    userActions: '12.1k',
+    total24h: '—',
+    securityAlerts: '—',
+    adminChanges: '—',
+    userActions: '—',
+    staffSessions: '—',
   });
 
   // Fetch Audit Stats
   const fetchStats = useCallback(async () => {
+    statsRequestRef.current?.abort();
+    const controller = new AbortController();
+    statsRequestRef.current = controller;
     setStatsError('');
     try {
-      const res = await auditApi.getStats();
+      const res = await auditApi.getStats({ scope }, { signal: controller.signal });
+      if (controller.signal.aborted) return;
       if (res?.success && res.data) {
         setStats({
           total24h: Number(res.data.total_24h || 0).toLocaleString(),
           securityAlerts: Number(res.data.security_alerts || 0).toLocaleString(),
           adminChanges: Number(res.data.admin_changes || 0).toLocaleString(),
           userActions: Number(res.data.user_actions || 0).toLocaleString(),
+          staffSessions: Number(res.data.staff_sessions || 0).toLocaleString(),
         });
       }
     } catch (e) {
+      if (controller.signal.aborted) return;
       setStatsError(e.message || 'Could not load audit statistics.');
     }
-  }, []);
+  }, [scope]);
 
   // Fetch Audit Logs with filters
   const fetchLogs = useCallback(async () => {
@@ -56,6 +66,7 @@ export default function AuditLogs({ onNavigate, onLogout }) {
     setLoadError('');
     try {
       const params = {
+        scope,
         page: currentPage,
         limit,
         search: searchQuery.trim() || undefined,
@@ -79,10 +90,11 @@ export default function AuditLogs({ onNavigate, onLogout }) {
     } finally {
       if (!signal.aborted) setIsLoading(false);
     }
-  }, [currentPage, limit, searchQuery, timeFilter, severityFilter, moduleFilter]);
+  }, [scope, currentPage, limit, searchQuery, timeFilter, severityFilter, moduleFilter]);
 
   useEffect(() => {
     fetchStats();
+    return () => statsRequestRef.current?.abort();
   }, [fetchStats]);
 
   useEffect(() => {
@@ -96,7 +108,7 @@ export default function AuditLogs({ onNavigate, onLogout }) {
     {
       title: 'TOTAL EVENTS (24H)',
       value: stats.total24h,
-      trend: 'Live stream',
+      trend: 'Recorded events',
       trendColor: 'text-green',
       icon: 'data_usage',
       iconColor: 'text-primary',
@@ -118,8 +130,8 @@ export default function AuditLogs({ onNavigate, onLogout }) {
       iconColor: 'text-secondary',
     },
     {
-      title: 'USER ACTIVITY',
-      value: stats.userActions,
+      title: scope === 'admin' ? 'SIGN-INS / SIGN-OUTS (24H)' : 'USER ACTIVITY',
+      value: scope === 'admin' ? stats.staffSessions : stats.userActions,
       trend: 'Stable',
       trendColor: 'text-muted',
       icon: 'person_play',
@@ -139,7 +151,7 @@ export default function AuditLogs({ onNavigate, onLogout }) {
           <div className="topbar-title-block">
             <h2 className="topbar-main-heading">Audit Logs &amp; Security Compliance</h2>
             <span className="topbar-sub-desc">
-              Immutable global record of system activity and administrative operations.
+              Staff sign-ins, page views, actions, and sign-outs recorded by the backend.
             </span>
           </div>
 
@@ -202,7 +214,7 @@ export default function AuditLogs({ onNavigate, onLogout }) {
               <span className="material-symbols-outlined search-icon">search</span>
               <input
                 type="text"
-                placeholder="Search Action, Entity ID, IP address, Message..."
+                placeholder="Search staff name, email, session ID, action, or IP…"
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
@@ -213,6 +225,11 @@ export default function AuditLogs({ onNavigate, onLogout }) {
             </div>
 
             <div className="filters-cluster">
+              <select className="custom-dropdown" aria-label="Activity scope" value={scope}
+                onChange={(e) => { setScope(e.target.value); setCurrentPage(1); }}>
+                <option value="admin">Admin portal activity</option>
+                <option value="all">All activity</option>
+              </select>
               <select
                 className="custom-dropdown"
                 value={timeFilter}
@@ -224,6 +241,7 @@ export default function AuditLogs({ onNavigate, onLogout }) {
                 <option>Last 24 Hours</option>
                 <option>Last 7 Days</option>
                 <option>Last 30 Days</option>
+                <option>All Time</option>
               </select>
 
               <select
@@ -250,10 +268,12 @@ export default function AuditLogs({ onNavigate, onLogout }) {
                 }}
               >
                 <option>All Modules</option>
+                <option value="admin">Administration</option>
                 <option value="users">Users / Auth</option>
                 <option value="devices">Devices</option>
                 <option value="support">Support</option>
                 <option value="firmware">Firmware</option>
+                <option value="app-releases">App releases</option>
                 <option value="security">Security</option>
               </select>
 
@@ -261,9 +281,10 @@ export default function AuditLogs({ onNavigate, onLogout }) {
                 type="button"
                 className="btn-export-csv"
                 onClick={() => {
-                  const headers = 'ID,Timestamp,Severity,Actor,EventType,Target,Description,IP\n';
+                  const cell = (value) => `"${String(value ?? '').replace(/^[=+@-]/, "'$&").replaceAll('"', '""')}"`;
+                  const headers = 'ID,Timestamp,Status,Severity,Actor,Email,Role,Session,EventType,Target,Description,IP\n';
                   const rows = logs
-                    .map((l) => `"${l.id}","${l.timestamp}","${l.severity}","${l.actor}","${l.eventType}","${l.targetEntity}","${l.description}","${l.location}"`)
+                    .map((l) => [l.id, l.utcTimestamp, l.status, l.severity, l.actor, l.actorEmail, l.actorRole, l.sessionId, l.eventType, l.targetEntity, l.description, l.location].map(cell).join(','))
                     .join('\n');
                   const blob = new Blob([headers + rows], { type: 'text/csv' });
                   const url = URL.createObjectURL(blob);
@@ -271,6 +292,8 @@ export default function AuditLogs({ onNavigate, onLogout }) {
                   a.href = url;
                   a.download = `audit_logs_${new Date().toISOString().slice(0, 10)}.csv`;
                   a.click();
+                  URL.revokeObjectURL(url);
+                  authApi.recordActivity('AUDIT_EXPORT', '/audit-logs').catch(() => console.warn('[Audit] Export activity could not be recorded.'));
                 }}
               >
                 <span className="material-symbols-outlined icon-18">download</span>
@@ -304,7 +327,7 @@ export default function AuditLogs({ onNavigate, onLogout }) {
                           <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>
                             sync
                           </span>
-                          <p>Streaming security audit records...</p>
+                          <p>Loading audit records...</p>
                         </td>
                       </tr>
                     ) : logs.length === 0 ? (
@@ -359,12 +382,14 @@ export default function AuditLogs({ onNavigate, onLogout }) {
                                 <div className="actor-badge-avatar">
                                   {log.actorType === 'admin' ? 'AD' : log.actorType === 'helper' ? 'HL' : log.actorType === 'user' ? 'UR' : 'SYS'}
                                 </div>
-                                <span className="actor-name truncate">{log.actor}</span>
+                                <span className="actor-name truncate" title={log.actorEmail || log.actor}>
+                                  {log.actor}<small style={{ display: 'block' }}>{log.actorRole}{log.actorEmail ? ` · ${log.actorEmail}` : ''}</small>
+                                </span>
                               </div>
                             </td>
 
                             {/* Event Type */}
-                            <td className="font-mono text-sm text-white">{log.eventType}</td>
+                            <td className="font-mono text-sm text-white">{log.eventType}<small style={{ display: 'block' }}>{log.status}</small></td>
 
                             {/* Target Entity */}
                             <td className="text-secondary font-mono text-sm">{log.targetEntity}</td>

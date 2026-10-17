@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Sidebar from '../../components/common/Sidebar';
-import { auditApi } from '../../api/services';
+import { auditApi, authApi } from '../../api/services';
 import './AuditLogDetail.css';
 
 export default function AuditLogDetail({ onNavigate, onLogout }) {
@@ -242,8 +242,9 @@ export default function AuditLogDetail({ onNavigate, onLogout }) {
                     )}
                     <div className="actor-detail-row">
                       <span className="text-muted">Auth Context</span>
-                      <span className="text-sm">Session Bearer Token</span>
+                      <span className="text-sm">{log.sessionId ? 'Verified staff session' : 'Not recorded'}</span>
                     </div>
+                    {log.employeeId && <div className="actor-detail-row"><span className="text-muted">Employee ID</span><span>{log.employeeId}</span></div>}
                   </div>
 
                   {log.actorId !== 'SYS-001' && (
@@ -256,22 +257,26 @@ export default function AuditLogDetail({ onNavigate, onLogout }) {
                       <span>View Actor Activity Trail</span>
                     </button>
                   )}
+                  {log.sessionId && <button type="button" className="btn-actor-profile"
+                    title={log.sessionId} onClick={() => onNavigate && onNavigate('audit-session', log.sessionId)}>
+                    <span className="material-symbols-outlined icon-16">history</span><span>View this session's events</span>
+                  </button>}
                 </div>
 
                 {/* Compliance & Security Card */}
                 <div className="side-card compliance-card">
                   <div className="compliance-icon-row">
                     <span className="material-symbols-outlined text-accent icon-24">verified_user</span>
-                    <h4>Compliance & Chain of Custody</h4>
+                    <h4>Audit Record</h4>
                   </div>
                   <p className="compliance-text">
-                    This security record is cryptographically indexed and retained per ISO/IEC 27001 & GDPR audit compliance policies.
+                    This event is recorded by the JustRide backend. Access is restricted to authorized staff.
                   </p>
 
                   <div className="compliance-badges">
-                    <span className="comp-badge">NON-REPUDIABLE</span>
-                    <span className="comp-badge">WORM STORAGE</span>
-                    <span className="comp-badge">256-BIT HMAC</span>
+                    <span className="comp-badge">STAFF IDENTITY</span>
+                    <span className="comp-badge">TIMESTAMP</span>
+                    <span className="comp-badge">OUTCOME</span>
                   </div>
 
                   <button
@@ -285,6 +290,7 @@ export default function AuditLogDetail({ onNavigate, onLogout }) {
                       document.body.appendChild(downloadAnchor);
                       downloadAnchor.click();
                       downloadAnchor.remove();
+                      authApi.recordActivity('AUDIT_DETAIL_EXPORT', `/audit-logs/${log.id}`).catch(() => console.warn('[Audit] Export activity could not be recorded.'));
                     }}
                   >
                     <span className="material-symbols-outlined icon-16">download</span>
