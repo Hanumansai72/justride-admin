@@ -3,8 +3,6 @@ import AdminLayout from '../../layouts/AdminLayout';
 import DataTable from '../../components/common/DataTable';
 import { interestApi } from '../../api/services';
 import './InterestedUsers.css';
-import WebsiteUpdateCampaign from '../../components/common/WebsiteUpdateCampaign';
-import { useAuth } from '../../context/AuthContext';
 
 function emailStatus(row) {
   if (row.confirmationEmailCode === 'CONSENT_REQUIRED') return 'Not sent — consent required';
@@ -29,7 +27,6 @@ const columns = [
 ];
 
 export default function InterestedUsers({ onNavigate, onLogout }) {
-  const { role } = useAuth();
   const [page, setPage] = useState(1);
   const [revision, setRevision] = useState(0);
   const [result, setResult] = useState({ items: [], total: 0, limit: 10 });
@@ -59,7 +56,7 @@ export default function InterestedUsers({ onNavigate, onLogout }) {
   const pages = Math.max(1, Math.ceil(result.total / result.limit));
   return <AdminLayout activeRoute="interested-users" pageTitle="Interested Users" onNavigate={onNavigate} onLogout={onLogout}>
     <section className="interested-users" aria-labelledby="interested-users-title">
-      <div className="interested-users__header"><div><h1 id="interested-users-title">Interested Users</h1><p>Early interest submissions from the JustRide homepage, newest first.</p></div><div className="interested-users__actions">{role === 'ADMIN' && <WebsiteUpdateCampaign />}<button type="button" onClick={() => reload(1)} disabled={loading}>Refresh</button></div></div>
+      <div className="interested-users__header"><div><h1 id="interested-users-title">Interested Users</h1><p>Early interest submissions from the JustRide homepage, newest first.</p></div><div className="interested-users__actions"><button type="button" onClick={() => reload(1)} disabled={loading}>Refresh</button></div></div>
       {!loading && !error && <p className="interested-users__count">{result.total} interested {result.total === 1 ? 'rider' : 'riders'}</p>}
       {loading ? <p role="status">Loading interested users…</p> : error ? <p role="alert" className="interested-users__error">{error}</p> : <>
         <DataTable columns={columns} data={result.items.map((row) => ({ ...row, id: row._id }))} pagination={false} />
