@@ -130,7 +130,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  left: 260px;
+  left: var(--admin-sidebar-width, 260px);
   height: 72px;
   background-color: var(--bg-layer-0);
   border-bottom: 1px solid var(--border-standard);
@@ -186,7 +186,7 @@
 
 /* Main Content */
 .devices-main-content {
-  margin-left: 260px;
+  margin-left: var(--admin-sidebar-width, 260px);
   margin-top: 72px;
   height: calc(100vh - 72px);
   overflow-y: auto;

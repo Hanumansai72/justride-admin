@@ -43,3 +43,20 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the Oxlint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+
+## Responsive admin navigation
+
+The shared Sidebar can be closed/reopened on desktop; its state is saved locally.
+Page columns and fixed headers use `--admin-sidebar-width` so content expands
+with the sidebar. Below 768px, navigation moves to a fixed bottom bar: Dashboard,
+Users, Devices, Support, and More. More opens an accessible native dialog for
+Firmware, APKs, Interested Users, Helpers, Audit Logs, Alerts and Logout.
+The dialog closes after navigation, on Escape, or on resizing to desktop.
+
+`ResponsiveAdmin.css` adapts the existing page grids, action rows, form fields
+and table scroll regions. Bottom padding includes the mobile safe area. Main
+admin pages/forms were checked at 390px; table-heavy pages were also checked at
+320px and 768px using mocked local API data. Desktop sidebar persistence,
+More-menu navigation, Escape and resize dismissal passed. Build and lint ran
+successfully (existing unrelated lint warnings remain). Temporary browser
+probe source files were removed.

@@ -10,7 +10,7 @@
 
 .audit-detail-main {
   flex: 1;
-  margin-left: 260px;
+  margin-left: var(--admin-sidebar-width, 260px);
   display: flex;
   flex-direction: column;
   min-width: 0;

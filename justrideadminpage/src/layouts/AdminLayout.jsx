@@ -11,7 +11,7 @@ export default function AdminLayout({
   pageTitle = 'Dashboard',
 }) {
   return (
-    <div style={{ display: 'flex', width: '100vw', minHeight: '100vh', backgroundColor: 'var(--bg-layer-0)', color: 'var(--text-body)', overflowX: 'hidden' }}>
+    <div className="admin-layout">
       {/* Reusable Admin Sidebar */}
       <Sidebar
         role="admin"
@@ -22,7 +22,7 @@ export default function AdminLayout({
       />
 
       {/* Main Content Pane */}
-      <div style={{ marginLeft: '260px', minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <div className="admin-layout-main">
         {/* Reusable TopBar */}
         <TopBar
           title={pageTitle}
@@ -33,7 +33,7 @@ export default function AdminLayout({
         />
 
         {/* Page Canvas Slot */}
-        <div style={{ marginTop: '72px', flex: 1, padding: '2rem', backgroundColor: 'var(--bg-layer-0)' }}>
+        <div className="admin-layout-canvas">
           {children}
         </div>
       </div>
