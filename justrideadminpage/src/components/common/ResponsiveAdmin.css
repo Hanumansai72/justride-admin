@@ -9,7 +9,7 @@
 .app-sidebar.sidebar-collapsed { display:none; }
 .sidebar-brand-row { display:flex; align-items:center; padding-right:10px; gap:4px; margin-bottom:20px; }
 .sidebar-header { border:0; background:transparent; text-align:left; margin:0; padding:0 12px 0 20px; flex:1; color:inherit; font:inherit; }
-.sidebar-header .brand-text-title,.sidebar-header .brand-text-role { display:block; }
+.sidebar-header .brand-text-title { display:block; }
 .sidebar-toggle,.sidebar-open-button { display:grid; place-items:center; width:44px; height:44px; flex-shrink:0; border:1px solid var(--border-standard); border-radius:8px; background:var(--bg-layer-1); color:var(--color-primary); cursor:pointer; }
 .sidebar-open-button { position:fixed; left:12px; top:14px; z-index:55; }
 .app-sidebar .sidebar-nav-section { flex:1 0 auto; overflow:visible; }

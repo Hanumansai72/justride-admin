@@ -48,14 +48,6 @@
   letter-spacing: -0.01em;
 }
 
-.brand-text-role {
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-transform: uppercase;
-}
-
 .sidebar-cta-btn-wrap {
   padding: 0 1.25rem 1.25rem 1.25rem;
 }

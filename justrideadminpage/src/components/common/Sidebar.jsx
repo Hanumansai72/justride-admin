@@ -75,7 +75,7 @@ export default function Sidebar({ activeRoute = 'dashboard', onNavigate, onLogou
       <div className="sidebar-brand-row">
         <button className="sidebar-header" type="button" onClick={() => go(items[0])} aria-label="JustRide dashboard">
           <div className="sidebar-brand-icon"><img src="/favicon.svg" alt="" width="24" height="24" /></div>
-          <div><span className="brand-text-title">Just<span>Ride</span></span><span className="brand-text-role">IoT Operations</span></div>
+          <div><span className="brand-text-title">Just<span>Ride</span></span></div>
         </button>
         <button type="button" className="sidebar-toggle" aria-label="Close sidebar" aria-expanded="true" aria-controls="admin-sidebar" onClick={toggleSidebar}>{icon('menu_open')}</button>
       </div>
