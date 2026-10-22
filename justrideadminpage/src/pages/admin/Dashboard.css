@@ -32,7 +32,7 @@
 .brand-logo {
   font-size: 28px;
   line-height: 36px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-primary);
   letter-spacing: -0.01em;
 }
@@ -41,7 +41,7 @@
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   margin-top: 0.25rem;
 }
@@ -67,7 +67,7 @@
   color: var(--text-muted);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   text-align: left;
   transition: all 0.2s ease;
@@ -106,7 +106,7 @@
   color: var(--color-on-primary);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 700;
+  font-weight: 500;
   border: none;
   border-radius: 0.375rem;
   cursor: pointer;
@@ -138,7 +138,7 @@
   border-radius: 0.375rem;
   color: var(--text-muted);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease;
   width: 100%;
@@ -243,7 +243,7 @@
   border: none;
   color: var(--text-muted);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.05em;
   padding-bottom: 0.25rem;
   cursor: pointer;
@@ -258,7 +258,7 @@
 .tab-link.active {
   color: var(--color-primary);
   border-bottom-color: var(--color-primary);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .header-right {
@@ -277,7 +277,7 @@
   border: 1px solid rgba(var(--rgb-primary), 0.2);
   color: var(--color-primary);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.05em;
   box-shadow: 0 0 8px rgba(var(--rgb-primary), 0.15);
 }
@@ -337,7 +337,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 15px;
   color: var(--color-primary);
   user-select: none;
@@ -382,7 +382,7 @@
 .page-title {
   font-size: 36px;
   line-height: 44px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text-body);
 }
@@ -400,7 +400,7 @@
   border: 1px solid var(--border-standard);
   color: var(--text-body);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   border-radius: 0.375rem;
   cursor: pointer;
   display: flex;
@@ -468,7 +468,7 @@
 .kpi-label {
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
 }
@@ -489,7 +489,7 @@
 .kpi-value {
   font-size: 36px;
   line-height: 44px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text-body);
 }
@@ -528,7 +528,7 @@
 
 .panel-title {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
   margin-bottom: 1.25rem;
   border-bottom: 1px solid var(--border-standard);
@@ -676,7 +676,7 @@
   border: none;
   color: var(--color-primary);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -707,7 +707,7 @@
   color: var(--text-muted);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   padding: 0.75rem 1.5rem;
   border-bottom: 1px solid var(--border-standard);
 }
@@ -731,7 +731,7 @@
   padding: 0.25rem 0.625rem;
   border-radius: 9999px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.02em;
 }
 
@@ -855,7 +855,7 @@
 
 .timeline-card-title {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-body);
 }
 

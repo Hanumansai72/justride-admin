@@ -54,7 +54,12 @@ export default function LoginPage({ onLoginSuccess }) {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', width: '100vw', background: 'var(--bg-layer-0)' }}>
+    <div className="login-page">
+      <aside className="login-intro" aria-label="JustRide operations">
+        <div className="login-intro__brand"><img src="/favicon.svg" alt="" /><span>Just<span>Ride</span></span></div>
+        <h2>Your operations.<br /><span>In view.</span></h2>
+        <p>Manage devices, releases and rider support from one connected workspace.</p>
+      </aside>
       <main className="login-card">
         {/* Subtle Top Accent */}
         <div className="top-accent" />
@@ -92,7 +97,7 @@ export default function LoginPage({ onLoginSuccess }) {
               border: 'none',
               background: role === 'admin' ? 'var(--color-primary)' : 'transparent',
               color: role === 'admin' ? 'var(--bg-layer-0)' : 'var(--text-muted)',
-              fontWeight: '700',
+              fontWeight: 500,
               fontSize: '12px',
               cursor: 'pointer',
               transition: 'all 0.2s ease',
@@ -110,7 +115,7 @@ export default function LoginPage({ onLoginSuccess }) {
               border: 'none',
               background: role === 'staff' ? 'var(--color-primary)' : 'transparent',
               color: role === 'staff' ? 'var(--color-on-primary)' : 'var(--text-muted)',
-              fontWeight: '700',
+              fontWeight: 500,
               fontSize: '12px',
               cursor: 'pointer',
               transition: 'all 0.2s ease',

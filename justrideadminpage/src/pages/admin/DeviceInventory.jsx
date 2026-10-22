@@ -182,7 +182,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
             style={{ cursor: 'pointer' }}
             title="Staff Accounts"
           >
-            <span style={{ color: 'var(--text-white)', fontWeight: '700', fontSize: '12px' }}>H</span>
+            <span style={{ color: 'var(--text-white)', fontWeight: 500, fontSize: '12px' }}>H</span>
           </div>
         </div>
       </header>

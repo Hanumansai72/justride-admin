@@ -27,7 +27,7 @@
   .mobile-bottom-nav { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); position:fixed; left:0; right:0; bottom:0; z-index:60; padding:6px 6px calc(6px + env(safe-area-inset-bottom)); background:var(--bg-layer-1); border-top:1px solid var(--border-standard); box-shadow:0 -8px 24px rgba(0,0,0,.2); }
   .mobile-nav-link { min-width:0; min-height:56px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; border:0; border-radius:10px; background:transparent; color:var(--text-muted); font:inherit; font-size:10px; cursor:pointer; }
   .mobile-nav-link .nav-icon { font-size:23px; }
-  .mobile-nav-link.active { color:var(--color-primary); background:rgba(var(--rgb-primary),.1); font-weight:700; }
+  .mobile-nav-link.active { color:var(--color-primary); background:rgba(var(--rgb-primary),.1); font-weight: 500; }
   :root:has(.app-sidebar) #root { width:100%; }
   :root:has(.app-sidebar) :is(.audit-topbar,.top-header,.dev-detail-header,.devices-topbar,.firmware-topbar,.helper-topbar,.notif-topbar,.provision-topbar,.staff-topbar,.activity-topbar,.user-topbar,.users-topbar,.ticket-top-appbar,.app-topbar,.audit-detail-topbar) { left:0; height:64px; padding:0 12px; gap:8px; overflow:hidden; }
   :root:has(.app-sidebar) :is(.audit-detail-main,.audit-main-wrapper,.main-wrapper,.dev-detail-main,.devices-main-content,.firmware-main-wrapper,.helper-main-wrapper,.notif-main-wrapper,.provision-main-wrapper,.register-device-main,.staff-main-area,.activity-main-wrapper,.user-main-wrapper,.users-main-wrapper,.support-main-content,.ticket-main-viewport,.admin-layout-main) { margin-left:0; width:100%; }

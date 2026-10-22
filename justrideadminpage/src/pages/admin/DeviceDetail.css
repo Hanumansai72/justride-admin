@@ -34,7 +34,7 @@
 .brand-logo-txt {
   font-size: 28px;
   line-height: 36px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-primary);
   letter-spacing: -0.01em;
 }
@@ -42,7 +42,7 @@
 .brand-sub-txt {
   font-size: 11px;
   letter-spacing: 0.08em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-dim);
   text-transform: uppercase;
   margin-top: 0.25rem;
@@ -82,7 +82,7 @@
   border-left: 3px solid var(--color-primary);
   background-color: rgba(var(--rgb-primary), 0.1);
   color: var(--text-white);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .sidebar-nav-btn.active .nav-icon {
@@ -103,7 +103,7 @@
   border-radius: 0.5rem;
   color: var(--color-primary);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   margin-bottom: 1rem;
 }
@@ -176,7 +176,7 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
 }
 
@@ -196,7 +196,7 @@
 
 .breadcrumb-current {
   color: var(--color-primary);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .header-user-actions {
@@ -261,7 +261,7 @@
 .device-headline {
   font-size: 28px;
   line-height: 36px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text-white);
   display: flex;
@@ -274,7 +274,7 @@
   border-radius: 9999px;
   font-size: 11px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
 }
 
@@ -310,7 +310,7 @@
   color: var(--text-white);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -333,7 +333,7 @@
   color: var(--text-white);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   cursor: pointer;
   transition: background-color 0.2s ease;
@@ -368,7 +368,7 @@
 
 .bento-title {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-white);
   display: flex;
   align-items: center;
@@ -446,7 +446,7 @@
 
 .owner-name-txt {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-white);
 }
 
@@ -499,7 +499,7 @@
 .metric-box-label {
   font-size: 11px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   color: var(--text-dim);
   display: flex;
@@ -510,13 +510,13 @@
 
 .metric-box-val {
   font-size: 32px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-white);
 }
 
 .rssi-value {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-white);
 }
 
@@ -549,7 +549,7 @@
 
 .version-val {
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-white);
 }
 
@@ -605,7 +605,7 @@
   border: 1px solid rgba(var(--rgb-warning), 0.5);
   color: var(--color-warning);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   cursor: pointer;
@@ -649,7 +649,7 @@
   padding: 0.75rem 1rem;
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-dim);
   text-transform: uppercase;
 }

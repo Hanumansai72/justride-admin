@@ -51,7 +51,7 @@
 .brand-logo-text {
   font-size: 20px;
   line-height: 24px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-primary);
 }
 
@@ -74,7 +74,7 @@
   gap: 0.5rem;
   color: var(--color-primary);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .live-dot-pulse {
@@ -124,7 +124,7 @@
   border-left: 3px solid var(--color-primary);
   background-color: rgba(var(--rgb-primary), 0.1);
   color: var(--text-body);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .nav-glyph {
@@ -186,7 +186,7 @@
 .ticket-heading-id {
   font-size: 20px;
   line-height: 28px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-body);
 }
 
@@ -203,7 +203,7 @@
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   border: 1px solid var(--border-standard);
 }
 
@@ -270,7 +270,7 @@
 .issue-title {
   font-size: 28px;
   line-height: 36px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text-body);
 }
@@ -332,7 +332,7 @@
   align-items: center;
   justify-content: center;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
   flex-shrink: 0;
 }
@@ -365,7 +365,7 @@
 
 .sender-name {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
   display: flex;
   align-items: center;
@@ -455,7 +455,7 @@
   color: var(--bg-layer-0);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 700;
+  font-weight: 500;
   padding: 0.5rem 1.5rem;
   border-radius: 0.5rem;
   border: none;
@@ -501,13 +501,13 @@
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
 }
 
 .card-person-name {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
 }
 
@@ -536,7 +536,7 @@
   border-radius: 0.25rem;
   border: 1px solid var(--border-standard);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-primary);
 }
 
@@ -559,7 +559,7 @@
 
 .card-device-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
   display: flex;
   align-items: center;
@@ -568,7 +568,7 @@
 
 .device-offline-pill {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-danger);
   background-color: rgba(var(--rgb-danger), 0.1);
   padding: 0.25rem 0.5rem;
@@ -615,7 +615,7 @@
 
 .text-red {
   color: var(--color-danger);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .divider-top {
@@ -636,7 +636,7 @@
 
 .actions-header-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
   margin-bottom: 0.25rem;
 }
@@ -652,7 +652,7 @@
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   background: transparent;
   transition: background-color 0.2s ease;

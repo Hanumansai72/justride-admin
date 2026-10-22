@@ -220,7 +220,7 @@ export default function NewFirmwareRelease({ onNavigate, onLogout }) {
                           <span className="material-symbols-outlined text-primary" style={{ fontSize: '32px', marginBottom: '8px' }}>
                             {selectedFile ? 'task_alt' : 'cloud_upload'}
                           </span>
-                          <p style={{ margin: '4px 0', fontWeight: '600', color: selectedFile ? 'var(--color-primary)' : 'var(--text-white)' }}>
+                          <p style={{ margin: '4px 0', fontWeight: 500, color: selectedFile ? 'var(--color-primary)' : 'var(--text-white)' }}>
                             {selectedFile ? selectedFile.name : 'Click to select justride_firmware.bin'}
                           </p>
                           <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-dim)' }}>

@@ -4,7 +4,7 @@
   min-height: 100vh;
   background-color: var(--bg-layer-0);
   color: var(--text-body);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Stack Sans Text', -apple-system, BlinkMacSystemFont, sans-serif;
   overflow-x: hidden;
 }
 
@@ -61,7 +61,7 @@
 
 .topbar-heading {
   font-size: 1.2rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-white);
   letter-spacing: -0.02em;
   margin: 0;
@@ -76,7 +76,7 @@
   padding: 0.35rem 0.75rem;
   border-radius: 20px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-primary);
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -124,7 +124,7 @@
   border: 1px solid var(--bg-layer-3);
   border-radius: 8px;
   color: var(--color-primary);
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
 }
 
@@ -163,7 +163,7 @@
   padding: 0.3rem 0.75rem;
   border-radius: 20px;
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.02em;
   text-transform: uppercase;
 }
@@ -200,7 +200,7 @@
 
 .event-action-title {
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: 500;
   color: var(--text-white);
   letter-spacing: -0.02em;
   margin: 0 0 0.5rem 0;
@@ -246,7 +246,7 @@
   border-bottom: 2px solid transparent;
   color: var(--text-dim);
   font-size: 0.88rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -283,7 +283,7 @@
 
 .param-label {
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.04em;
@@ -301,7 +301,7 @@
   padding: 0.2rem 0.6rem;
   border-radius: 4px;
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
 }
 
@@ -337,7 +337,7 @@
 .narrative-header h4,
 .diff-header h4 {
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-white);
   margin: 0;
 }
@@ -376,7 +376,7 @@
   margin-bottom: 1rem;
   font-size: 0.85rem;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .copy-json-btn {
@@ -389,7 +389,7 @@
   border-radius: 6px;
   color: var(--color-primary);
   font-size: 0.78rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -415,7 +415,7 @@
 
 .side-card-title {
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-white);
   margin: 0 0 1.25rem 0;
   letter-spacing: -0.01em;
@@ -439,14 +439,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-primary);
   font-size: 1.1rem;
 }
 
 .actor-full-name {
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-white);
   margin: 0 0 0.2rem 0;
 }
@@ -459,7 +459,7 @@
   border-radius: 4px;
   color: var(--color-primary);
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
 }
 
@@ -489,7 +489,7 @@
   border-radius: 8px;
   color: var(--color-primary);
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -508,7 +508,7 @@
 
 .compliance-card h4 {
   font-size: 0.9rem;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-white);
   margin: 0;
 }
@@ -535,7 +535,7 @@
   color: var(--text-dim);
   font-size: 0.68rem;
   font-family: monospace;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .btn-export-single-log {
@@ -550,7 +550,7 @@
   border-radius: 8px;
   color: var(--color-on-primary);
   font-size: 0.82rem;
-  font-weight: 700;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
 }

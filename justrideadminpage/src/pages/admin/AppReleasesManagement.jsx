@@ -332,7 +332,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                                 <span
                                   style={{
                                     fontSize: '9px',
-                                    fontWeight: '800',
+                                    fontWeight: 500,
                                     padding: '2px 6px',
                                     borderRadius: '4px',
                                     background: 'rgba(var(--rgb-primary), 0.2)',
@@ -355,7 +355,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                                 alignItems: 'center',
                                 gap: '4px',
                                 fontSize: '12px',
-                                fontWeight: '600',
+                                fontWeight: 500,
                                 color: 'var(--color-primary)',
                               }}
                             >
@@ -374,7 +374,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                           <td className="text-muted">{row.releaseDate}</td>
                           <td>
                             {row.mandatory ? (
-                              <span style={{ color: 'var(--color-danger-light)', fontWeight: '600', fontSize: '12px' }}>
+                              <span style={{ color: 'var(--color-danger-light)', fontWeight: 500, fontSize: '12px' }}>
                                 Mandatory
                               </span>
                             ) : (

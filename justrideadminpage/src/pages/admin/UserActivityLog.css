@@ -34,7 +34,7 @@
 .brand-title-lg {
   font-size: 32px;
   line-height: 40px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-primary);
   letter-spacing: -0.02em;
 }
@@ -43,7 +43,7 @@
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
   margin-top: 0.25rem;
@@ -63,7 +63,7 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
 }
 
@@ -96,7 +96,7 @@
   color: var(--text-dim);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   width: 100%;
   text-align: left;
@@ -112,7 +112,7 @@
   border-left: 3px solid var(--color-primary);
   background-color: rgba(var(--rgb-primary), 0.1);
   color: var(--text-body);
-  font-weight: 700;
+  font-weight: 500;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -174,7 +174,7 @@
 .topbar-heading {
   font-size: 20px;
   line-height: 28px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-body);
   letter-spacing: -0.01em;
 }
@@ -246,7 +246,7 @@
   color: var(--text-dim);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -262,7 +262,7 @@
 .user-title-heading {
   font-size: 36px;
   line-height: 44px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text-body);
 }
@@ -277,7 +277,7 @@
 .id-sub-tag {
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
 }
@@ -310,7 +310,7 @@
   color: var(--text-body);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -342,7 +342,7 @@
 .timeline-title {
   font-size: 18px;
   line-height: 24px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
 }
 
@@ -355,7 +355,7 @@
 .filter-label {
   font-size: 11px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-dim);
 }
 
@@ -365,7 +365,7 @@
   color: var(--text-body);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   border-radius: 0.25rem;
   padding: 0.375rem 0.75rem;
   outline: none;
@@ -397,7 +397,7 @@
 .date-badge-text {
   font-size: 11px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-dim);
   text-transform: uppercase;
   background-color: var(--bg-layer-1);
@@ -481,7 +481,7 @@
 .event-heading {
   font-size: 18px;
   line-height: 24px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
 }
 
@@ -530,7 +530,7 @@
   border: none;
   color: var(--text-dim);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;

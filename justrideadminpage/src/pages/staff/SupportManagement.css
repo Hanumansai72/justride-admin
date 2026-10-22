@@ -32,7 +32,7 @@
 .brand-logo-title {
   font-size: 28px;
   line-height: 36px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-primary);
   letter-spacing: -0.01em;
 }
@@ -41,7 +41,7 @@
   font-size: 11px;
   line-height: 16px;
   letter-spacing: 0.08em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
   margin-top: 0.25rem;
@@ -57,7 +57,7 @@
   background-color: var(--color-primary);
   color: var(--bg-layer-0);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   border: none;
   border-radius: 0.375rem;
   cursor: pointer;
@@ -104,7 +104,7 @@
   border-left: 3px solid var(--color-primary);
   background-color: rgba(var(--rgb-primary), 0.1);
   color: var(--text-white);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .support-nav-item.active .nav-symbol {
@@ -207,7 +207,7 @@
 
 .header-tab.active {
   color: var(--color-primary);
-  font-weight: 700;
+  font-weight: 500;
   border-bottom: 2px solid var(--color-primary);
 }
 
@@ -226,7 +226,7 @@
   background-color: rgba(var(--rgb-primary), 0.1);
   color: var(--color-primary-light);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .live-dot-pulse {
@@ -294,7 +294,7 @@
 .support-page-title {
   font-size: 36px;
   line-height: 44px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text-white);
 }
@@ -330,7 +330,7 @@
 .metric-title {
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
 }
@@ -343,7 +343,7 @@
 .metric-number {
   font-size: 36px;
   line-height: 44px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.02em;
 }
 
@@ -454,7 +454,7 @@
   color: var(--text-muted);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   padding: 0.75rem 1rem;
 }
 
@@ -497,7 +497,7 @@
   padding: 0.125rem 0.5rem;
   border-radius: 0.25rem;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: 0.05em;
 }
 
@@ -554,7 +554,7 @@
   padding: 0.375rem 0.75rem;
   border-radius: 0.25rem;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }

@@ -6,7 +6,7 @@ Support Management keeps the ticket queue and adds Help feedback with per-articl
 
 Ticket details show the issue category, originating article, screenshots and an optional consented diagnostic report. Diagnostics are labelled as customer-supplied. Missing device details are not replaced with sample firmware/MAC values. Staff replies and ticket status use the existing backend workflow; device actions are disabled when no device is supplied.
 
-Deploy the matching backend before these views. Check with `npm run build` and the backend's `node scripts/check-help-center.cjs`. The app has its own offline troubleshooting library; website product FAQs remain separate.
+Deploy the matching backend before these views. Check with `npm run build`. The app has its own offline troubleshooting library; website product FAQs remain separate.
 
 ## Shared JustRide colours
 

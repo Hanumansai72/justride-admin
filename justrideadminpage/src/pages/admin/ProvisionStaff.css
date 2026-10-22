@@ -33,7 +33,7 @@
 .brand-title {
   font-size: 28px;
   line-height: 36px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-primary);
   letter-spacing: -0.01em;
 }
@@ -42,7 +42,7 @@
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
   margin-top: 0.25rem;
@@ -59,7 +59,7 @@
   color: var(--bg-layer-0);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 700;
+  font-weight: 500;
   border-radius: 0.375rem;
   border: none;
   cursor: pointer;
@@ -109,7 +109,7 @@
   border-left: 3px solid var(--color-primary);
   background-color: rgba(var(--rgb-primary), 0.1);
   color: var(--text-body);
-  font-weight: 700;
+  font-weight: 500;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -163,7 +163,7 @@
 .topbar-page-title {
   font-size: 20px;
   line-height: 28px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-body);
 }
 
@@ -186,7 +186,7 @@
 
 .topbar-tab.active {
   color: var(--text-body);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .topbar-right-controls {
@@ -265,7 +265,7 @@
 .page-main-heading {
   font-size: 36px;
   line-height: 44px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text-body);
   margin-bottom: 0.5rem;
@@ -308,7 +308,7 @@
 .section-title {
   font-size: 18px;
   line-height: 24px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
 }
 
@@ -369,7 +369,7 @@
 .field-label {
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   margin-bottom: 0.35rem;
 }
@@ -480,7 +480,7 @@
 .preview-heading {
   font-size: 18px;
   line-height: 24px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
   margin-bottom: 1rem;
 }
@@ -537,7 +537,7 @@
 .preview-full-name {
   font-size: 20px;
   line-height: 28px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
 }
 
@@ -552,7 +552,7 @@
   padding: 0.125rem 0.625rem;
   border-radius: 9999px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   margin-top: 0.5rem;
 }
 
@@ -608,7 +608,7 @@
   background: transparent;
   color: var(--text-white);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -623,7 +623,7 @@
   background-color: var(--color-primary);
   color: var(--bg-layer-0);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 500;
   border: none;
   cursor: pointer;
   box-shadow: 0 0 15px rgba(var(--rgb-primary), 0.2);

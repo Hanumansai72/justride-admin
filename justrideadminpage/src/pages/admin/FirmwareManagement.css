@@ -33,7 +33,7 @@
 .brand-title {
   font-size: 28px;
   line-height: 36px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-primary);
   letter-spacing: -0.01em;
 }
@@ -41,7 +41,7 @@
 .brand-sub {
   font-size: 11px;
   letter-spacing: 0.08em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
   margin-top: 0.25rem;
@@ -81,7 +81,7 @@
   border-left: 3px solid var(--color-primary);
   background-color: rgba(var(--rgb-primary), 0.08);
   color: var(--text-body);
-  font-weight: 700;
+  font-weight: 500;
 }
 
 .menu-icon {
@@ -101,7 +101,7 @@
   border-radius: 0.25rem;
   color: var(--text-body);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -198,7 +198,7 @@
 
 .topbar-tab.active {
   color: var(--color-primary);
-  font-weight: 700;
+  font-weight: 500;
   border-bottom-color: var(--color-primary);
   padding-top: 3px;
 }
@@ -289,7 +289,7 @@
 .page-heading {
   font-size: 36px;
   line-height: 44px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text-body);
   margin-bottom: 0.5rem;
@@ -307,7 +307,7 @@
   color: var(--bg-layer-0);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 700;
+  font-weight: 500;
   border-radius: 0.25rem;
   border: none;
   cursor: pointer;
@@ -359,7 +359,7 @@
 .metric-caption {
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
   margin-bottom: 0.5rem;
@@ -368,7 +368,7 @@
 .metric-value {
   font-size: 28px;
   line-height: 36px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text-body);
   margin-bottom: 0.25rem;
@@ -470,7 +470,7 @@
   color: var(--text-muted);
   border-radius: 0.25rem;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -500,7 +500,7 @@
   padding: 0.75rem 1rem;
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   border-bottom: 1px solid var(--border-standard);
 }
 
@@ -525,7 +525,7 @@
   padding: 0.125rem 0.5rem;
   border-radius: 9999px;
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: 0.05em;
 }
 

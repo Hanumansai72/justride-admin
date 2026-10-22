@@ -288,7 +288,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
                                 <span
                                   style={{
                                     fontSize: '9px',
-                                    fontWeight: '800',
+                                    fontWeight: 500,
                                     padding: '2px 6px',
                                     borderRadius: '4px',
                                     background: 'rgba(var(--rgb-primary), 0.2)',

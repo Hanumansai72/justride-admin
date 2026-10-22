@@ -49,7 +49,7 @@
 .brand-title {
   font-size: 28px;
   line-height: 36px;
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--color-on-surface);
   margin-bottom: 0.5rem;
@@ -58,7 +58,7 @@
 .portal-title {
   font-size: 18px;
   line-height: 24px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-on-surface-variant);
   margin-bottom: 0.25rem;
 }
@@ -86,7 +86,7 @@
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-on-surface-variant);
   text-transform: uppercase;
 }
@@ -217,7 +217,7 @@
   font-size: 12px;
   line-height: 16px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--color-primary-container);
   text-decoration: none;
   transition: color 0.2s ease;
@@ -238,7 +238,7 @@
   color: var(--color-on-primary-container);
   font-size: 16px;
   line-height: 24px;
-  font-weight: 600;
+  font-weight: 500;
   border: none;
   border-radius: 0.5rem;
   cursor: pointer;

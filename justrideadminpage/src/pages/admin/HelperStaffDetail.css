@@ -48,7 +48,7 @@
 .brand-main-title {
   font-size: 20px;
   line-height: 28px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-primary);
   letter-spacing: -0.01em;
 }
@@ -56,7 +56,7 @@
 .brand-sub-cap {
   font-size: 11px;
   letter-spacing: 0.08em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
   margin-top: 0.125rem;
@@ -96,7 +96,7 @@
   border-left: 3px solid var(--color-primary);
   background-color: rgba(var(--rgb-primary), 0.1);
   color: var(--text-body);
-  font-weight: 600;
+  font-weight: 500;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -116,7 +116,7 @@
 .admin-heading-label {
   font-size: 11px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
   padding: 0 0.75rem;
@@ -177,7 +177,7 @@
 
 .breadcrumb-current {
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-primary);
   letter-spacing: -0.01em;
 }
@@ -191,7 +191,7 @@
   border-radius: 9999px;
   font-size: 11px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .pill-active {
@@ -283,7 +283,7 @@
 .helper-main-name {
   font-size: 36px;
   line-height: 44px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text-body);
   margin-bottom: 0.5rem;
@@ -325,7 +325,7 @@
   color: var(--text-muted);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   cursor: pointer;
   display: flex;
@@ -346,7 +346,7 @@
   color: var(--bg-layer-0);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
   border: none;
   cursor: pointer;
@@ -379,7 +379,7 @@
 .card-title {
   font-size: 20px;
   line-height: 28px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-body);
   display: flex;
   align-items: center;
@@ -422,7 +422,7 @@
 .field-label {
   font-size: 11px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
   margin-bottom: 0.25rem;
@@ -490,7 +490,7 @@
 .metric-caption {
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
 }
@@ -504,7 +504,7 @@
 .metric-huge-num {
   font-size: 36px;
   line-height: 1;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-body);
 }
 
@@ -588,7 +588,7 @@
   display: block;
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   text-transform: uppercase;
   color: var(--text-body);
   margin-bottom: 0.25rem;

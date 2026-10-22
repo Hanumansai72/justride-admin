@@ -24,7 +24,7 @@
 .topbar-title {
   font-size: 20px;
   line-height: 28px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--text-body);
 }
 
@@ -33,7 +33,7 @@
   border-radius: 0.25rem;
   font-size: 11px;
   letter-spacing: 0.05em;
-  font-weight: 700;
+  font-weight: 500;
   text-transform: uppercase;
 }
 
@@ -61,7 +61,7 @@
   color: var(--text-muted);
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   padding-bottom: 0.25rem;
   border-bottom: 2px solid transparent;
@@ -74,7 +74,7 @@
 
 .topbar-tab-btn.active {
   color: var(--color-primary);
-  font-weight: 700;
+  font-weight: 500;
   border-bottom-color: var(--color-primary);
 }
 
@@ -98,7 +98,7 @@
   background: transparent;
   border: none;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   border-radius: 0.25rem;
   cursor: pointer;
@@ -148,7 +148,7 @@
 .user-avatar-h {
   border-color: rgba(var(--rgb-primary), 0.4);
   color: var(--color-primary);
-  font-weight: 700;
+  font-weight: 500;
   font-size: 15px;
   user-select: none;
 }

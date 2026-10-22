@@ -52,7 +52,7 @@
 .brand-logo-text {
   font-size: 20px;
   line-height: 28px;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-primary);
 }
 
@@ -97,7 +97,7 @@
   border-left: 3px solid var(--color-primary);
   background-color: rgba(var(--rgb-primary), 0.1);
   color: var(--text-white);
-  font-weight: 700;
+  font-weight: 500;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -118,7 +118,7 @@
   border-radius: 0.25rem;
   color: var(--text-white);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -149,7 +149,7 @@
   border: none;
   color: var(--text-muted);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   width: 100%;
   text-align: left;
@@ -163,7 +163,7 @@
 
 .sidebar-footer-item.active {
   color: var(--color-primary);
-  font-weight: 700;
+  font-weight: 500;
   background-color: var(--bg-layer-3);
 }
 
@@ -213,7 +213,7 @@
 .topbar-heading {
   font-size: 20px;
   line-height: 28px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-white);
 }
 
@@ -223,7 +223,7 @@
   border-radius: 0.25rem;
   font-size: 11px;
   letter-spacing: 0.05em;
-  font-weight: 700;
+  font-weight: 500;
   color: var(--color-danger-light);
   border: 1px solid rgba(var(--rgb-danger), 0.2);
 }
@@ -244,7 +244,7 @@
   border: 1px solid rgba(var(--rgb-primary), 0.2);
   color: var(--color-primary-light);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .live-pulse-dot {
@@ -342,7 +342,7 @@
 .stat-label {
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-muted);
   text-transform: uppercase;
 }
@@ -350,7 +350,7 @@
 .stat-value {
   font-size: 36px;
   line-height: 44px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text-white);
 }
@@ -366,7 +366,7 @@
   background-color: var(--color-primary);
   color: var(--bg-layer-0);
   font-size: 18px;
-  font-weight: 700;
+  font-weight: 500;
   border-radius: 0.25rem;
   border: none;
   cursor: pointer;
@@ -437,7 +437,7 @@
   background: transparent;
   color: var(--text-white);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -467,7 +467,7 @@
   padding: 0.75rem 1.5rem;
   font-size: 12px;
   letter-spacing: 0.05em;
-  font-weight: 600;
+  font-weight: 500;
   border-bottom: 1px solid var(--border-standard);
 }
 
@@ -518,7 +518,7 @@
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 500;
   background-color: var(--bg-layer-3);
   color: var(--text-muted);
 }
@@ -543,7 +543,7 @@
   padding: 0.125rem 0.625rem;
   border-radius: 9999px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .badge-active {
