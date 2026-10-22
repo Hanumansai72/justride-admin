@@ -28,3 +28,5 @@
 
 .website-update-permission { display: grid; gap: 8px; font-size: 14px; color: var(--color-primary); }
 .website-update-permission textarea { width: 100%; min-height: 80px; padding: 12px; color: var(--text-body); border-radius: 10px; }
+
+.website-update-step .website-update-waiting { padding: 16px; border-radius: 12px; background: var(--bg-layer-2); color: var(--color-primary); margin-bottom: 20px; }
