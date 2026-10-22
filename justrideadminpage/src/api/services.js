@@ -30,6 +30,9 @@ export const usersApi = {
 };
 
 export const interestApi = {
+  getWebsiteUpdate: (options = {}) => api.get('/early-interest/website-update', {}, options),
+  testWebsiteUpdate: () => api.post('/early-interest/website-update/test'),
+  approveWebsiteUpdate: (expectedRecipients, permission = {}) => api.post('/early-interest/website-update/approve', { ...permission, confirmation: 'APPROVE_WEBSITE_UPDATE', expectedRecipients }),
   getUsers: (page = 1, options = {}) => api.get('/early-interest', { page, limit: 10 }, options),
 };
 
