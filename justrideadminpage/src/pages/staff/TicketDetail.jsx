@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
@@ -149,58 +150,7 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
       {/* Main Content Area */}
       <div className="ticket-main-viewport">
         {/* Top App Bar */}
-        <header className="ticket-top-appbar">
-          <div className="appbar-left">
-            <button
-              type="button"
-              className="back-btn"
-              onClick={onBack || (() => onNavigate && onNavigate('support'))}
-              aria-label="Go Back"
-            >
-              <span className="material-symbols-outlined">arrow_back</span>
-            </button>
-            <div className="ticket-heading-id">
-              Ticket {ticket?.ticket_number || `#TK-${ticketId || '8942'}`}
-            </div>
-          </div>
-
-          <div className="appbar-right">
-            <div className="pill-badge-wrap critical-pill">
-              <span className="dot-indicator dot-amber" />
-              <span>{(ticket?.priority || 'Medium').toUpperCase()}</span>
-            </div>
-
-            <div className="pill-badge-wrap open-pill">
-              <span className="dot-indicator dot-green" />
-              <span>{(ticket?.status || 'Open').replace(/_/g, ' ').toUpperCase()}</span>
-            </div>
-
-            <button
-              type="button"
-              className="icon-action-btn"
-              aria-label="Refresh"
-              onClick={fetchTicket}
-            >
-              <span className="material-symbols-outlined">refresh</span>
-            </button>
-            <button
-              type="button"
-              className="icon-action-btn"
-              aria-label="Notifications"
-              onClick={() => onNavigate && onNavigate('notifications')}
-            >
-              <span className="material-symbols-outlined">notifications</span>
-            </button>
-            <div
-              className="user-profile-avatar-h"
-              onClick={() => onNavigate && onNavigate('helpers')}
-              style={{ cursor: 'pointer' }}
-              title="Staff Accounts"
-            >
-              <span>H</span>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Support ticket" onRefresh={fetchTicket} refreshing={isLoading} onBack={onBack || (() => onNavigate?.('support'))} backLabel="Back to support" onNavigate={onNavigate} />
 
         {/* Content Canvas */}
         <main className="ticket-canvas-content">
@@ -216,6 +166,11 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
             <>
               {/* Header Title Section */}
               <div className="ticket-title-section">
+                <div className="jr-detail-meta">
+                  <span>Ticket {ticket?.ticket_number || ticketId}</span>
+                  <span className="status-badge">{(ticket?.priority || 'Medium').toUpperCase()}</span>
+                  <span className="status-badge">{(ticket?.status || 'Open').replace(/_/g, ' ').toUpperCase()}</span>
+                </div>
                 <h2 className="issue-title">{ticket?.subject || 'Customer Support Request'}</h2>
                 <p className="issue-meta">
                   Opened by {customer.name} • {ticket?.createdAt ? new Date(ticket.createdAt).toLocaleDateString() : 'Today'}

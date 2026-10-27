@@ -1,160 +1,21 @@
-/* Common Reusable TopBar Styles */
-.app-topbar {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: var(--admin-sidebar-width, 260px);
-  height: 72px;
-  background-color: var(--bg-layer-0);
-  border-bottom: 1px solid var(--border-standard);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 2rem;
-  z-index: 40;
-  backdrop-filter: blur(10px);
+/* One navigation layout for every authenticated page. */
+.app-topbar.jr-topbar { position:fixed; inset:0 0 auto var(--admin-sidebar-width,260px); height:72px; display:flex; align-items:center; justify-content:space-between; gap:20px; padding:0 32px; z-index:40; background:var(--bg-layer-0); border-bottom:1px solid var(--border-standard); }
+.jr-topbar-heading { display:flex; align-items:center; gap:12px; min-width:0; }
+.jr-topbar-title { margin:0; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:18px; line-height:1.4; font-weight:500; letter-spacing:-.025em; color:var(--text-white); }
+.jr-topbar-actions { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.jr-topbar-button,.jr-topbar-avatar { display:grid; place-items:center; width:40px; height:40px; flex-shrink:0; padding:0; border:0; border-radius:50%; background:transparent; color:var(--text-muted); cursor:pointer; }
+.jr-topbar-button > span { display:flex; }
+.jr-topbar-button:hover { background:var(--bg-layer-2); color:var(--color-primary); }
+.jr-topbar-button:disabled { opacity:.5; cursor:wait; }
+.jr-topbar-avatar { margin-left:4px; border:1px solid var(--border-standard); background:var(--bg-layer-2); color:var(--color-primary); font:500 13px 'Stack Sans Text',sans-serif; }
+.jr-topbar :is(button):focus-visible { outline:2px solid var(--color-primary); outline-offset:3px; }
+.jr-refreshing { animation:jr-refresh 1s linear infinite; }
+@keyframes jr-refresh { to { transform:rotate(360deg); } }
+@media (max-width:767px) {
+ .app-topbar.jr-topbar { left:0; height:64px; padding:0 16px; gap:8px; }
+ .jr-topbar-heading { gap:4px; }
+ .jr-topbar-title { font-size:16px; }
+ .jr-topbar-actions { gap:0; }
+ .jr-topbar-button,.jr-topbar-avatar { width:36px; height:40px; }
 }
-
-.topbar-left-cluster {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.topbar-title {
-  font-size: 20px;
-  line-height: 28px;
-  font-weight: 500;
-  color: var(--text-body);
-}
-
-.topbar-role-badge {
-  padding: 0.25rem 0.625rem;
-  border-radius: 0.25rem;
-  font-size: 11px;
-  letter-spacing: 0.05em;
-  font-weight: 500;
-  text-transform: uppercase;
-}
-
-.badge-admin-tag {
-  background-color: rgba(var(--rgb-primary), 0.1);
-  color: var(--color-primary);
-  border: 1px solid rgba(var(--rgb-primary), 0.3);
-}
-
-.badge-staff-tag {
-  background-color: rgba(var(--rgb-primary), 0.1);
-  color: var(--color-primary);
-  border: 1px solid rgba(var(--rgb-primary), 0.3);
-}
-
-.topbar-nav-tabs {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.topbar-tab-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  font-size: 12px;
-  letter-spacing: 0.05em;
-  font-weight: 500;
-  cursor: pointer;
-  padding-bottom: 0.25rem;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s ease;
-}
-
-.topbar-tab-btn:hover {
-  color: var(--text-body);
-}
-
-.topbar-tab-btn.active {
-  color: var(--color-primary);
-  font-weight: 500;
-  border-bottom-color: var(--color-primary);
-}
-
-.topbar-right-cluster {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-.role-switcher-wrap {
-  display: flex;
-  align-items: center;
-  background-color: var(--bg-layer-2);
-  border: 1px solid var(--border-standard);
-  border-radius: 0.375rem;
-  padding: 0.125rem;
-}
-
-.role-switch-btn {
-  padding: 0.25rem 0.625rem;
-  background: transparent;
-  border: none;
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-muted);
-  border-radius: 0.25rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.role-switch-btn.active {
-  background-color: var(--color-primary);
-  color: var(--bg-layer-0);
-}
-
-.topbar-icon-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.topbar-icon-btn {
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.2s ease;
-}
-
-.topbar-icon-btn:hover {
-  color: var(--color-primary);
-}
-
-.user-avatar-circle {
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  overflow: hidden;
-  border: 1px solid var(--border-standard);
-  background-color: var(--bg-layer-2);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.user-avatar-h {
-  border-color: rgba(var(--rgb-primary), 0.4);
-  color: var(--color-primary);
-  font-weight: 500;
-  font-size: 15px;
-  user-select: none;
-}
-
-.user-avatar-circle img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+@media (prefers-reduced-motion:reduce) { .jr-refreshing { animation:none; } }

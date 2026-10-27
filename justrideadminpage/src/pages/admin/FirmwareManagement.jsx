@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
@@ -140,37 +141,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
       {/* Main Content View */}
       <div className="firmware-main-wrapper">
         {/* TopNavBar */}
-        <header className="firmware-topbar">
-          <div className="topbar-actions">
-            <div className="topbar-icon-actions">
-              <button
-                type="button"
-                className="icon-action-btn"
-                aria-label="Refresh list"
-                onClick={fetchReleases}
-                title="Refresh Releases"
-              >
-                <span className="material-symbols-outlined">refresh</span>
-              </button>
-              <button
-                type="button"
-                className="icon-action-btn"
-                aria-label="Notifications"
-                onClick={() => onNavigate && onNavigate('notifications')}
-              >
-                <span className="material-symbols-outlined">notifications</span>
-              </button>
-              <div
-                className="user-profile-avatar-h"
-                onClick={() => onNavigate && onNavigate('helpers')}
-                style={{ cursor: 'pointer' }}
-                title="Staff Accounts"
-              >
-                <span>H</span>
-              </div>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Firmware" onRefresh={fetchReleases} refreshing={isLoading} onNavigate={onNavigate} />
 
         {/* Content Canvas */}
         <main className="firmware-content-canvas">

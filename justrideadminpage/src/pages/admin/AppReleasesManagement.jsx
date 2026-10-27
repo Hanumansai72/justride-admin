@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
@@ -146,42 +147,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
       {/* Main Content Area */}
       <div className="firmware-main-wrapper">
         {/* Top Header */}
-        <header className="firmware-topbar">
-          <div className="topbar-search-box">
-            <span className="material-symbols-outlined search-icon">search</span>
-            <input
-              type="text"
-              placeholder="Search APK version, build number, or notes..."
-              className="search-input"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
-          <div className="topbar-right-controls">
-            <div className="system-status-pill">
-              <span className="live-pulse-dot" />
-              <span>Cloudflare R2 Connected</span>
-            </div>
-
-            <button
-              type="button"
-              className="icon-btn"
-              aria-label="Notifications"
-              onClick={() => onNavigate && onNavigate('notifications')}
-            >
-              <span className="material-symbols-outlined">notifications</span>
-            </button>
-            <div
-              className="user-profile-avatar-h"
-              onClick={() => onNavigate && onNavigate('helpers')}
-              style={{ cursor: 'pointer' }}
-              title="Staff Accounts"
-            >
-              <span>H</span>
-            </div>
-          </div>
-        </header>
+        <TopBar title="App releases" onRefresh={fetchReleases} refreshing={isLoading} onNavigate={onNavigate} />
 
         {/* Content Canvas */}
         <main className="firmware-content-canvas">
@@ -195,7 +161,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                   Deploy, host, and distribute Android APK application binaries via zero-egress Cloudflare R2 CDN.
                 </p>
               </div>
-              <div style={{ display: 'flex', gap: '12px' }}>
+              <div className="jr-page-actions">
                 <button
                   type="button"
                   className="btn-create-release"
@@ -221,7 +187,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
             </div>
 
             {/* Top Summary Metrics Bento */}
-            <div className="firmware-bento-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            <div className="firmware-bento-grid">
               {metrics.map((m, idx) => (
                 <div key={idx} className="bento-metric-card">
                   <div className="watermark-icon">

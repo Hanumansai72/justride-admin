@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Sidebar from '../../components/common/Sidebar';
@@ -47,20 +48,7 @@ export default function AuditLogDetail({ onNavigate, onLogout }) {
       {/* Main Content Area */}
       <div className="audit-detail-main">
         {/* Top Header */}
-        <header className="audit-detail-topbar">
-          <div className="topbar-left-wrap">
-            <button
-              type="button"
-              className="back-btn"
-              onClick={() => onNavigate && onNavigate('audit-logs')}
-            >
-              <span className="material-symbols-outlined icon-20">arrow_back</span>
-              <span>Back to Audit Logs</span>
-            </button>
-            <h2 className="topbar-heading">Security Audit Event Inspection</h2>
-          </div>
-
-        </header>
+        <TopBar title="Audit event" onBack={() => onNavigate?.('audit-logs')} backLabel="Back to audit logs" onNavigate={onNavigate} />
 
         {/* Content Container */}
         <main className="audit-detail-content">

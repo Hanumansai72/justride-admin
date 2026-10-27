@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import React, { useState } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { helpersApi } from '../../api/services';
@@ -83,27 +84,7 @@ export default function ProvisionStaff({ onNavigate, onLogout }) {
       {/* Main Content Pane */}
       <div className="provision-main-wrapper">
         {/* TopNavBar */}
-        <header className="provision-topbar">
-          <div className="topbar-right-controls">
-
-            <button
-              type="button"
-              className="icon-btn"
-              aria-label="Notifications"
-              onClick={() => onNavigate && onNavigate('notifications')}
-            >
-              <span className="material-symbols-outlined">notifications</span>
-            </button>
-            <div
-              className="user-profile-avatar-h"
-              onClick={() => onNavigate && onNavigate('helpers')}
-              style={{ cursor: 'pointer' }}
-              title="Staff Accounts"
-            >
-              <span>H</span>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Provision staff" onBack={() => onNavigate?.('helpers')} backLabel="Back to staff" onNavigate={onNavigate} />
 
         {/* Content Canvas */}
         <main className="provision-canvas-content">

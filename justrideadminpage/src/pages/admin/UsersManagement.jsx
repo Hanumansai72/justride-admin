@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
@@ -5,7 +6,6 @@ import { usersApi } from '../../api/services';
 import './UsersManagement.css';
 
 export default function UsersManagement({ onNavigate, onLogout }) {
-  const [activeTab, setActiveTab] = useState('Operations');
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -136,57 +136,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
       {/* Main Content */}
       <div className="users-main-wrapper">
         {/* TopNavBar */}
-        <header className="users-topbar">
-          <div className="topbar-tabs">
-            <button
-              type="button"
-              className={`topbar-tab ${activeTab === 'Home' ? 'active' : ''}`}
-              onClick={() => {
-                setActiveTab('Home');
-                if (onNavigate) onNavigate('dashboard');
-              }}
-            >
-              Overview
-            </button>
-            <button
-              type="button"
-              className={`topbar-tab ${activeTab === 'Operations' ? 'active' : ''}`}
-              onClick={() => setActiveTab('Operations')}
-            >
-              User Directory
-            </button>
-          </div>
-
-          <div className="topbar-right">
-            <div className="topbar-actions">
-              <button
-                type="button"
-                className="icon-btn"
-                aria-label="Refresh list"
-                onClick={fetchUsers}
-                title="Refresh user list"
-              >
-                <span className="material-symbols-outlined">refresh</span>
-              </button>
-              <button
-                type="button"
-                className="icon-btn"
-                aria-label="Notifications"
-                onClick={() => onNavigate && onNavigate('notifications')}
-              >
-                <span className="material-symbols-outlined">notifications</span>
-              </button>
-              <div
-                className="user-profile-avatar-h"
-                onClick={() => onNavigate && onNavigate('helpers')}
-                style={{ cursor: 'pointer' }}
-                title="Staff Accounts"
-              >
-                <span>H</span>
-              </div>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Users" onRefresh={fetchUsers} refreshing={isLoading} onNavigate={onNavigate} />
 
         {/* Content Canvas */}
         <main className="users-canvas-content">

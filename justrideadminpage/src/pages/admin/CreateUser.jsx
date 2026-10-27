@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import React, { useState } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { usersApi } from '../../api/services';
@@ -48,27 +49,7 @@ export default function CreateUser({ onNavigate, onLogout }) {
       {/* Main Content Pane */}
       <div className="provision-main-wrapper">
         {/* TopNavBar */}
-        <header className="provision-topbar">
-          <div className="topbar-right-controls">
-
-            <button
-              type="button"
-              className="icon-btn"
-              aria-label="Notifications"
-              onClick={() => onNavigate && onNavigate('notifications')}
-            >
-              <span className="material-symbols-outlined">notifications</span>
-            </button>
-            <div
-              className="user-profile-avatar-h"
-              onClick={() => onNavigate && onNavigate('helpers')}
-              style={{ cursor: 'pointer' }}
-              title="Staff Accounts"
-            >
-              <span>H</span>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Create user" onBack={() => onNavigate?.('users')} backLabel="Back to users" onNavigate={onNavigate} />
 
         {/* Content Canvas */}
         <main className="provision-canvas-content">

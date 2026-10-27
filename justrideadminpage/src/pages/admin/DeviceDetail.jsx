@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -129,46 +130,7 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
       {/* Main Container */}
       <div className="dev-detail-main">
         {/* Top App Bar */}
-        <header className="dev-detail-header">
-          <div className="header-breadcrumbs">
-            <button
-              type="button"
-              className="breadcrumb-link"
-              onClick={onBack || (() => onNavigate && onNavigate('devices'))}
-            >
-              Devices
-            </button>
-            <span className="material-symbols-outlined icon-16">chevron_right</span>
-            <span className="breadcrumb-current">{device?.device_id || device?.BLE_ADDRESS || deviceId || 'JR-A7B9C'}</span>
-          </div>
-
-          <div className="header-user-actions">
-            <button
-              type="button"
-              className="icon-btn"
-              aria-label="Refresh"
-              onClick={fetchDeviceDetails}
-            >
-              <span className="material-symbols-outlined">refresh</span>
-            </button>
-            <button
-              type="button"
-              className="icon-btn"
-              aria-label="Notifications"
-              onClick={() => onNavigate && onNavigate('notifications')}
-            >
-              <span className="material-symbols-outlined">notifications</span>
-            </button>
-            <div
-              className="user-profile-avatar-h"
-              onClick={() => onNavigate && onNavigate('helpers')}
-              style={{ cursor: 'pointer' }}
-              title="Staff Accounts"
-            >
-              <span>H</span>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Device details" onRefresh={fetchDeviceDetails} refreshing={isLoading} onBack={onBack || (() => onNavigate?.('devices'))} backLabel="Back to devices" onNavigate={onNavigate} />
 
         {/* Content Canvas */}
         <main className="dev-detail-content">

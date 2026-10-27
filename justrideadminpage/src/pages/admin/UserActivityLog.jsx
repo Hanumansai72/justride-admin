@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -87,39 +88,7 @@ export default function UserActivityLog({ userId: propUserId, onNavigate, onLogo
       {/* Main Content Area */}
       <div className="activity-main-wrapper">
         {/* TopAppBar */}
-        <header className="activity-topbar">
-          <div className="topbar-title-flex">
-            <span className="topbar-heading">JustRide Operations</span>
-          </div>
-
-          <div className="topbar-right-group">
-            <button
-              type="button"
-              className="topbar-icon-btn"
-              aria-label="Refresh Activity"
-              onClick={fetchActivity}
-              title="Refresh Activity Trail"
-            >
-              <span className="material-symbols-outlined">refresh</span>
-            </button>
-            <button
-              type="button"
-              className="topbar-icon-btn"
-              aria-label="Notifications"
-              onClick={() => onNavigate && onNavigate('notifications')}
-            >
-              <span className="material-symbols-outlined">notifications</span>
-            </button>
-            <div
-              className="user-profile-avatar-h"
-              onClick={() => onNavigate && onNavigate('helpers')}
-              style={{ cursor: 'pointer' }}
-              title="Staff Accounts"
-            >
-              <span>H</span>
-            </div>
-          </div>
-        </header>
+        <TopBar title="User activity" onRefresh={fetchActivity} refreshing={isLoading} onNavigate={onNavigate} />
 
         {/* Main Canvas */}
         <main className="activity-canvas-content">

@@ -7,18 +7,15 @@ export default function AdminLayout({
   activeRoute,
   onNavigate,
   onLogout,
-  onRoleChange,
   pageTitle = 'Dashboard',
 }) {
   return (
     <div className="admin-layout">
       {/* Reusable Admin Sidebar */}
       <Sidebar
-        role="admin"
         activeRoute={activeRoute}
         onNavigate={onNavigate}
         onLogout={onLogout}
-        onNewTicket={() => onNavigate('support')}
       />
 
       {/* Main Content Pane */}
@@ -27,9 +24,6 @@ export default function AdminLayout({
         <TopBar
           title={pageTitle}
           onNavigate={onNavigate}
-          role="admin"
-          onRoleChange={onRoleChange}
-          onTabChange={(tab) => console.log('Tab switched:', tab)}
         />
 
         {/* Page Canvas Slot */}

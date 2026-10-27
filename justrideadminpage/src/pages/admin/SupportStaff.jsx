@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import Pagination from '../../components/common/Pagination';
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
@@ -115,48 +116,21 @@ export default function SupportStaff({ onNavigate, onLogout }) {
       {/* Main Content Area */}
       <div className="staff-main-area">
         {/* TopNavBar */}
-        <header className="staff-topbar">
-          <div className="topbar-left-group">
-            <h2 className="topbar-heading">Support Staff & Helpers</h2>
-            <span className="admin-badge-tag">ADMIN ACCESS ONLY</span>
-          </div>
-
-          <div className="topbar-right-group">
-            <div className="topbar-actions">
-              <button
-                type="button"
-                className="icon-action-btn"
-                aria-label="Refresh list"
-                onClick={fetchStaff}
-                title="Refresh Staff List"
-              >
-                <span className="material-symbols-outlined">refresh</span>
-              </button>
-              <button
-                type="button"
-                className="icon-action-btn"
-                aria-label="Notifications"
-                onClick={() => onNavigate && onNavigate('notifications')}
-              >
-                <span className="material-symbols-outlined">notifications</span>
-              </button>
-              <div
-                className="user-profile-avatar-h"
-                onClick={() => onNavigate && onNavigate('helpers')}
-                style={{ cursor: 'pointer' }}
-                title="Staff Accounts"
-              >
-                <span>H</span>
-              </div>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Staff & helpers" onRefresh={fetchStaff} refreshing={isLoading} onNavigate={onNavigate} />
 
         {/* Main Canvas */}
         <main className="staff-canvas-body">
           <RequestError message={loadError} loading={isLoading} onRetry={fetchStaff} />
           <div className="canvas-wrapper">
             {/* Top Section: Stats Cards & Action */}
+            <div className="jr-page-heading"><h2>Support staff &amp; helpers</h2><button
+                type="button"
+                className="btn-add-helper btn-glow"
+                onClick={() => onNavigate && onNavigate('provision-staff')}
+              >
+                <span className="material-symbols-outlined icon-20">person_add</span>
+                <span>Provision Staff</span>
+              </button></div>
             <div className="staff-top-section">
               <div className="stats-row-grid">
                 {/* Active */}
@@ -204,16 +178,6 @@ export default function SupportStaff({ onNavigate, onLogout }) {
                   <div className="stat-trend text-primary">{stats.resolvedTrend}</div>
                 </div>
               </div>
-
-              {/* Add Helper CTA */}
-              <button
-                type="button"
-                className="btn-add-helper btn-glow"
-                onClick={() => onNavigate && onNavigate('provision-staff')}
-              >
-                <span className="material-symbols-outlined icon-20">person_add</span>
-                <span>Provision Staff</span>
-              </button>
             </div>
 
             {/* Table Container */}

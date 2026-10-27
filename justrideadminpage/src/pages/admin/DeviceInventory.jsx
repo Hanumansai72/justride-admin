@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
@@ -154,42 +155,12 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
       <Sidebar activeRoute="devices" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* TopAppBar */}
-      <header className="devices-topbar">
-        <div className="topbar-title-wrap">
-          <h2 className="topbar-heading">Devices Inventory & Fleet Control</h2>
-        </div>
-        <div className="topbar-actions">
-          <button
-            type="button"
-            className="action-icon-btn"
-            aria-label="Refresh Devices"
-            onClick={fetchDevices}
-            title="Refresh Fleet"
-          >
-            <span className="material-symbols-outlined">refresh</span>
-          </button>
-          <button
-            type="button"
-            className="action-icon-btn"
-            aria-label="Notifications"
-            onClick={() => onNavigate && onNavigate('notifications')}
-          >
-            <span className="material-symbols-outlined">notifications</span>
-          </button>
-          <div
-            className="profile-thumb"
-            onClick={() => onNavigate && onNavigate('helpers')}
-            style={{ cursor: 'pointer' }}
-            title="Staff Accounts"
-          >
-            <span style={{ color: 'var(--text-white)', fontWeight: 500, fontSize: '12px' }}>H</span>
-          </div>
-        </div>
-      </header>
+      <TopBar title="Devices" onRefresh={fetchDevices} refreshing={isLoading} onNavigate={onNavigate} />
 
       {/* Main Content Viewport */}
       <main className="devices-main-content">
           <RequestError message={loadError} loading={isLoading} onRetry={fetchDevices} />
+        <div className="jr-page-heading"><h2>Device inventory &amp; fleet control</h2></div>
         {/* Summary Stats (Bento Grid) */}
         <div className="stats-bento-grid">
           {/* Total Devices Card */}

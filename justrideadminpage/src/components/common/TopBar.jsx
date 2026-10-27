@@ -1,69 +1,29 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 import './TopBar.css';
 
-export default function TopBar({
-  title = 'Operations',
-  role = 'admin',
-  onRoleChange,
-  activeTab = 'Operations',
-  onTabChange,
-  onNavigate,
-  userProfile = {
-    avatar:
-      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=80&q=80',
-  },
-}) {
-  return (
-    <header className="app-topbar">
-      {/* Left Title & Role Badges */}
-      <div className="topbar-left-cluster">
-        <h2 className="topbar-title">{title}</h2>
-        <span
-          className={`topbar-role-badge ${
-            role === 'admin' ? 'badge-admin-tag' : 'badge-staff-tag'
-          }`}
-        >
-          {role === 'admin' ? 'Admin Portal' : 'Staff / Helper'}
-        </span>
+const paths = {
+  refresh: 'M20 7v5h-5 M20 12a8 8 0 1 0-2.3 5.7 M20 7l-2.3-2.3',
+  notifications: 'M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9 M10 21h4',
+  back: 'M19 12H5 M12 5l-7 7 7 7',
+};
+const icon = (name) => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={paths[name]} /></svg>;
 
-        {/* Home / Operations Tabs */}
-        
-      </div>
-
-      {/* Right Controls */}
-      <div className="topbar-right-cluster">
-        {/* Quick Role Switcher demo */}
-        {onRoleChange && (
-          <div className="role-switcher-wrap">
-            <button
-              type="button"
-              className={`role-switch-btn ${role === 'admin' ? 'active' : ''}`}
-              onClick={() => onRoleChange('admin')}
-            >
-              Admin
-            </button>
-            <button
-              type="button"
-              className={`role-switch-btn ${role === 'staff' ? 'active' : ''}`}
-              onClick={() => onRoleChange('staff')}
-            >
-              Staff
-            </button>
-          </div>
-        )}
-
-        <div className="topbar-icon-actions">
-          <button type="button" className="topbar-icon-btn" aria-label="Notifications" onClick={() => onNavigate && onNavigate('notifications')}>
-            <span className="material-symbols-outlined">notifications</span>
-          </button>
-          <button type="button" className="topbar-icon-btn" aria-label="Settings">
-            <span className="material-symbols-outlined">settings</span>
-          </button>
-          <div className="user-avatar-circle user-avatar-h" title="User Profile (H)">
-            <span>H</span>
-          </div>
-        </div>
-      </div>
-    </header>
-  );
+export default function TopBar({ title = 'Operations', onNavigate, onRefresh, refreshing = false, onBack, backLabel = 'Back' }) {
+  const navigate = useNavigate();
+  const { user, role } = useAuth();
+  const go = (page) => onNavigate ? onNavigate(page) : navigate('/' + page);
+  const initials = (user?.name || user?.email || 'JustRide').trim().split(/\s+/).map((part) => part[0]).slice(0, 2).join('').toUpperCase();
+  return <header className="app-topbar jr-topbar" aria-label="Page navigation">
+    <div className="jr-topbar-heading">
+      {onBack && <button type="button" className="jr-topbar-button" onClick={onBack} aria-label={backLabel} title={backLabel}>{icon('back')}</button>}
+      <h1 className="jr-topbar-title" title={title}>{title}</h1>
+    </div>
+    <div className="jr-topbar-actions">
+      {onRefresh && <button type="button" className="jr-topbar-button" onClick={onRefresh} disabled={refreshing} aria-label="Refresh page" title="Refresh page"><span className={refreshing ? 'jr-refreshing' : undefined}>{icon('refresh')}</span></button>}
+      <button type="button" className="jr-topbar-button" onClick={() => go('notifications')} aria-label="Notifications" title="Notifications">{icon('notifications')}</button>
+      {role === 'ADMIN' ? <button type="button" className="jr-topbar-avatar" onClick={() => go('helpers')} aria-label="Staff accounts" title={user?.name || 'Staff accounts'}>{initials}</button> : <span className="jr-topbar-avatar" title={user?.name || 'Staff'}>{initials}</span>}
+    </div>
+  </header>;
 }

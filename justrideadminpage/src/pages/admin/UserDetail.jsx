@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -9,7 +10,6 @@ export default function UserDetail({ userId: propUserId, onNavigate, onLogout })
   const params = useParams();
   const navigate = useNavigate();
   const userId = propUserId || params.id;
-  const [activeTab, setActiveTab] = useState('Operations');
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
   const requestRef = useRef(null);
@@ -81,61 +81,7 @@ export default function UserDetail({ userId: propUserId, onNavigate, onLogout })
       {/* Main View Area */}
       <div className="user-main-wrapper">
         {/* TopNavBar */}
-        <header className="user-topbar">
-          <div className="topbar-left-group">
-            <h2 className="topbar-page-title">User Detail</h2>
-            <div className="topbar-nav-links">
-              <button
-                type="button"
-                className={`tab-link ${activeTab === 'Home' ? 'active' : ''}`}
-                onClick={() => onNavigate && onNavigate('users')}
-              >
-                Back to Directory
-              </button>
-              <button
-                type="button"
-                className={`tab-link ${activeTab === 'Operations' ? 'active' : ''}`}
-                onClick={() => setActiveTab('Operations')}
-              >
-                Operations
-              </button>
-            </div>
-          </div>
-
-          <div className="topbar-right-group">
-            <div className="system-pill">
-              <span className="live-pulse-dot" />
-              <span>System Operational</span>
-            </div>
-
-            <div className="topbar-actions">
-              <button
-                type="button"
-                className="icon-action-btn"
-                aria-label="Refresh"
-                onClick={fetchUserDetails}
-              >
-                <span className="material-symbols-outlined">refresh</span>
-              </button>
-              <button
-                type="button"
-                className="icon-action-btn"
-                aria-label="Notifications"
-                onClick={() => onNavigate && onNavigate('notifications')}
-              >
-                <span className="material-symbols-outlined">notifications</span>
-              </button>
-              <div
-                className="user-profile-avatar-h"
-                onClick={() => onNavigate && onNavigate('helpers')}
-                style={{ cursor: 'pointer' }}
-                title="Staff Accounts"
-              >
-                <span>H</span>
-              </div>
-            </div>
-          </div>
-        </header>
+        <TopBar title="User details" onRefresh={fetchUserDetails} refreshing={isLoading} onBack={() => onNavigate?.('users')} backLabel="Back to users" onNavigate={onNavigate} />
 
         {/* Content Canvas */}
         <main className="user-content-canvas">

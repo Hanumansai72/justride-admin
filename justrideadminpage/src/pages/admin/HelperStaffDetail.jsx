@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -90,51 +91,7 @@ export default function HelperStaffDetail({ helperId: propHelperId, onNavigate, 
       {/* Main Content Area */}
       <div className="helper-main-wrapper">
         {/* TopAppBar */}
-        <header className="helper-topbar">
-          <div className="topbar-breadcrumbs">
-            <button
-              type="button"
-              className="breadcrumb-root-btn"
-              onClick={() => onNavigate && onNavigate('helpers')}
-            >
-              Helpers
-            </button>
-            <span className="material-symbols-outlined breadcrumb-sep">chevron_right</span>
-            <span className="breadcrumb-current">{helper?.name || 'Staff Member'}</span>
-
-            <div className={`status-pill pill-${staffStatus.toLowerCase()}`}>
-              <span className="status-live-dot" />
-              <span>{staffStatus}</span>
-            </div>
-          </div>
-
-          <div className="topbar-actions-row">
-            <button
-              type="button"
-              className="topbar-icon-btn"
-              aria-label="Refresh"
-              onClick={fetchHelper}
-            >
-              <span className="material-symbols-outlined">refresh</span>
-            </button>
-            <button
-              type="button"
-              className="topbar-icon-btn"
-              aria-label="Notifications"
-              onClick={() => onNavigate && onNavigate('notifications')}
-            >
-              <span className="material-symbols-outlined">notifications</span>
-            </button>
-            <div
-              className="user-profile-avatar-h"
-              onClick={() => onNavigate && onNavigate('helpers')}
-              style={{ cursor: 'pointer' }}
-              title="Staff Accounts"
-            >
-              <span>H</span>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Staff details" onRefresh={fetchHelper} refreshing={isLoading} onBack={() => onNavigate?.('helpers')} backLabel="Back to staff" onNavigate={onNavigate} />
 
         {/* Content Canvas */}
         <main className="helper-canvas-content">
@@ -151,7 +108,7 @@ export default function HelperStaffDetail({ helperId: propHelperId, onNavigate, 
               {/* Header Section */}
               <div className="helper-header-row">
                 <div>
-                  <h2 className="helper-main-name">{helper?.name || 'Staff Member'}</h2>
+                  <h2 className="helper-main-name">{helper?.name || 'Staff Member'}</h2><span className="status-badge">{staffStatus}</span>
                   <div className="helper-meta-sub">
                     <span className="emp-badge">{helper?.employee_id || helperId || 'EMP-8021'}</span>
                     <span className="bullet-dot">•</span>

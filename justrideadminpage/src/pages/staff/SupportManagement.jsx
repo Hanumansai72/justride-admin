@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
@@ -122,58 +123,13 @@ export default function SupportManagement({ onNavigate, onLogout }) {
       {/* Main Content Area */}
       <div className="support-main-content">
         {/* Top Header */}
-        <header className="support-top-header">
-          <div className="header-tabs-group">
-            <button
-              type="button"
-              className={`header-tab ${activeTab === 'Operations' ? 'active' : ''}`}
-              onClick={() => setActiveTab('Operations')}
-            >
-              Ticket Queue
-            </button>
-            <button type="button" className={`header-tab ${activeTab === 'Help feedback' ? 'active' : ''}`} onClick={() => setActiveTab('Help feedback')}>Help feedback</button>
-          </div>
-
-          <div className="header-actions-group">
-            <div className="system-live-pill">
-              <span className="live-dot-pulse" />
-              <span>System Operational</span>
-            </div>
-
-            <div className="header-icon-actions">
-              <button
-                type="button"
-                className="action-icon-btn"
-                aria-label="Refresh Queue"
-                onClick={fetchTickets}
-                title="Refresh Tickets"
-              >
-                <span className="material-symbols-outlined">refresh</span>
-              </button>
-              <button
-                type="button"
-                className="action-icon-btn"
-                aria-label="Notifications"
-                onClick={() => onNavigate && onNavigate('notifications')}
-              >
-                <span className="material-symbols-outlined">notifications</span>
-              </button>
-              <div
-                className="user-profile-avatar-h"
-                onClick={() => onNavigate && onNavigate('helpers')}
-                style={{ cursor: 'pointer' }}
-                title="Staff Accounts"
-              >
-                <span>H</span>
-              </div>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Support" onRefresh={fetchTickets} refreshing={isLoading} onNavigate={onNavigate} />
 
         {/* Canvas Body */}
         <main className="support-canvas">
           <RequestError message={loadError} loading={isLoading} onRetry={fetchTickets} />
           <div className="canvas-wrapper">
+            <div className="jr-page-tabs" aria-label="Support views"><button type="button" aria-pressed={activeTab === 'Operations'} onClick={() => setActiveTab('Operations')}>Ticket queue</button><button type="button" aria-pressed={activeTab === 'Help feedback'} onClick={() => setActiveTab('Help feedback')}>Help feedback</button></div>
             {/* Title */}
             <div>
               <h2 className="support-page-title">Support Management &amp; Customer Care</h2>

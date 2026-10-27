@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -147,45 +148,7 @@ export default function AuditLogs({ onNavigate, onLogout }) {
       {/* Main Wrapper */}
       <div className="audit-main-wrapper">
         {/* TopAppBar */}
-        <header className="audit-topbar">
-          <div className="topbar-title-block">
-            <h2 className="topbar-main-heading">Audit Logs &amp; Security Compliance</h2>
-            <span className="topbar-sub-desc">
-              Staff sign-ins, page views, actions, and sign-outs recorded by the backend.
-            </span>
-          </div>
-
-          <div className="topbar-right-actions">
-            <button
-              type="button"
-              className="topbar-btn"
-              aria-label="Refresh logs"
-              onClick={() => {
-                fetchStats();
-                fetchLogs();
-              }}
-              title="Refresh Audit Trail"
-            >
-              <span className="material-symbols-outlined">refresh</span>
-            </button>
-            <button
-              type="button"
-              className="topbar-btn"
-              aria-label="Notifications"
-              onClick={() => onNavigate && onNavigate('notifications')}
-            >
-              <span className="material-symbols-outlined">notifications</span>
-            </button>
-            <div
-              className="user-profile-avatar-h"
-              onClick={() => onNavigate && onNavigate('helpers')}
-              style={{ cursor: 'pointer' }}
-              title="Staff Accounts"
-            >
-              <span>H</span>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Audit logs" onRefresh={() => { fetchStats(); fetchLogs(); }} onNavigate={onNavigate} />
 
         {/* Content Canvas */}
         <main className="audit-canvas-body">

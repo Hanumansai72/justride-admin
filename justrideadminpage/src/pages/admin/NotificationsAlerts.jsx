@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import Pagination from '../../components/common/Pagination';
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
@@ -115,29 +116,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
       {/* Main Area */}
       <div className="notif-main-wrapper">
         {/* TopNavBar */}
-        <header className="notif-topbar">
-          <div className="topbar-right-ctrls">
-            <div className="topbar-icon-actions">
-              <button
-                type="button"
-                className="icon-action-btn"
-                aria-label="Refresh Alerts"
-                onClick={fetchAlerts}
-                title="Refresh Notifications"
-              >
-                <span className="material-symbols-outlined">refresh</span>
-              </button>
-              <div
-                className="user-profile-avatar-h"
-                onClick={() => onNavigate && onNavigate('helpers')}
-                style={{ cursor: 'pointer' }}
-                title="Staff Accounts"
-              >
-                <span>H</span>
-              </div>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Notifications" onRefresh={fetchAlerts} refreshing={isLoading} onNavigate={onNavigate} />
 
         {/* Content Canvas */}
         <main className="notif-content-canvas">

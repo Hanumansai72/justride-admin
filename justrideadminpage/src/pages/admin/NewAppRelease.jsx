@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import React, { useState } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { appReleasesApi } from '../../api/services';
@@ -109,31 +110,7 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
       {/* Main Content Area */}
       <div className="provision-main-wrapper">
         {/* Top Header */}
-        <header className="provision-topbar">
-          <div className="topbar-right-controls">
-            <div className="system-status-pill">
-              <span className="live-pulse-dot" />
-              <span>Cloudflare R2 Ready</span>
-            </div>
-
-            <button
-              type="button"
-              className="icon-btn"
-              aria-label="Notifications"
-              onClick={() => onNavigate && onNavigate('notifications')}
-            >
-              <span className="material-symbols-outlined">notifications</span>
-            </button>
-            <div
-              className="user-profile-avatar-h"
-              onClick={() => onNavigate && onNavigate('helpers')}
-              style={{ cursor: 'pointer' }}
-              title="Staff Accounts"
-            >
-              <span>H</span>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Publish APK" onBack={() => onNavigate?.('app-releases')} backLabel="Back to app releases" onNavigate={onNavigate} />
 
         {/* Canvas Body */}
         <main className="provision-canvas-content">

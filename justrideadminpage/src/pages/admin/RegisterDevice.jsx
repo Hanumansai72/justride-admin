@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import React, { useState } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { devicesApi } from '../../api/services';
@@ -71,20 +72,7 @@ export default function RegisterDevice({ onNavigate, onLogout }) {
       {/* Main Content Area */}
       <div className="register-device-main">
         {/* Top Header */}
-        <header className="register-device-topbar">
-          <div className="topbar-title-wrap">
-            <button
-              type="button"
-              className="back-btn"
-              onClick={() => onNavigate && onNavigate('devices')}
-            >
-              <span className="material-symbols-outlined icon-20">arrow_back</span>
-              <span>Back to Fleet</span>
-            </button>
-            <h2 className="topbar-heading">Provision New IoT Telemetry Node</h2>
-          </div>
-
-        </header>
+        <TopBar title="Register device" onBack={() => onNavigate?.('devices')} backLabel="Back to devices" onNavigate={onNavigate} />
 
         {/* Form Container Canvas */}
         <main className="register-device-content">

@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import React, { useState } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { firmwareApi } from '../../api/services';
@@ -80,31 +81,7 @@ export default function NewFirmwareRelease({ onNavigate, onLogout }) {
       {/* Main Content Area */}
       <div className="provision-main-wrapper">
         {/* TopAppBar */}
-        <header className="provision-topbar">
-          <div className="topbar-right-controls">
-            <div className="system-status-pill">
-              <span className="live-pulse-dot" />
-              <span>System Operational</span>
-            </div>
-
-            <button
-              type="button"
-              className="icon-btn"
-              aria-label="Notifications"
-              onClick={() => onNavigate && onNavigate('notifications')}
-            >
-              <span className="material-symbols-outlined">notifications</span>
-            </button>
-            <div
-              className="user-profile-avatar-h"
-              onClick={() => onNavigate && onNavigate('helpers')}
-              style={{ cursor: 'pointer' }}
-              title="Staff Accounts"
-            >
-              <span>H</span>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Publish firmware" onBack={() => onNavigate?.('firmware')} backLabel="Back to firmware" onNavigate={onNavigate} />
 
         {/* Canvas Body */}
         <main className="provision-canvas-content">

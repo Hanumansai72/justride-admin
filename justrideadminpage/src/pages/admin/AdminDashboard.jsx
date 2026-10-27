@@ -1,3 +1,4 @@
+import TopBar from '../../components/common/TopBar';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import RequestError from '../../components/common/RequestError';
@@ -7,7 +8,6 @@ import './Dashboard.css';
 
 export default function AdminDashboard({ onNavigate, onLogout }) {
   const { currentUser } = useAuth();
-  const [activeTab, setActiveTab] = useState('Home');
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -160,66 +160,12 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
       {/* Main Content View */}
       <div className="main-wrapper">
         {/* Top App Header */}
-        <header className="top-header">
-          <div className="header-left">
-            <div className="search-box">
-              <span className="material-symbols-outlined search-icon">search</span>
-              <input
-                type="text"
-                placeholder="Search devices, users..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="search-input"
-              />
-            </div>
-
-            <div className="header-tabs">
-              <button
-                type="button"
-                className="tab-link active"
-              >
-                Operations Dashboard
-              </button>
-            </div>
-          </div>
-
-          <div className="header-right">
-
-
-            <button
-              type="button"
-              className="icon-btn"
-              aria-label="Refresh Data"
-              title="Refresh Real-time Data"
-              onClick={() => loadDashboardData(true)}
-              style={{ transform: isRefreshing ? 'rotate(180deg)' : 'none', transition: 'transform 0.5s ease' }}
-            >
-              <span className="material-symbols-outlined">refresh</span>
-            </button>
-
-            <button
-              type="button"
-              className="icon-btn"
-              aria-label="Notifications"
-              onClick={() => onNavigate && onNavigate('notifications')}
-            >
-              <span className="material-symbols-outlined">notifications</span>
-            </button>
-
-            <div
-              className="user-profile-avatar-h"
-              onClick={() => onNavigate && onNavigate('helpers')}
-              style={{ cursor: 'pointer' }}
-              title={`Logged in as ${currentUser?.name || 'Administrator'}`}
-            >
-              <span>{currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'A'}</span>
-            </div>
-          </div>
-        </header>
+        <TopBar title="Dashboard" onRefresh={() => loadDashboardData(true)} refreshing={isRefreshing} onNavigate={onNavigate} />
 
         {/* Dashboard Canvas */}
         <main className="dashboard-content">
           <div className="content-container">
+            <label className="jr-page-search"><span className="material-symbols-outlined" aria-hidden="true">search</span><input type="search" aria-label="Search devices and users" placeholder="Search devices, users..." value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} /></label>
             <RequestError message={error || healthError} loading={isRefreshing} onRetry={() => loadDashboardData(true)} />
             {/* Title & Action */}
             <div className="page-header">
