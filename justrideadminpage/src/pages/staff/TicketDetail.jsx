@@ -14,6 +14,7 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
   const requestRef = useRef(null);
+  const conversationRef = useRef(null);
   const [isSending, setIsSending] = useState(false);
   const [isActing, setIsActing] = useState(false);
 
@@ -46,6 +47,11 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
     fetchTicket();
     return () => requestRef.current?.abort();
   }, [fetchTicket]);
+
+  useEffect(() => {
+    const conversation = conversationRef.current;
+    if (conversation) conversation.scrollTop = conversation.scrollHeight;
+  }, [ticket?._id, ticket?.messages?.length]);
 
   const handleSendReply = async () => {
     if (!replyText.trim() || !ticket?._id) return;
@@ -122,12 +128,11 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
   const messagesList = ticket?.messages && ticket.messages.length > 0
     ? ticket.messages.map((m, idx) => ({
         id: m._id || idx,
-        sender: m.sender_role === 'ADMIN' ? 'Staff Specialist' : ticket.user_id?.name || 'Customer',
+        sender: m.sender_id?.name || (m.sender_role === 'ADMIN' ? 'Support team' : ticket.user_id?.name || 'Customer'),
         isCustomer: m.sender_role !== 'ADMIN',
         time: m.createdAt ? new Date(m.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recent',
         content: m.body,
         attachments: (m.attachments || []).filter(url => { try { const parsed = new URL(url); return parsed.protocol === 'https:' && parsed.hostname === 'res.cloudinary.com'; } catch { return false; } }),
-        verified: m.sender_role === 'ADMIN',
       }))
     : [
         {
@@ -155,7 +160,7 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
         {/* Content Canvas */}
         <main className="ticket-canvas-content">
           <RequestError message={loadError} loading={isLoading} onRetry={fetchTicket} />
-          {isLoading ? (
+          {isLoading && !ticket ? (
             <div style={{ textAlign: 'center', padding: '5rem', color: 'var(--text-muted)' }}>
               <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite', fontSize: '32px' }}>
                 sync
@@ -184,71 +189,34 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
                 {/* Left Column: Thread & Reply Box (65%) */}
                 <div className="thread-column">
                   {ticket?.diagnostics && <section className="ticket-diagnostic-report"><h3>Customer-shared diagnostic report</h3><p>Shared with consent on {new Date(ticket.diagnostics.consented_at).toLocaleString()}. Values are supplied by the customer app.</p><dl>{Object.entries(ticket.diagnostics).filter(([key]) => key !== 'consented_at').map(([key, value]) => <div key={key}><dt>{key.replaceAll('_', ' ')}</dt><dd>{String(value)}</dd></div>)}</dl></section>}
-                  {/* Message Thread Box */}
-                  <div className="thread-container">
-                    {messagesList.map((msg, index) => (
-                      <div
-                        key={msg.id}
-                        className={`message-row ${msg.isCustomer ? 'customer-msg' : 'staff-msg'} ${
-                          index > 0 ? 'border-t-dark' : ''
-                        }`}
-                      >
-                        <div className="message-flex">
-                          {msg.isCustomer ? (
-                            <div className="customer-avatar-badge">
-                              <span>{customer.name ? customer.name.charAt(0).toUpperCase() : 'C'}</span>
-                            </div>
-                          ) : (
-                            <div className="staff-avatar-badge">
-                              <span className="material-symbols-outlined icon-18">support_agent</span>
-                            </div>
-                          )}
-
-                          <div className="message-body">
-                            <div className="message-meta-row">
-                              <span className="sender-name">
-                                {msg.sender}
-                                {msg.verified && (
-                                  <span
-                                    className="material-symbols-outlined verified-icon"
-                                    style={{ fontVariationSettings: "'FILL' 1" }}
-                                  >
-                                    verified
-                                  </span>
-                                )}
-                              </span>
-                              <span className="message-time">{msg.time}</span>
-                            </div>
-                            <p className="message-text">{msg.content}</p>
+                  <section className="ticket-chat" aria-labelledby="ticket-chat-title">
+                    <div className="ticket-chat-header">
+                      <h3 id="ticket-chat-title">Conversation</h3>
+                      <span>{ticket?.ticket_number}</span>
+                    </div>
+                    <div className="ticket-chat-messages" ref={conversationRef} role="log" aria-label="Conversation messages" aria-live="polite" aria-relevant="additions">
+                      {messagesList.map((msg) => (
+                        <div key={msg.id} className={`ticket-chat-message ${msg.isCustomer ? 'from-customer' : 'from-support'}`}>
+                          <div className="ticket-chat-bubble">
+                            <span className="ticket-chat-sender">{msg.sender}<span>{msg.isCustomer ? 'Customer' : 'Support'}</span></span>
+                            <p>{msg.content}</p>
                             {msg.attachments?.map((url, attachmentIndex) => <a className="ticket-screenshot" key={url} href={url} target="_blank" rel="noopener noreferrer"><img src={url} alt={`Customer screenshot ${attachmentIndex + 1}`} loading="lazy" /><span>Open screenshot {attachmentIndex + 1}</span></a>)}
+                            <span className="ticket-chat-time">{msg.time}</span>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Reply Box */}
-                  <div className="reply-container">
-                    <textarea
-                      className="reply-textarea"
-                      placeholder="Type response to customer..."
-                      rows={4}
-                      value={replyText}
-                      onChange={(e) => setReplyText(e.target.value)}
-                    />
-                    <div className="reply-footer">
-                      <button
-                        type="button"
-                        disabled={isSending || !replyText.trim()}
-                        className="send-reply-btn btn-glow"
-                        style={{ opacity: isSending ? 0.7 : 1 }}
-                        onClick={handleSendReply}
-                      >
-                        <span>{isSending ? 'Sending...' : 'Send Staff Reply'}</span>
-                        <span className="material-symbols-outlined send-icon">send</span>
-                      </button>
+                      ))}
                     </div>
-                  </div>
+                    <form className="ticket-chat-composer" onSubmit={(event) => { event.preventDefault(); handleSendReply(); }}>
+                      <label htmlFor="ticket-reply">Message to customer</label>
+                      <div className="ticket-chat-input-row">
+                        <textarea id="ticket-reply" placeholder="Write a reply..." rows={2} value={replyText} onChange={(event) => setReplyText(event.target.value)} disabled={isSending} />
+                        <button type="submit" disabled={isSending || !replyText.trim()}>
+                          <span>{isSending ? 'Sending...' : 'Send reply'}</span>
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4 20-7Z M22 2 11 13" /></svg>
+                        </button>
+                      </div>
+                    </form>
+                  </section>
                 </div>
 
                 {/* Right Column: Info Cards (35%) */}

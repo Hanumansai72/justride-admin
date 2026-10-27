@@ -695,3 +695,36 @@
 }
 /* Explicitly shared support data; no fabricated hardware diagnostics. */
 .ticket-diagnostic-report{padding:20px;margin-bottom:20px;border:1px solid var(--border-standard);border-radius:12px;background:var(--bg-layer-2);color:var(--text-white)}.ticket-diagnostic-report h3{margin:0 0 8px;font-size:16px}.ticket-diagnostic-report p{color:var(--text-muted);font-size:12px;line-height:1.6}.ticket-diagnostic-report dl>div{display:grid;grid-template-columns:1fr 1.5fr;gap:16px;padding:10px 0;border-top:1px solid var(--border-standard)}.ticket-diagnostic-report dt{color:var(--text-muted);text-transform:capitalize}.ticket-diagnostic-report dd{margin:0;overflow-wrap:anywhere}.ticket-screenshot{display:block;max-width:420px;margin-top:16px;color:var(--color-primary);font-size:12px}.ticket-screenshot img{max-width:100%;max-height:400px;object-fit:contain;border:1px solid var(--border-standard);border-radius:8px;display:block;margin-bottom:8px}
+/* Ticket conversation: customer on the left, support on the right. */
+.ticket-page-container .thread-column { min-width:0; }
+.ticket-chat { display:flex; flex-direction:column; min-width:0; border:1px solid var(--border-standard); border-radius:16px; overflow:hidden; background:var(--bg-layer-1); }
+.ticket-chat-header { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:18px 20px; border-bottom:1px solid var(--border-standard); }
+.ticket-chat-header h3 { margin:0; font-size:16px; font-weight:500; color:var(--text-white); }
+.ticket-chat-header > span { color:var(--text-dim); font-size:12px; overflow-wrap:anywhere; }
+.ticket-chat-messages { height:clamp(320px,50dvh,560px); min-width:0; overflow-y:auto; overscroll-behavior:contain; display:flex; flex-direction:column; gap:16px; padding:24px 20px; scrollbar-gutter:stable; }
+.ticket-chat-message { display:flex; flex:0 0 auto; min-width:0; }
+.ticket-chat-message.from-customer { justify-content:flex-start; }
+.ticket-chat-message.from-support { justify-content:flex-end; }
+.ticket-chat-bubble { min-width:0; max-width:82%; padding:12px 16px; border:1px solid var(--border-standard); border-radius:16px 16px 16px 4px; background:var(--bg-layer-2); color:var(--text-white); }
+.from-support .ticket-chat-bubble { border-radius:16px 16px 4px 16px; background:#182f22; border-color:#315a40; }
+.ticket-chat-sender { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:7px; color:var(--color-primary-light); font-size:12px; font-weight:500; }
+.ticket-chat-sender > span { color:var(--text-dim); font-size:11px; font-weight:400; }
+.ticket-chat-bubble p { margin:0; color:var(--text-white); font-size:14px; line-height:1.65; white-space:pre-wrap; overflow-wrap:anywhere; }
+.ticket-chat-time { display:block; margin-top:8px; text-align:right; color:var(--text-muted); font-size:11px; line-height:1.4; }
+.ticket-chat-composer { margin:0; padding:16px 20px; border-top:1px solid var(--border-standard); background:var(--bg-layer-2); }
+.ticket-chat-composer label { display:block; margin-bottom:8px; font-size:12px; color:var(--text-muted); }
+.ticket-chat-input-row { display:flex; align-items:flex-end; gap:12px; }
+.ticket-chat-input-row textarea { flex:1; width:100%; min-width:0; min-height:64px; max-height:180px; padding:12px 14px; border:1px solid var(--border-standard); border-radius:12px; background:var(--bg-layer-0); color:var(--text-white); font:inherit; font-size:14px; line-height:1.5; resize:vertical; }
+.ticket-chat-input-row button { display:inline-flex; align-items:center; justify-content:center; gap:8px; flex-shrink:0; min-height:44px; padding:10px 18px; border:0; border-radius:999px; background:var(--color-primary); color:var(--bg-layer-0); font:inherit; font-size:13px; font-weight:500; cursor:pointer; }
+.ticket-chat-input-row button:hover:not(:disabled) { background:var(--color-primary-light); }
+.ticket-chat-input-row button:disabled { opacity:.45; cursor:default; }
+@media(max-width:767px) {
+ .ticket-chat-header { padding:16px; }
+ .ticket-chat-header > span { max-width:50%; text-align:right; }
+ .ticket-chat-messages { height:46dvh; min-height:300px; padding:20px 12px; gap:14px; }
+ .ticket-chat-bubble { max-width:90%; padding:10px 12px; }
+ .ticket-chat-composer { padding:14px 12px; }
+ .ticket-chat-input-row { flex-wrap:wrap; gap:10px; }
+ .ticket-chat-input-row textarea { flex-basis:100%; font-size:16px; }
+ .ticket-chat-input-row button { margin-left:auto; }
+}
