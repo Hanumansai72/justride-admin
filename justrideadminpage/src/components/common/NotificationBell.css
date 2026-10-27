@@ -1,0 +1,22 @@
+.jr-notifications { position:relative; }
+.jr-notification-trigger { position:relative; }
+.jr-notification-count { position:absolute; top:0; right:-3px; min-width:18px; height:18px; padding:0 4px; display:grid; place-items:center; border-radius:999px; background:var(--color-primary); color:var(--bg-layer-0); font:500 10px 'Stack Sans Text',sans-serif; border:2px solid var(--bg-layer-0); }
+.jr-notification-inbox { position:absolute; top:calc(100% + 16px); right:0; width:min(390px,calc(100vw - 32px)); border:1px solid var(--border-standard); border-radius:16px; overflow:hidden; background:var(--bg-layer-1); box-shadow:0 20px 60px #0008; color:var(--text-white); }
+.jr-inbox-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:18px 20px; border-bottom:1px solid var(--border-standard); }
+.jr-inbox-heading h2 { margin:0; font-size:17px; }
+.jr-inbox-heading button,.jr-inbox-error button { border:0; background:transparent; color:var(--color-primary); padding:6px 0; font:inherit; font-size:12px; cursor:pointer; }
+.jr-inbox-heading button:disabled { opacity:.4; cursor:default; }
+.jr-inbox-list { max-height:min(460px,calc(100dvh - 240px)); overflow-y:auto; overscroll-behavior:contain; }
+.jr-inbox-item { width:100%; display:flex; align-items:flex-start; gap:12px; padding:16px 20px; border:0; border-bottom:1px solid var(--border-standard); background:transparent; color:var(--text-white); text-align:left; font:inherit; cursor:pointer; }
+.jr-inbox-item:hover { background:var(--bg-layer-3); }
+.jr-inbox-item.unread { background:#14231a; }
+.jr-inbox-dot { flex:0 0 7px; height:7px; border-radius:50%; background:transparent; margin-top:6px; }
+.unread .jr-inbox-dot { background:var(--color-primary); }
+.jr-inbox-item strong { display:block; font-size:13px; font-weight:500; line-height:1.4; }
+.jr-inbox-message { display:block; margin-top:5px; font-size:12px; line-height:1.6; color:var(--text-muted); overflow-wrap:anywhere; }
+.jr-inbox-item time { display:block; margin-top:8px; color:var(--text-dim); font-size:11px; }
+.jr-inbox-all { display:block; width:100%; min-height:48px; border:0; background:var(--bg-layer-2); color:var(--color-primary); font:inherit; font-size:13px; cursor:pointer; }
+.jr-inbox-error,.jr-inbox-empty { margin:0; padding:24px 20px; font-size:13px; color:var(--text-muted); }
+.jr-inbox-error { color:var(--color-danger-light); }
+.jr-inbox-error button { margin-left:12px; }
+@media(max-width:767px) { .jr-notification-inbox { position:fixed; top:72px; right:16px; } }

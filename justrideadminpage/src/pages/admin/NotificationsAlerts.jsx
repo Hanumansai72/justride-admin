@@ -4,9 +4,12 @@ import Pagination from '../../components/common/Pagination';
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Sidebar from '../../components/common/Sidebar';
 import { notificationsApi } from '../../api/services';
+import { useNavigate } from 'react-router-dom';
+import { notificationTarget } from '../../utils/notificationTarget';
 import './NotificationsAlerts.css';
 
 export default function NotificationsAlerts({ onNavigate, onLogout }) {
+  const navigate = useNavigate();
   const [filterCategory, setFilterCategory] = useState('ALL');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -48,17 +51,17 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
           }
 
           return {
-            id: n._id,
+            id: n._id || n.id,
             title: n.title || 'Operational Notification',
-            time: n.createdAt ? new Date(n.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Recently',
+            time: n.createdAt ? new Date(n.createdAt).toLocaleString() : 'Recently',
             category,
             badgeText: n.type || 'SYSTEM ALERT',
             badgeType,
             icon,
-            description: n.message || 'Administrative event logged in platform.',
+            description: `${n.message || 'Administrative event logged in platform.'}${n.type === 'ADMIN_SIGN_IN' && n.data?.user_agent ? ` Browser: ${n.data.user_agent}` : ''}`,
             read: n.is_read || false,
             deviceTag: n.data?.device_id || null,
-            targetRoute: n.data?.ticket_number ? 'support' : 'audit-logs',
+            targetPath: notificationTarget(n),
           };
         });
 
@@ -82,6 +85,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
     try {
       await notificationsApi.markAllRead();
       setAlerts((prev) => prev.map((a) => ({ ...a, read: true })));
+      window.dispatchEvent(new Event('notifications:changed'));
     } catch (err) {
       alert(`Failed to mark read: ${err.message}`);
     }
@@ -91,6 +95,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
     try {
       await notificationsApi.markRead(id);
       setAlerts((prev) => prev.map((a) => (a.id === id ? { ...a, read: true } : a)));
+      window.dispatchEvent(new Event('notifications:changed'));
     } catch (err) {
       console.warn('Mark read error:', err.message);
     }
@@ -127,7 +132,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
               <div>
                 <h2 className="notif-page-heading">Notifications &amp; Alerts</h2>
                 <p className="notif-page-sub">
-                  Live operational events, telemetry alerts, and ticket assignments.
+                  Support tickets, new registrations, and admin sign-ins.
                 </p>
               </div>
 
@@ -159,7 +164,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
               <div className="feed-left-col">
                 <div className="feed-header-row">
                   <h3 className="feed-title">Recent Activity</h3>
-                  <span className="feed-time-span">LIVE STREAM</span>
+                  <span className="feed-time-span">NEWEST FIRST</span>
                 </div>
 
                 <div className="alerts-card-list">
@@ -219,7 +224,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
                               className="view-logs-link-btn"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                if (onNavigate) onNavigate(alert.targetRoute || 'audit-logs');
+                                navigate(alert.targetPath);
                               }}
                             >
                               <span className="material-symbols-outlined icon-14">

@@ -173,8 +173,8 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
               <div className="ticket-title-section">
                 <div className="jr-detail-meta">
                   <span>Ticket {ticket?.ticket_number || ticketId}</span>
-                  <span className="status-badge">{(ticket?.priority || 'Medium').toUpperCase()}</span>
-                  <span className="status-badge">{(ticket?.status || 'Open').replace(/_/g, ' ').toUpperCase()}</span>
+                  <span className="status-badge ticket-priority">{(ticket?.priority || 'Medium').toUpperCase()}</span>
+                  <span className="status-badge ticket-status">{(ticket?.status || 'Open').replace(/_/g, ' ').toUpperCase()}</span>
                 </div>
                 <h2 className="issue-title">{ticket?.subject || 'Customer Support Request'}</h2>
                 <p className="issue-meta">
@@ -188,7 +188,7 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
               <div className="ticket-grid-layout">
                 {/* Left Column: Thread & Reply Box (65%) */}
                 <div className="thread-column">
-                  {ticket?.diagnostics && <section className="ticket-diagnostic-report"><h3>Customer-shared diagnostic report</h3><p>Shared with consent on {new Date(ticket.diagnostics.consented_at).toLocaleString()}. Values are supplied by the customer app.</p><dl>{Object.entries(ticket.diagnostics).filter(([key]) => key !== 'consented_at').map(([key, value]) => <div key={key}><dt>{key.replaceAll('_', ' ')}</dt><dd>{String(value)}</dd></div>)}</dl></section>}
+
                   <section className="ticket-chat" aria-labelledby="ticket-chat-title">
                     <div className="ticket-chat-header">
                       <h3 id="ticket-chat-title">Conversation</h3>
@@ -221,6 +221,7 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
 
                 {/* Right Column: Info Cards (35%) */}
                 <div className="info-column">
+                  {ticket?.diagnostics && <details className="ticket-diagnostic-report"><summary>Customer-shared diagnostics</summary><p>Shared with consent on {new Date(ticket.diagnostics.consented_at).toLocaleString()}. Values are supplied by the customer app.</p><dl>{Object.entries(ticket.diagnostics).filter(([key]) => key !== 'consented_at').map(([key, value]) => <div key={key}><dt>{key.replaceAll('_', ' ')}</dt><dd>{String(value)}</dd></div>)}</dl></details>}
                   {/* Customer Info Card */}
                   <div className="info-card">
                     <div className="customer-card-header">
@@ -234,6 +235,7 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
                     </div>
                   </div>
 
+                  {ticket?.device_id ? <>
                   {/* Device Card */}
                   <div className="info-card">
                     <div className="device-card-header">
@@ -259,9 +261,12 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
                     </div>
                   </div>
 
+                  </> : <div className="ticket-no-device"><span>Device</span><p>No device linked to this ticket.</p></div>}
+
                   {/* Quick Actions Card */}
                   <div className="info-card actions-card">
                     <h3 className="actions-header-title">Customer Care Actions</h3>
+                    {ticket?.device_id && <>
                     <button
                       type="button"
                       disabled={isActing || !ticket?.device_id}
@@ -282,6 +287,9 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
                     </button>
 
                     <div className="actions-divider" />
+                    </>}
+
+
 
                     <button
                       type="button"

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import NotificationBell from './NotificationBell';
 import './TopBar.css';
 
 const paths = {
@@ -22,7 +23,7 @@ export default function TopBar({ title = 'Operations', onNavigate, onRefresh, re
     </div>
     <div className="jr-topbar-actions">
       {onRefresh && <button type="button" className="jr-topbar-button" onClick={onRefresh} disabled={refreshing} aria-label="Refresh page" title="Refresh page"><span className={refreshing ? 'jr-refreshing' : undefined}>{icon('refresh')}</span></button>}
-      <button type="button" className="jr-topbar-button" onClick={() => go('notifications')} aria-label="Notifications" title="Notifications">{icon('notifications')}</button>
+      <NotificationBell />
       {role === 'ADMIN' ? <button type="button" className="jr-topbar-avatar" onClick={() => go('helpers')} aria-label="Staff accounts" title={user?.name || 'Staff accounts'}>{initials}</button> : <span className="jr-topbar-avatar" title={user?.name || 'Staff'}>{initials}</span>}
     </div>
   </header>;

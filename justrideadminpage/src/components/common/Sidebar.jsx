@@ -13,7 +13,6 @@ const items = [
   { id: 'interested-users', label: 'Interested Users', icon: 'person_add', path: '/interested-users' },
   { id: 'helpers', label: 'Helpers', icon: 'build', path: '/helpers' },
   { id: 'audit-logs', label: 'Audit Logs', icon: 'admin_panel_settings', path: '/audit-logs' },
-  { id: 'notifications', label: 'Alerts', icon: 'notifications', path: '/notifications' },
 ];
 const mobileIds = ['dashboard', 'users', 'devices', 'support'];
 const iconPaths = {
@@ -79,9 +78,8 @@ export default function Sidebar({ activeRoute = 'dashboard', onNavigate, onLogou
         </button>
         <button type="button" className="sidebar-toggle" aria-label="Close sidebar" aria-expanded="true" aria-controls="admin-sidebar" onClick={toggleSidebar}>{icon('menu_open')}</button>
       </div>
-      <nav className="sidebar-nav-section" aria-label="Main">{items.slice(0, 5).map((item) => navButton(item))}</nav>
-      <nav className="sidebar-footer-section" aria-label="Administration">
-        {items.slice(5).map((item) => navButton(item))}
+      <nav className="sidebar-nav-section" aria-label="Main">
+        {items.map((item) => navButton(item))}
         <button type="button" className="nav-link-btn logout-btn" onClick={logout}>{icon('logout')}<span>Logout</span></button>
       </nav>
     </aside>
