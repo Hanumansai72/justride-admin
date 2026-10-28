@@ -8,6 +8,8 @@ import api from './client';
 export const authApi = {
   login: (credentials) => api.post('/admin/login', credentials),
   getProfile: (options = {}) => api.get('/admin/me', {}, options),
+  requestPasswordOtp: (currentPassword) => api.post('/admin/profile/password/otp', { currentPassword }),
+  changePassword: (data) => api.post('/admin/profile/password', data),
   updateCredentials: (data) => api.put('/admin/credentials', data),
   logout: () => api.post('/admin/logout'),
   recordActivity: (event, path) => api.post('/admin/activity', { event, path }),

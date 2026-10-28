@@ -56,6 +56,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
         const mapped = res.data.map((d) => ({
           id: d.device_id || d.BLE_ADDRESS || 'DEV-NODE',
           rawId: d._id,
+          lastSeen: d.last_seen_at,
           serial: d.BLE_ADDRESS ? `BLE: ${d.BLE_ADDRESS}` : `DEV: ${d.device_id}`,
           name: d.devicename || 'JustRide Telemetry Unit',
           owner: d.linked_to
@@ -294,13 +295,14 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
                 <th>DEVICE NAME</th>
                 <th>OWNER</th>
                 <th>STATUS</th>
+                <th>LAST SEEN</th>
                 <th className="text-right">ACTIONS</th>
               </tr>
             </thead>
             <tbody>
               {isLoading && devices.length === 0 ? (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+                  <td colSpan="6" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                     <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>
                       sync
                     </span>
@@ -309,7 +311,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
                 </tr>
               ) : devices.length === 0 ? (
                 <tr>
-                  <td colSpan="5" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+                  <td colSpan="6" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                     No devices found matching current filters.
                   </td>
                 </tr>
@@ -355,6 +357,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
                           <span className="status-pill-blocked">BLOCKED</span>
                         )}
                       </td>
+                      <td><time dateTime={d.lastSeen || undefined}>{d.lastSeen ? new Date(d.lastSeen).toLocaleString() : 'Not reported'}</time></td>
                       <td className="text-right" onClick={(e) => e.stopPropagation()}>
                         <div className="row-action-buttons">
                           <button

@@ -176,6 +176,7 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
                     </h3>
 
                     <div className="specs-list">
+                      <div className="specs-row"><span className="specs-k">Last Seen</span><time className="specs-v" dateTime={device?.last_seen_at || undefined}>{device?.last_seen_at ? new Date(device.last_seen_at).toLocaleString() : 'Not reported'}</time></div>
                       <div className="specs-row">
                         <span className="specs-k">Device ID</span>
                         <span className="specs-v font-mono">{device?.device_id || 'N/A'}</span>

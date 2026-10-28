@@ -24,7 +24,7 @@ export default function TopBar({ title = 'Operations', onNavigate, onRefresh, re
     <div className="jr-topbar-actions">
       {onRefresh && <button type="button" className="jr-topbar-button" onClick={onRefresh} disabled={refreshing} aria-label="Refresh page" title="Refresh page"><span>{icon('refresh')}</span></button>}
       <NotificationBell />
-      {role === 'ADMIN' ? <button type="button" className="jr-topbar-avatar" onClick={() => go('helpers')} aria-label="Staff accounts" title={user?.name || 'Staff accounts'}>{initials}</button> : <span className="jr-topbar-avatar" title={user?.name || 'Staff'}>{initials}</span>}
+      {role === 'ADMIN' ? <button type="button" className="jr-topbar-avatar" onClick={() => go('profile')} aria-label="Admin profile" title={user?.name || 'Admin profile'}>{initials}</button> : <span className="jr-topbar-avatar" title={user?.name || 'Staff'}>{initials}</span>}
     </div>
   </header>;
 }

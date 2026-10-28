@@ -1,0 +1,16 @@
+.admin-profile-page { max-width:1120px; margin:auto; }
+.admin-profile-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.3fr); gap:24px; align-items:start; }
+.admin-profile-card { min-width:0; padding:24px; border:1px solid var(--border-standard); border-radius:16px; background:var(--bg-layer-2); }
+.admin-profile-card h3 { margin-bottom:20px; font-size:20px; }
+.admin-profile-card p { margin:16px 0; line-height:1.6; overflow-wrap:anywhere; color:var(--text-muted); }
+.admin-profile-card dl>div { display:grid; gap:6px; padding:16px 0; border-bottom:1px solid var(--border-standard); }
+.admin-profile-card dt { font-size:13px; color:var(--text-muted); }
+.admin-profile-card dd { margin:0; overflow-wrap:anywhere; }
+.admin-profile-card form { display:grid; gap:18px; }
+.admin-profile-card label { display:grid; gap:8px; font-size:14px; }
+.admin-profile-card input { width:100%; min-width:0; min-height:44px; padding:12px; border:1px solid var(--border-standard); border-radius:8px; }
+.admin-profile-card button { padding:12px 18px; min-height:44px; font:inherit; }
+.admin-profile-card button:disabled { opacity:.55; cursor:wait; }
+.admin-profile-card p.admin-profile-error { color:var(--color-danger); }
+.admin-profile-hint { font-size:13px; }
+@media(max-width:900px) { .admin-profile-grid { grid-template-columns:minmax(0,1fr); } }

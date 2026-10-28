@@ -6,6 +6,8 @@ import { useAuth } from './context/AuthContext';
 import { authApi } from './api/services';
 const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 
+const AdminProfile = lazy(() => import('./pages/admin/AdminProfile'));
+
 // Admin Modules
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const UsersManagement = lazy(() => import('./pages/admin/UsersManagement'));
@@ -153,6 +155,8 @@ export default function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route path="/profile" element={<ProtectedRoute allowedRoles={['ADMIN']}><AdminProfile onNavigate={handleNavigate} onLogout={handleLogout} /></ProtectedRoute>} />
 
         {/* Users Management */}
         <Route path="/interested-users" element={<ProtectedRoute allowedRoles={['ADMIN', 'HELPER']}><InterestedUsers onNavigate={handleNavigate} onLogout={handleLogout} /></ProtectedRoute>} />
