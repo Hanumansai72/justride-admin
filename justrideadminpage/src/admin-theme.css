@@ -31,8 +31,8 @@ button, a, input, select, textarea { transition: background-color 160ms ease, bo
 .sidebar-brand-row { margin-bottom: 28px; padding: 0 12px 0 16px; gap: 8px; }
 .sidebar-brand-row .sidebar-header { min-width: 0; padding: 0; gap: 8px; justify-content: flex-start; cursor: pointer; }
 .sidebar-header .brand-text-title { white-space: nowrap; }
-.sidebar-toggle, .sidebar-open-button { background: transparent; border-color: transparent; border-radius: 50%; color: var(--text-muted); }
-.sidebar-toggle:hover, .sidebar-open-button:hover { color: var(--color-primary); background: var(--bg-layer-2); }
+.sidebar-toggle { background: transparent; border-color: transparent; border-radius: 50%; color: var(--text-muted); }
+.sidebar-toggle:hover { color: var(--color-primary); background: var(--bg-layer-2); }
 .nav-link-btn { border-left: 0; border-radius: 12px; min-height: 44px; padding: 11px 14px; font-size: 13px; font-weight: 400; }
 .nav-link-btn.active { background: #18291f; color: var(--color-primary); font-weight: 500; }
 .sidebar-nav-section { gap: 5px; }

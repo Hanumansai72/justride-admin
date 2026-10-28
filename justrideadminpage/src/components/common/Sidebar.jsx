@@ -28,7 +28,8 @@ const iconPaths = {
   notifications: 'M6 8a6 6 0 0 1 12 0v8l2 3H4l2-3z M10 22h4',
   logout: 'M9 3H3v18h6 M9 12h13 M17 7l5 5-5 5',
   menu: 'M3 6h18 M3 12h18 M3 18h18',
-  menu_open: 'M3 6h12 M3 12h9 M3 18h12 M21 8l-4 4 4 4',
+  chevron_left: 'M15 6l-6 6 6 6',
+  chevron_right: 'M9 6l6 6-6 6',
   close: 'M6 6l12 12 M18 6L6 18',
 };
 const icon = (name) => <svg className="nav-icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d={iconPaths[name]} /></svg>;
@@ -63,6 +64,7 @@ export default function Sidebar({ activeRoute, onNavigate, onLogout }) {
   };
   const navButton = (item, mobile = false) => (
     <button key={item.id} type="button" className={`${mobile ? 'mobile-nav-link' : 'nav-link-btn'} ${active(item) ? 'active' : ''}`}
+      aria-label={item.label} title={collapsed && !mobile ? item.label : undefined}
       aria-current={active(item) ? 'page' : undefined} onClick={() => go(item)}>
       {icon(item.icon)}<span>{item.label}</span>
     </button>
@@ -70,20 +72,20 @@ export default function Sidebar({ activeRoute, onNavigate, onLogout }) {
   const logout = () => { closeMore(); onLogout?.(); };
 
   return <>
-    <aside id="admin-sidebar" aria-label="Admin navigation" className={`app-sidebar ${collapsed ? 'sidebar-collapsed' : ''}`} inert={collapsed}>
+    <aside id="admin-sidebar" aria-label="Admin navigation" className={`app-sidebar ${collapsed ? 'sidebar-collapsed' : ''}`}>
       <div className="sidebar-brand-row">
         <button className="sidebar-header" type="button" onClick={() => go(items[0])} aria-label="JustRide dashboard">
           <div className="sidebar-brand-icon"><img src="/favicon.svg" alt="" width="24" height="24" /></div>
-          <div><span className="brand-text-title">Just<span>Ride</span></span></div>
+          <div className="sidebar-brand-name"><span className="brand-text-title">Just<span>Ride</span></span></div>
         </button>
-        <button type="button" className="sidebar-toggle" aria-label="Close sidebar" aria-expanded="true" aria-controls="admin-sidebar" onClick={toggleSidebar}>{icon('menu_open')}</button>
+        <button type="button" className="sidebar-toggle" aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'} aria-expanded={!collapsed} aria-controls="admin-sidebar" onClick={toggleSidebar}>{icon(collapsed ? 'chevron_right' : 'chevron_left')}</button>
       </div>
       <nav className="sidebar-nav-section" aria-label="Main">
         {items.map((item) => navButton(item))}
-        <button type="button" className="nav-link-btn logout-btn" onClick={logout}>{icon('logout')}<span>Logout</span></button>
+        <button type="button" className="nav-link-btn logout-btn" aria-label="Logout" title={collapsed ? 'Logout' : undefined} onClick={logout}>{icon('logout')}<span>Logout</span></button>
       </nav>
     </aside>
-    {collapsed && <button type="button" className="sidebar-open-button" aria-label="Open sidebar" aria-expanded="false" aria-controls="admin-sidebar" onClick={toggleSidebar}>{icon('menu')}</button>}
+
     <nav className="mobile-bottom-nav" aria-label="Mobile admin navigation">
       {mobileIds.map((id) => navButton(items.find((item) => item.id === id), true))}
       <button type="button" className={`mobile-nav-link ${items.some((item) => !mobileIds.includes(item.id) && active(item)) ? 'active' : ''}`}
@@ -96,7 +98,7 @@ export default function Sidebar({ activeRoute, onNavigate, onLogout }) {
       onClose={() => setMoreOpen(false)} onClick={(event) => { if (event.target === moreDialog.current) closeMore(); }}>
       <div className="mobile-more-heading"><h2 id="admin-more-title">More</h2><button type="button" className="sidebar-toggle" aria-label="Close navigation" onClick={closeMore}>{icon('close')}</button></div>
       <nav aria-label="More admin pages">{items.filter((item) => !mobileIds.includes(item.id)).map((item) => navButton(item))}</nav>
-      <button type="button" className="nav-link-btn logout-btn" onClick={logout}>{icon('logout')}<span>Logout</span></button>
+      <button type="button" className="nav-link-btn logout-btn" aria-label="Logout" title={collapsed ? 'Logout' : undefined} onClick={logout}>{icon('logout')}<span>Logout</span></button>
     </dialog>
   </>;
 }

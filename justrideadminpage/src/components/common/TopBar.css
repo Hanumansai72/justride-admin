@@ -9,8 +9,6 @@
 .jr-topbar-button:disabled { opacity:.5; cursor:wait; }
 .jr-topbar-avatar { margin-left:4px; border:1px solid var(--border-standard); background:var(--bg-layer-2); color:var(--color-primary); font:500 13px 'Stack Sans Text',sans-serif; }
 .jr-topbar :is(button):focus-visible { outline:2px solid var(--color-primary); outline-offset:3px; }
-.jr-refreshing { animation:jr-refresh 1s linear infinite; }
-@keyframes jr-refresh { to { transform:rotate(360deg); } }
 @media (max-width:767px) {
  .app-topbar.jr-topbar { left:0; height:64px; padding:0 16px; gap:8px; }
  .jr-topbar-heading { gap:4px; }
@@ -18,4 +16,3 @@
  .jr-topbar-actions { gap:0; }
  .jr-topbar-button,.jr-topbar-avatar { width:36px; height:40px; }
 }
-@media (prefers-reduced-motion:reduce) { .jr-refreshing { animation:none; } }

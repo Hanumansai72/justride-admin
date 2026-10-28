@@ -1,17 +1,22 @@
 /* Shared shell overrides for legacy admin page layouts. */
 :root { --admin-sidebar-width: 260px; }
-:root:has(.sidebar-collapsed) { --admin-sidebar-width: 0px; }
+:root:has(.sidebar-collapsed) { --admin-sidebar-width: 80px; }
 .admin-layout { display:flex; width:100%; min-height:100dvh; background:var(--bg-layer-0); color:var(--text-body); }
 .admin-layout-main { margin-left:var(--admin-sidebar-width); min-width:0; flex:1; display:flex; flex-direction:column; min-height:100dvh; }
 .admin-layout-canvas { margin-top:72px; flex:1; padding:2rem; min-width:0; }
 .app-sidebar .nav-icon,.mobile-bottom-nav .nav-icon,.mobile-more-dialog .nav-icon { flex-shrink:0; }
 .app-sidebar { height:100dvh; overflow-y:auto; padding:20px 0; }
-.app-sidebar.sidebar-collapsed { display:none; }
+.app-sidebar.sidebar-collapsed { width:var(--admin-sidebar-width); }
+.sidebar-collapsed .sidebar-brand-row { flex-direction:column; padding:0 8px; gap:8px; }
+.sidebar-collapsed .sidebar-brand-row .sidebar-header { flex:none; justify-content:center; padding:0; }
+.sidebar-collapsed .sidebar-brand-name,.sidebar-collapsed .nav-link-btn > span { display:none; }
+.sidebar-collapsed .sidebar-nav-section { padding:0 12px; }
+.sidebar-collapsed .nav-link-btn { justify-content:center; padding:11px 0; }
+.sidebar-collapsed .sidebar-toggle { width:36px; height:36px; }
 .sidebar-brand-row { display:flex; align-items:center; padding-right:10px; gap:4px; margin-bottom:20px; }
 .sidebar-header { border:0; background:transparent; text-align:left; margin:0; padding:0 12px 0 20px; flex:1; color:inherit; font:inherit; }
 .sidebar-header .brand-text-title { display:block; }
-.sidebar-toggle,.sidebar-open-button { display:grid; place-items:center; width:44px; height:44px; flex-shrink:0; border:1px solid var(--border-standard); border-radius:8px; background:var(--bg-layer-1); color:var(--color-primary); cursor:pointer; }
-.sidebar-open-button { position:fixed; left:12px; top:14px; z-index:55; }
+.sidebar-toggle { display:grid; place-items:center; width:44px; height:44px; flex-shrink:0; border:1px solid var(--border-standard); border-radius:8px; background:var(--bg-layer-1); color:var(--color-primary); cursor:pointer; }
 .app-sidebar .sidebar-nav-section { flex:1 0 auto; overflow:visible; }
 .mobile-bottom-nav { display:none; }
 .mobile-more-dialog { width:min(480px,calc(100% - 24px)); max-height:calc(100dvh - 100px); margin:auto auto calc(82px + env(safe-area-inset-bottom)); padding:16px; border:1px solid var(--border-standard); border-radius:18px; background:var(--bg-layer-1); color:var(--text-body); overflow-y:auto; }
@@ -19,11 +24,10 @@
 .mobile-more-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:12px; }
 .mobile-more-heading h2 { font-size:20px; }
 .mobile-more-dialog .nav-link-btn { min-height:48px; border-radius:8px; }
-:root:has(.sidebar-collapsed) :is(.audit-topbar,.top-header,.dev-detail-header,.devices-topbar,.firmware-topbar,.helper-topbar,.notif-topbar,.provision-topbar,.staff-topbar,.activity-topbar,.user-topbar,.users-topbar,.ticket-top-appbar,.app-topbar,.audit-detail-topbar) { padding-left:72px; }
 :root:has(.app-sidebar) :is(.audit-detail-main,.audit-main-wrapper,.main-wrapper,.dev-detail-main,.devices-main-content,.firmware-main-wrapper,.helper-main-wrapper,.notif-main-wrapper,.provision-main-wrapper,.register-device-main,.staff-main-area,.activity-main-wrapper,.user-main-wrapper,.users-main-wrapper,.support-main-content,.ticket-main-viewport,.admin-layout-main) { min-width:0; }
 @media (max-width: 767px) {
   :root,:root:has(.sidebar-collapsed) { --admin-sidebar-width:0px; }
-  .app-sidebar,.sidebar-open-button { display:none; }
+  .app-sidebar,.app-sidebar.sidebar-collapsed { display:none; }
   .mobile-bottom-nav { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); position:fixed; left:0; right:0; bottom:0; z-index:60; padding:6px 6px calc(6px + env(safe-area-inset-bottom)); background:var(--bg-layer-1); border-top:1px solid var(--border-standard); box-shadow:0 -8px 24px rgba(0,0,0,.2); }
   .mobile-nav-link { min-width:0; min-height:56px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; border:0; border-radius:10px; background:transparent; color:var(--text-muted); font:inherit; font-size:10px; cursor:pointer; }
   .mobile-nav-link .nav-icon { font-size:23px; }

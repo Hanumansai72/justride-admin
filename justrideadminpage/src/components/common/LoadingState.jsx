@@ -10,7 +10,7 @@ export function CircleLoader({ fullScreen = false, label = 'Loading…' }) {
 
 export function ContentSkeleton({ route = false }) {
   return <div className={`jr-page-skeleton ${route ? 'jr-route-skeleton' : ''}`} role="status" aria-label="Loading page content" aria-busy="true">
-    <div className="jr-skeleton-heading"><span className="jr-skeleton-block" /><span className="jr-loading-ring" aria-hidden="true" /></div>
+    <div className="jr-skeleton-heading"><span className="jr-skeleton-block" /></div>
     <div className="jr-skeleton-metrics" aria-hidden="true">{[0, 1, 2].map(i => <div key={i}><span className="jr-skeleton-block" /><span className="jr-skeleton-block" /></div>)}</div>
     <div className="jr-skeleton-table" aria-hidden="true">{[0, 1, 2, 3, 4, 5].map(i => <div key={i}>{[0, 1, 2, 3].map(j => <span className="jr-skeleton-block" key={j} />)}</div>)}</div>
     <span className="jr-sr-only">Loading page content…</span>
