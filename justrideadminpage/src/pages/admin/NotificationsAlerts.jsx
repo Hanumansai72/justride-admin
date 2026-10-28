@@ -1,3 +1,5 @@
+import ReleasePushComposer from '../../components/common/ReleasePushComposer';
+import { useAuth } from '../../context/AuthContext';
 import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import Pagination from '../../components/common/Pagination';
@@ -10,6 +12,7 @@ import './NotificationsAlerts.css';
 
 export default function NotificationsAlerts({ onNavigate, onLogout }) {
   const navigate = useNavigate();
+  const { role } = useAuth();
   const [filterCategory, setFilterCategory] = useState('ALL');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -125,6 +128,7 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
 
         {/* Content Canvas */}
         <main className="notif-content-canvas">
+          {role === 'ADMIN' && <ReleasePushComposer />}
           <RequestError message={loadError} loading={isLoading} onRetry={fetchAlerts} />
           <div className="canvas-wrapper">
             {/* Header & Primary Controls */}

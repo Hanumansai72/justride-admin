@@ -106,3 +106,8 @@ export const auditApi = {
   getLogById: (id, options = {}) => api.get(`/admin/audit-logs/${id}`, {}, options),
   getStats: (params = {}, options = {}) => api.get('/admin/audit-logs/stats', params, options),
 };
+
+export const releasePushApi = {
+  status: (options = {}) => api.get('/admin/notifications/push-status', {}, options),
+  send: (data) => api.post('/admin/notifications/release-push', data),
+};
