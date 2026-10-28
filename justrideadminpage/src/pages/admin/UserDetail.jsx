@@ -1,8 +1,8 @@
+import UserAvatar from '../../components/common/UserAvatar';
 import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Sidebar from '../../components/common/Sidebar';
 import { usersApi } from '../../api/services';
 import './UserDetail.css';
 
@@ -76,7 +76,6 @@ export default function UserDetail({ userId: propUserId, onNavigate, onLogout })
   return (
     <div className="user-detail-container">
       {/* SideNavBar */}
-      <Sidebar activeRoute="users" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main View Area */}
       <div className="user-main-wrapper">
@@ -111,7 +110,7 @@ export default function UserDetail({ userId: propUserId, onNavigate, onLogout })
                       <span>{userStatus}</span>
                     </div>
                   </div>
-                  <h1 className="user-main-title">{user?.name || 'Marcus Aurelius'}</h1>
+                  <h1 className="user-main-title">{user?.name || 'Name unavailable'}</h1>
                 </div>
 
                 <div className="user-header-actions">
@@ -145,16 +144,10 @@ export default function UserDetail({ userId: propUserId, onNavigate, onLogout })
 
                   <div className="identity-avatar-row">
                     <div className="identity-avatar-ring">
-                      <img
-                        src={
-                          user?.avatar ||
-                          'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?auto=format&fit=crop&w=200&q=80'
-                        }
-                        alt={user?.name || 'User'}
-                      />
+                      <UserAvatar src={user?.avatar} name={user?.name} email={user?.email} />
                     </div>
                     <div>
-                      <h4 className="identity-name">{user?.name || 'Marcus Aurelius'}</h4>
+                      <h4 className="identity-name">{user?.name || 'Name unavailable'}</h4>
                       <p className="identity-role">{user?.role || 'USER'} Rider</p>
                     </div>
                   </div>
@@ -162,11 +155,11 @@ export default function UserDetail({ userId: propUserId, onNavigate, onLogout })
                   <div className="identity-details-list">
                     <div className="detail-row">
                       <span className="detail-key">Email</span>
-                      <span className="detail-val">{user?.email || 'marcus.a@example.com'}</span>
+                      <span className="detail-val">{user?.email || 'Not provided'}</span>
                     </div>
                     <div className="detail-row">
                       <span className="detail-key">Phone</span>
-                      <span className="detail-val">{user?.phonenumber || '+1 (555) 019-8372'}</span>
+                      <span className="detail-val">{user?.phonenumber || 'Not provided'}</span>
                     </div>
                     <div className="detail-row">
                       <span className="detail-key">Member Since</span>
@@ -196,10 +189,7 @@ export default function UserDetail({ userId: propUserId, onNavigate, onLogout })
                     {pairedDevice ? (
                       <div className="device-content-flex">
                         <div className="device-photo-wrap">
-                          <img
-                            src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=400&q=80"
-                            alt={pairedDevice.devicename || 'JustRide Device'}
-                          />
+                          <span className="material-symbols-outlined" aria-hidden="true">motorcycle</span>
                         </div>
 
                         <div className="device-info-grid">

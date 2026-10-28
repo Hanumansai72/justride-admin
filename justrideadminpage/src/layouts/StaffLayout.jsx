@@ -1,5 +1,4 @@
 import React from 'react';
-import Sidebar from '../../components/common/Sidebar';
 import TopBar from '../../components/common/TopBar';
 
 export default function StaffLayout({

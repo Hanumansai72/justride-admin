@@ -2,7 +2,6 @@ import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import Pagination from '../../components/common/Pagination';
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-import Sidebar from '../../components/common/Sidebar';
 import { helpersApi } from '../../api/services';
 import './SupportStaff.css';
 
@@ -111,7 +110,6 @@ export default function SupportStaff({ onNavigate, onLogout }) {
   return (
     <div className="staff-mgmt-container">
       {/* SideNavBar */}
-      <Sidebar activeRoute="helpers" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Content Area */}
       <div className="staff-main-area">

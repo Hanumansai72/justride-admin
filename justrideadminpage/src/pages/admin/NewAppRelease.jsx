@@ -1,19 +1,16 @@
 import TopBar from '../../components/common/TopBar';
 import React, { useState } from 'react';
-import Sidebar from '../../components/common/Sidebar';
 import { appReleasesApi } from '../../api/services';
 import './ProvisionStaff.css';
 
 export default function NewAppRelease({ onNavigate, onLogout }) {
-  const [version, setVersion] = useState('1.0.0');
-  const [buildNumber, setBuildNumber] = useState('1');
+  const [version, setVersion] = useState('');
+  const [buildNumber, setBuildNumber] = useState('');
   const [platform, setPlatform] = useState('android');
   const [channel, setChannel] = useState('stable'); // stable, beta, alpha
   const [minSupportedVersion, setMinSupportedVersion] = useState('');
   const [isMandatory, setIsMandatory] = useState(false);
-  const [releaseNotes, setReleaseNotes] = useState(
-    'Initial Android release: Wireless BLE navigation dashboard, battery telemetry, and background sync.'
-  );
+  const [releaseNotes, setReleaseNotes] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileUrl, setFileUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -105,7 +102,6 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
   return (
     <div className="provision-staff-page">
       {/* Universal Sidebar */}
-      <Sidebar activeRoute="app-releases" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Content Area */}
       <div className="provision-main-wrapper">
@@ -223,7 +219,7 @@ export default function NewAppRelease({ onNavigate, onLogout }) {
                           style={{ width: '18px', height: '18px', accentColor: 'var(--color-primary)', cursor: 'pointer' }}
                         />
                         <label htmlFor="is-mandatory-toggle" style={{ color: 'var(--text-white)', fontSize: '13px', cursor: 'pointer' }}>
-                          Force Mandatory Update (Blocks older versions)
+                          Force Require update before app use (Blocks older versions)
                         </label>
                       </div>
 

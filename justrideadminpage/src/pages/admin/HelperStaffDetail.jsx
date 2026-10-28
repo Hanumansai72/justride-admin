@@ -2,7 +2,6 @@ import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Sidebar from '../../components/common/Sidebar';
 import { helpersApi } from '../../api/services';
 import './HelperStaffDetail.css';
 
@@ -86,7 +85,6 @@ export default function HelperStaffDetail({ helperId: propHelperId, onNavigate, 
   return (
     <div className="helper-detail-container">
       {/* SideNavBar */}
-      <Sidebar activeRoute="helpers" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Content Area */}
       <div className="helper-main-wrapper">

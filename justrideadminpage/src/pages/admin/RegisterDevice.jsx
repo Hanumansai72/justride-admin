@@ -1,6 +1,5 @@
 import TopBar from '../../components/common/TopBar';
 import React, { useState } from 'react';
-import Sidebar from '../../components/common/Sidebar';
 import { devicesApi } from '../../api/services';
 import './RegisterDevice.css';
 
@@ -67,7 +66,6 @@ export default function RegisterDevice({ onNavigate, onLogout }) {
   return (
     <div className="register-device-page">
       {/* Universal Side Navigation */}
-      <Sidebar activeRoute="devices" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Content Area */}
       <div className="register-device-main">

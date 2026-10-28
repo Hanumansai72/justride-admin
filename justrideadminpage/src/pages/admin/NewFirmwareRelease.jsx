@@ -1,6 +1,5 @@
 import TopBar from '../../components/common/TopBar';
 import React, { useState } from 'react';
-import Sidebar from '../../components/common/Sidebar';
 import { firmwareApi } from '../../api/services';
 import './ProvisionStaff.css';
 
@@ -76,7 +75,6 @@ export default function NewFirmwareRelease({ onNavigate, onLogout }) {
   return (
     <div className="provision-staff-page">
       {/* Universal Sidebar */}
-      <Sidebar activeRoute="firmware" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Content Area */}
       <div className="provision-main-wrapper">

@@ -1,6 +1,5 @@
 import TopBar from '../../components/common/TopBar';
 import React, { useState } from 'react';
-import Sidebar from '../../components/common/Sidebar';
 import { helpersApi } from '../../api/services';
 import './ProvisionStaff.css';
 
@@ -79,7 +78,6 @@ export default function ProvisionStaff({ onNavigate, onLogout }) {
   return (
     <div className="provision-staff-page">
       {/* Universal Sidebar */}
-      <Sidebar activeRoute="helpers" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Content Pane */}
       <div className="provision-main-wrapper">

@@ -1,66 +1,42 @@
-import React, { useEffect, useRef } from 'react';
+import React, { Suspense, lazy, useEffect, useRef } from 'react';
+import Sidebar from './components/common/Sidebar';
+import { CircleLoader, ContentSkeleton, PageLoadBoundary } from './components/common/LoadingState';
 import { Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { authApi } from './api/services';
-import LoginPage from './pages/auth/LoginPage';
+const LoginPage = lazy(() => import('./pages/auth/LoginPage'));
 
 // Admin Modules
-import AdminDashboard from './pages/admin/AdminDashboard';
-import UsersManagement from './pages/admin/UsersManagement';
-import InterestedUsers from './pages/admin/InterestedUsers';
-import CreateUser from './pages/admin/CreateUser';
-import UserDetail from './pages/admin/UserDetail';
-import UserActivityLog from './pages/admin/UserActivityLog';
-import SupportStaff from './pages/admin/SupportStaff';
-import HelperStaffDetail from './pages/admin/HelperStaffDetail';
-import DeviceInventory from './pages/admin/DeviceInventory';
-import DeviceDetail from './pages/admin/DeviceDetail';
-import RegisterDevice from './pages/admin/RegisterDevice';
-import FirmwareManagement from './pages/admin/FirmwareManagement';
-import NewFirmwareRelease from './pages/admin/NewFirmwareRelease';
-import AppReleasesManagement from './pages/admin/AppReleasesManagement';
-import NewAppRelease from './pages/admin/NewAppRelease';
-import AuditLogs from './pages/admin/AuditLogs';
-import AuditLogDetail from './pages/admin/AuditLogDetail';
-import NotificationsAlerts from './pages/admin/NotificationsAlerts';
-import ProvisionStaff from './pages/admin/ProvisionStaff';
+const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
+const UsersManagement = lazy(() => import('./pages/admin/UsersManagement'));
+const InterestedUsers = lazy(() => import('./pages/admin/InterestedUsers'));
+const CreateUser = lazy(() => import('./pages/admin/CreateUser'));
+const UserDetail = lazy(() => import('./pages/admin/UserDetail'));
+const UserActivityLog = lazy(() => import('./pages/admin/UserActivityLog'));
+const SupportStaff = lazy(() => import('./pages/admin/SupportStaff'));
+const HelperStaffDetail = lazy(() => import('./pages/admin/HelperStaffDetail'));
+const DeviceInventory = lazy(() => import('./pages/admin/DeviceInventory'));
+const DeviceDetail = lazy(() => import('./pages/admin/DeviceDetail'));
+const RegisterDevice = lazy(() => import('./pages/admin/RegisterDevice'));
+const FirmwareManagement = lazy(() => import('./pages/admin/FirmwareManagement'));
+const NewFirmwareRelease = lazy(() => import('./pages/admin/NewFirmwareRelease'));
+const AppReleasesManagement = lazy(() => import('./pages/admin/AppReleasesManagement'));
+const NewAppRelease = lazy(() => import('./pages/admin/NewAppRelease'));
+const AuditLogs = lazy(() => import('./pages/admin/AuditLogs'));
+const AuditLogDetail = lazy(() => import('./pages/admin/AuditLogDetail'));
+const NotificationsAlerts = lazy(() => import('./pages/admin/NotificationsAlerts'));
+const ProvisionStaff = lazy(() => import('./pages/admin/ProvisionStaff'));
 
 // Staff Modules
-import SupportManagement from './pages/staff/SupportManagement';
-import TicketDetail from './pages/staff/TicketDetail';
+const SupportManagement = lazy(() => import('./pages/staff/SupportManagement'));
+const TicketDetail = lazy(() => import('./pages/staff/TicketDetail'));
 
 // Protected Route Guard Component
 function ProtectedRoute({ children, allowedRoles }) {
   const { user, role, isLoading } = useAuth();
   const location = useLocation();
 
-  if (isLoading) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          height: '100vh',
-          width: '100vw',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'var(--bg-layer-0)',
-          color: 'var(--color-primary)',
-          flexDirection: 'column',
-          gap: '16px',
-        }}
-      >
-        <span
-          className="material-symbols-outlined"
-          style={{ fontSize: '48px', animation: 'spin 1s linear infinite' }}
-        >
-          sync
-        </span>
-        <p style={{ color: 'var(--text-body)', fontFamily: 'monospace' }}>
-          Verifying session credentials...
-        </p>
-      </div>
-    );
-  }
+  if (isLoading) return <CircleLoader fullScreen />;
 
   if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
@@ -129,33 +105,7 @@ export default function App() {
     navigate('/login');
   };
 
-  if (isLoading) {
-    return (
-      <div
-        style={{
-          display: 'flex',
-          height: '100vh',
-          width: '100vw',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: 'var(--bg-layer-0)',
-          color: 'var(--color-primary)',
-          flexDirection: 'column',
-          gap: '16px',
-        }}
-      >
-        <span
-          className="material-symbols-outlined"
-          style={{ fontSize: '48px', animation: 'spin 1s linear infinite' }}
-        >
-          sync
-        </span>
-        <p style={{ color: 'var(--text-body)', fontFamily: 'monospace' }}>
-          Loading JustRide Operations Portal...
-        </p>
-      </div>
-    );
-  }
+  if (isLoading && !user) return <CircleLoader fullScreen />;
 
   if (sessionUnavailable) {
     return <div role="alert" style={{ minHeight: '100vh', display: 'grid', placeContent: 'center', gap: 16, padding: 24, background: 'var(--bg-layer-0)', color: 'var(--text-body)' }}>
@@ -167,6 +117,9 @@ export default function App() {
 
   return (
     <div className="justride-application-root">
+      {user && pathname !== '/login' && <Sidebar onNavigate={handleNavigate} onLogout={handleLogout} />}
+      <PageLoadBoundary key={user ? 'signed-in' : 'signed-out'}>
+      <Suspense fallback={user ? <ContentSkeleton route /> : <CircleLoader fullScreen />}>
       {/* React Router Routes */}
       <Routes>
         {/* Public Login Route */}
@@ -384,6 +337,8 @@ export default function App() {
           element={<Navigate to={user ? (role === 'ADMIN' ? '/dashboard' : '/support') : '/login'} replace />}
         />
       </Routes>
+      </Suspense>
+      </PageLoadBoundary>
     </div>
   );
 }

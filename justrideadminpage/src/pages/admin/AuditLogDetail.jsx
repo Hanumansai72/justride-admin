@@ -1,7 +1,6 @@
 import TopBar from '../../components/common/TopBar';
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Sidebar from '../../components/common/Sidebar';
 import { auditApi, authApi } from '../../api/services';
 import './AuditLogDetail.css';
 
@@ -43,7 +42,6 @@ export default function AuditLogDetail({ onNavigate, onLogout }) {
   return (
     <div className="audit-detail-page">
       {/* Universal Sidebar */}
-      <Sidebar activeRoute="audit-logs" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Content Area */}
       <div className="audit-detail-main">

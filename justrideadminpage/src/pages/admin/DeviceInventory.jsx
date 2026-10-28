@@ -1,11 +1,12 @@
 import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import Sidebar from '../../components/common/Sidebar';
+import { useAuth } from '../../context/AuthContext';
 import { devicesApi } from '../../api/services';
 import './DeviceInventory.css';
 
 export default function DeviceInventory({ onNavigate, onLogout }) {
+  const { role } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('Status: All');
   const [pairingFilter, setPairingFilter] = useState('Pairing: All');
@@ -36,6 +37,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
     setLoadError('');
     try {
       const params = {
+        is_retired: false,
         page: currentPage,
         limit,
         search: searchQuery.trim() || undefined,
@@ -124,6 +126,13 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
             );
           }
         }
+      } else if (type === 'delete' && role === 'ADMIN') {
+        if (!window.confirm(`Delete device ${device.id}? It will be unlinked and removed from active inventory. Its audit record will be retained.`)) return;
+        const res = await devicesApi.retireDevice(device.rawId, 'Deleted from admin inventory');
+        if (res?.success) {
+          if (devices.length === 1 && currentPage > 1) setCurrentPage(currentPage - 1);
+          else await fetchDevices();
+        }
       } else if (type === 'block') {
         const reason = window.prompt(`Enter reason for blocking device ${device.id}:`, 'Reported lost/stolen');
         if (reason) {
@@ -152,7 +161,6 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
   return (
     <div className="devices-page-container">
       {/* SideNavBar */}
-      <Sidebar activeRoute="devices" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* TopAppBar */}
       <TopBar title="Devices" onRefresh={fetchDevices} refreshing={isLoading} onNavigate={onNavigate} />
@@ -395,6 +403,11 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
                               <span className="material-symbols-outlined icon-20">
                                 {isActionLoading ? 'sync' : 'lock_open'}
                               </span>
+                            </button>
+                          )}
+                          {role === 'ADMIN' && (
+                            <button type="button" className="row-btn hover-red" title="Delete device" aria-label={`Delete device ${d.id}`} disabled={isActionLoading} onClick={(e) => handleAction('delete', d, e)}>
+                              <span className="material-symbols-outlined icon-20">delete</span>
                             </button>
                           )}
                         </div>

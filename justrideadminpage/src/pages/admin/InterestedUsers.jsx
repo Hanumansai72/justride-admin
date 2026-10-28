@@ -1,3 +1,4 @@
+import { ContentSkeleton } from '../../components/common/LoadingState';
 import React, { useEffect, useState } from 'react';
 import AdminLayout from '../../layouts/AdminLayout';
 import DataTable from '../../components/common/DataTable';
@@ -58,7 +59,7 @@ export default function InterestedUsers({ onNavigate, onLogout }) {
     <section className="interested-users" aria-labelledby="interested-users-title">
       <div className="interested-users__header"><div><h1 id="interested-users-title">Interested Users</h1><p>Early interest submissions from the JustRide homepage, newest first.</p></div><div className="interested-users__actions"><button type="button" onClick={() => reload(1)} disabled={loading}>Refresh</button></div></div>
       {!loading && !error && <p className="interested-users__count">{result.total} interested {result.total === 1 ? 'rider' : 'riders'}</p>}
-      {loading ? <p role="status">Loading interested users…</p> : error ? <p role="alert" className="interested-users__error">{error}</p> : <>
+      {loading ? <ContentSkeleton /> : error ? <p role="alert" className="interested-users__error">{error}</p> : <>
         <DataTable columns={columns} data={result.items.map((row) => ({ ...row, id: row._id }))} pagination={false} />
         <div className="interested-users__pagination"><span>Page {page} of {pages}</span><button type="button" disabled={page <= 1} onClick={() => reload(page - 1)}>Previous</button><button type="button" disabled={page >= pages} onClick={() => reload(page + 1)}>Next</button></div>
       </>}

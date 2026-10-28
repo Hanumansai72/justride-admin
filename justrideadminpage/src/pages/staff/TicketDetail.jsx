@@ -2,7 +2,6 @@ import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import Sidebar from '../../components/common/Sidebar';
 import { supportApi } from '../../api/services';
 import './TicketDetail.css';
 
@@ -150,7 +149,6 @@ export default function TicketDetail({ ticketId: propTicketId, onBack, onNavigat
   return (
     <div className="ticket-page-container">
       {/* Side Nav Bar */}
-      <Sidebar activeRoute="support" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Content Area */}
       <div className="ticket-main-viewport">

@@ -33,7 +33,7 @@ const iconPaths = {
 };
 const icon = (name) => <svg className="nav-icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d={iconPaths[name]} /></svg>;
 
-export default function Sidebar({ activeRoute = 'dashboard', onNavigate, onLogout }) {
+export default function Sidebar({ activeRoute, onNavigate, onLogout }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const moreDialog = useRef(null);

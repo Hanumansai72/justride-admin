@@ -1,10 +1,7 @@
-import ReleasePushComposer from '../../components/common/ReleasePushComposer';
-import { useAuth } from '../../context/AuthContext';
 import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import Pagination from '../../components/common/Pagination';
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import Sidebar from '../../components/common/Sidebar';
 import { notificationsApi } from '../../api/services';
 import { useNavigate } from 'react-router-dom';
 import { notificationTarget } from '../../utils/notificationTarget';
@@ -12,7 +9,6 @@ import './NotificationsAlerts.css';
 
 export default function NotificationsAlerts({ onNavigate, onLogout }) {
   const navigate = useNavigate();
-  const { role } = useAuth();
   const [filterCategory, setFilterCategory] = useState('ALL');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -119,7 +115,6 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
   return (
     <div className="notifications-page-container">
       {/* SideNavBar */}
-      <Sidebar activeRoute="notifications" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Area */}
       <div className="notif-main-wrapper">
@@ -128,7 +123,6 @@ export default function NotificationsAlerts({ onNavigate, onLogout }) {
 
         {/* Content Canvas */}
         <main className="notif-content-canvas">
-          {role === 'ADMIN' && <ReleasePushComposer />}
           <RequestError message={loadError} loading={isLoading} onRetry={fetchAlerts} />
           <div className="canvas-wrapper">
             {/* Header & Primary Controls */}

@@ -1,21 +1,19 @@
 import TopBar from '../../components/common/TopBar';
+import UserAvatar from '../../components/common/UserAvatar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import Sidebar from '../../components/common/Sidebar';
+import { useParams } from 'react-router-dom';
 import { devicesApi } from '../../api/services';
 import './DeviceDetail.css';
 
 export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigate, onLogout }) {
   const params = useParams();
-  const navigate = useNavigate();
   const deviceId = propDeviceId || params.id;
   const [device, setDevice] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
   const requestRef = useRef(null);
   const [isUpdating, setIsUpdating] = useState(false);
-  const [firmwareUpdating, setFirmwareUpdating] = useState(false);
 
   const fetchDeviceDetails = useCallback(async () => {
     if (!deviceId) {
@@ -96,36 +94,12 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
     }
   };
 
-  const handlePushUpdate = () => {
-    setFirmwareUpdating(true);
-    setTimeout(() => {
-      setFirmwareUpdating(false);
-      setDevice((prev) => ({ ...prev, firmware_version: '2.4.1' }));
-      alert('Firmware update signal dispatched via MQTT.');
-    }, 1500);
-  };
-
-  const logs = [
-    {
-      timestamp: device?.linked_date ? new Date(device.linked_date).toLocaleString() : 'Recent',
-      user: device?.linked_to?.name || 'Assigned Rider',
-      event: device?.is_paired ? 'BLE Pairing Established' : 'Device Available',
-      status: device?.is_blocked ? 'Blocked' : 'Active',
-      type: device?.is_blocked ? 'error' : 'success',
-    },
-    {
-      timestamp: 'Diagnostic Check',
-      user: 'SYSTEM_DAEMON',
-      event: 'Telemetry Packet Received',
-      status: '200 OK',
-      type: 'success',
-    },
-  ];
+  const version = (value) => value ? `v${String(value).replace(/^v/i, '')}` : 'Not reported';
+  const logs = device?.activity || [];
 
   return (
     <div className="dev-detail-page">
       {/* SideNavBar */}
-      <Sidebar activeRoute="devices" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Container */}
       <div className="dev-detail-main">
@@ -208,15 +182,15 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
                       </div>
                       <div className="specs-row">
                         <span className="specs-k">BLE Address</span>
-                        <span className="specs-v font-mono">{device?.BLE_ADDRESS || '00:1A:2B:3C:4D'}</span>
+                        <span className="specs-v font-mono">{device?.BLE_ADDRESS || 'Not reported'}</span>
                       </div>
                       <div className="specs-row">
                         <span className="specs-k">Firmware Version</span>
-                        <span className="specs-v">v{device?.firmware_version || '1.0.0'}</span>
+                        <span className="specs-v">{version(device?.firmware_version)}</span>
                       </div>
                       <div className="specs-row no-border">
                         <span className="specs-k">Device Version</span>
-                        <span className="specs-v">{device?.device_version || '1.0'}</span>
+                        <span className="specs-v">{device?.device_version || 'Not reported'}</span>
                       </div>
                     </div>
                   </div>
@@ -235,10 +209,7 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
                         style={{ cursor: 'pointer' }}
                       >
                         <div className="owner-avatar-wrap">
-                          <img
-                            src={device.linked_to.avatar || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=100&q=80'}
-                            alt={device.linked_to.name || 'Rider'}
-                          />
+                          <UserAvatar src={device.linked_to.avatar} name={device.linked_to.name} email={device.linked_to.email} />
                         </div>
                         <div>
                           <div className="owner-name-txt">{device.linked_to.name || 'Registered Rider'}</div>
@@ -262,9 +233,9 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
                       <div className="bento-title-flex">
                         <h3 className="bento-title">
                           <span className="material-symbols-outlined icon-20">vital_signs</span>
-                          <span>Live Telemetry</span>
+                          <span>Device Telemetry</span>
                         </h3>
-                        <span className="telemetry-timestamp">Stream Active</span>
+                        <span className="telemetry-timestamp">No telemetry reported</span>
                       </div>
 
                       <div className="telemetry-metrics-grid">
@@ -273,7 +244,7 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
                             <span className="material-symbols-outlined icon-16">battery_std</span>
                             <span>Battery</span>
                           </div>
-                          <div className="metric-box-val text-warning">88%</div>
+                          <div className="metric-box-val text-warning">Unavailable</div>
                         </div>
 
                         <div className="metric-box">
@@ -281,7 +252,7 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
                             <span className="material-symbols-outlined icon-16">device_thermostat</span>
                             <span>Temp</span>
                           </div>
-                          <div className="metric-box-val">34°C</div>
+                          <div className="metric-box-val">Unavailable</div>
                         </div>
 
                         <div className="metric-box full-width flex-between">
@@ -289,7 +260,7 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
                             <span className="material-symbols-outlined icon-16">signal_cellular_alt</span>
                             <span>Signal Strength (RSSI)</span>
                           </div>
-                          <div className="font-mono rssi-value">-54 dBm</div>
+                          <div className="font-mono rssi-value">Unavailable</div>
                         </div>
                       </div>
                     </div>
@@ -304,35 +275,16 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
                       <div className="firmware-versions-row">
                         <div>
                           <div className="version-label">Current Version</div>
-                          <div className="version-val font-mono">v{device?.firmware_version || '1.0.0'}</div>
+                          <div className="version-val font-mono">{version(device?.firmware_version)}</div>
                         </div>
                         <div className="text-right">
-                          <div className="version-label">Target Channel</div>
-                          <div className="version-val target font-mono">Stable v2.4.1</div>
+                          <div className="version-label">Latest Available</div>
+                          <div className="version-val target font-mono">{version(device?.latest_firmware)}</div>
                         </div>
                       </div>
 
-                      <div className="update-progress-section">
-                        <div className="update-status-label">
-                          <span className="material-symbols-outlined icon-16">pending</span>
-                          <span>{firmwareUpdating ? 'OTA Update in progress...' : 'Ready for OTA update'}</span>
-                        </div>
-                        <div className="progress-bg">
-                          <div
-                            className={`progress-fill ${firmwareUpdating ? 'progress-active' : ''}`}
-                            style={{ width: firmwareUpdating ? '100%' : '10%' }}
-                          />
-                        </div>
-                      </div>
-
-                      <button
-                        type="button"
-                        className="btn-push-update"
-                        disabled={firmwareUpdating}
-                        onClick={handlePushUpdate}
-                      >
-                        {firmwareUpdating ? 'Transmitting...' : 'Push OTA Update'}
-                      </button>
+                      <p className="update-status-label">{device?.firmware_update_available ? 'An update is available in the rider app.' : 'No pending update reported.'}</p>
+                      <p className="version-label">Firmware updates are installed from the rider app.</p>
                     </div>
                   </div>
 
@@ -356,13 +308,14 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
                           </tr>
                         </thead>
                         <tbody>
+                          {logs.length === 0 && <tr><td colSpan="4">No recorded device activity.</td></tr>}
                           {logs.map((log, idx) => (
                             <tr key={idx} className="log-row">
-                              <td className="font-mono text-muted">{log.timestamp}</td>
-                              <td className="text-white font-medium">{log.user}</td>
-                              <td className="text-white">{log.event}</td>
+                              <td className="font-mono text-muted">{log.createdAt ? new Date(log.createdAt).toLocaleString() : 'Not recorded'}</td>
+                              <td className="text-white font-medium">{log.user_id?.name || log.user_id?.email || 'System'}</td>
+                              <td className="text-white">{log.action?.replaceAll('_', ' ')}</td>
                               <td>
-                                <span className={`log-status-badge status-${log.type}`}>
+                                <span className={`log-status-badge status-${log.status === 'SUCCESS' ? 'success' : 'error'}`}>
                                   <span className="status-dot" />
                                   {log.status}
                                 </span>

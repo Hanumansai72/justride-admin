@@ -1,7 +1,7 @@
+import UserAvatar from '../../components/common/UserAvatar';
 import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import Sidebar from '../../components/common/Sidebar';
 import { usersApi } from '../../api/services';
 import './UsersManagement.css';
 
@@ -61,11 +61,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
           lastActivity: u.updatedAt ? new Date(u.updatedAt).toLocaleDateString() : 'Recent',
           createdDate: u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A',
           isOnline: u.status === 'active',
-          avatar:
-            u.avatar ||
-            (u.role === 'ADMIN'
-              ? 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80'
-              : 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80'),
+          avatar: u.avatar,
         }));
 
         setUsers(mapped);
@@ -131,7 +127,6 @@ export default function UsersManagement({ onNavigate, onLogout }) {
   return (
     <div className="users-management-container">
       {/* SideNavBar */}
-      <Sidebar activeRoute="users" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Content */}
       <div className="users-main-wrapper">
@@ -343,11 +338,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                                     u.role === 'ADMIN' ? 'border-primary' : ''
                                   }`}
                                 >
-                                  <img
-                                    src={u.avatar}
-                                    alt={u.name}
-                                    className={isSuspended ? 'grayscale' : ''}
-                                  />
+                                  <UserAvatar src={u.avatar} name={u.name} email={u.email} />
                                 </div>
                                 <div>
                                   <div className="user-name-title">

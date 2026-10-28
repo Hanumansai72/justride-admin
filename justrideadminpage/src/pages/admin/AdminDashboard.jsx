@@ -1,6 +1,5 @@
 import TopBar from '../../components/common/TopBar';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import Sidebar from '../../components/common/Sidebar';
 import RequestError from '../../components/common/RequestError';
 import { dashboardApi } from '../../api/services';
 import { useAuth } from '../../context/AuthContext';
@@ -151,11 +150,6 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
   return (
     <div className="dashboard-container">
       {/* Universal Side Navigation Bar */}
-      <Sidebar
-        activeRoute="dashboard"
-        onNavigate={onNavigate}
-        onLogout={onLogout}
-      />
 
       {/* Main Content View */}
       <div className="main-wrapper">
@@ -166,7 +160,7 @@ export default function AdminDashboard({ onNavigate, onLogout }) {
         <main className="dashboard-content">
           <div className="content-container">
             <label className="jr-page-search"><span className="material-symbols-outlined" aria-hidden="true">search</span><input type="search" aria-label="Search devices and users" placeholder="Search devices, users..." value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} /></label>
-            <RequestError message={error || healthError} loading={isRefreshing} onRetry={() => loadDashboardData(true)} />
+            <RequestError message={error || healthError} loading={isLoading || isRefreshing} onRetry={() => loadDashboardData(true)} />
             {/* Title & Action */}
             <div className="page-header">
               <div>

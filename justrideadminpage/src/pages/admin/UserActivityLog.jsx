@@ -2,7 +2,6 @@ import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Sidebar from '../../components/common/Sidebar';
 import { usersApi } from '../../api/services';
 import './UserActivityLog.css';
 
@@ -83,7 +82,6 @@ export default function UserActivityLog({ userId: propUserId, onNavigate, onLogo
   return (
     <div className="user-activity-page">
       {/* SideNavBar */}
-      <Sidebar activeRoute="users" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Content Area */}
       <div className="activity-main-wrapper">

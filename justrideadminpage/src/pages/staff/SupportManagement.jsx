@@ -1,7 +1,6 @@
 import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import Sidebar from '../../components/common/Sidebar';
 import { supportApi } from '../../api/services';
 import './SupportManagement.css';
 import HelpFeedbackPanel from '../../components/support/HelpFeedbackPanel';
@@ -118,7 +117,6 @@ export default function SupportManagement({ onNavigate, onLogout }) {
   return (
     <div className="support-container">
       {/* SideNavBar */}
-      <Sidebar activeRoute="support" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Content Area */}
       <div className="support-main-content">

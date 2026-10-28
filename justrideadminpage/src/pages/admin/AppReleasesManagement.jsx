@@ -1,7 +1,6 @@
 import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import Sidebar from '../../components/common/Sidebar';
 import { appReleasesApi } from '../../api/services';
 import './FirmwareManagement.css';
 
@@ -142,7 +141,6 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
   return (
     <div className="firmware-page-container">
       {/* Universal Sidebar */}
-      <Sidebar activeRoute="app-releases" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Content Area */}
       <div className="firmware-main-wrapper">
@@ -206,6 +204,9 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                 </div>
               ))}
             </div>
+
+
+            <p className="page-subheading">Publishing a release automatically notifies eligible users.</p>
 
             {/* Table Container */}
             <div className="firmware-table-card">

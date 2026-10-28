@@ -2,7 +2,6 @@ import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import Sidebar from '../../components/common/Sidebar';
 import { auditApi, authApi } from '../../api/services';
 import './AuditLogs.css';
 
@@ -143,7 +142,6 @@ export default function AuditLogs({ onNavigate, onLogout }) {
   return (
     <div className="audit-logs-container">
       {/* SideNavBar */}
-      <Sidebar activeRoute="audit-logs" onNavigate={onNavigate} onLogout={onLogout} />
 
       {/* Main Wrapper */}
       <div className="audit-main-wrapper">

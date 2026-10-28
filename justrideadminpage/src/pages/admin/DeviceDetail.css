@@ -706,3 +706,8 @@
     grid-template-columns: 1fr;
   }
 }
+
+.telemetry-card .metric-box-val { font-size:14px; white-space:nowrap; }
+
+.telemetry-card .bento-title-flex { flex-wrap:wrap; gap:8px; }
+.telemetry-card .rssi-value { font-size:14px; }

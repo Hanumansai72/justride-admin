@@ -1,5 +1,4 @@
 import React from 'react';
-import Sidebar from '../components/common/Sidebar';
 import TopBar from '../components/common/TopBar';
 
 export default function AdminLayout({
@@ -12,11 +11,6 @@ export default function AdminLayout({
   return (
     <div className="admin-layout">
       {/* Reusable Admin Sidebar */}
-      <Sidebar
-        activeRoute={activeRoute}
-        onNavigate={onNavigate}
-        onLogout={onLogout}
-      />
 
       {/* Main Content Pane */}
       <div className="admin-layout-main">
