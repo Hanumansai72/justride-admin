@@ -9,6 +9,8 @@ export const authApi = {
   login: (credentials) => api.post('/admin/login', credentials),
   getProfile: (options = {}) => api.get('/admin/me', {}, options),
   requestPasswordOtp: (currentPassword) => api.post('/admin/profile/password/otp', { currentPassword }),
+  getSessions: (options = {}) => api.get('/admin/profile/sessions', {}, options),
+  revokeSession: (id) => api.delete(`/admin/profile/sessions/${encodeURIComponent(id)}`),
   changePassword: (data) => api.post('/admin/profile/password', data),
   updateCredentials: (data) => api.put('/admin/credentials', data),
   logout: () => api.post('/admin/logout'),

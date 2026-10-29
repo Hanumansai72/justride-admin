@@ -14,3 +14,20 @@
 .admin-profile-card p.admin-profile-error { color:var(--color-danger); }
 .admin-profile-hint { font-size:13px; }
 @media(max-width:900px) { .admin-profile-grid { grid-template-columns:minmax(0,1fr); } }
+
+.admin-sessions { margin-top:24px; }
+.admin-sessions-heading { display:flex; align-items:start; justify-content:space-between; gap:20px; margin-bottom:16px; }
+.admin-sessions-heading h3 { margin-bottom:8px; }
+.admin-sessions-heading p { margin:0; }
+.admin-session-list { list-style:none; padding:0; margin:0; }
+.admin-session-list>li { display:flex; justify-content:space-between; align-items:center; gap:24px; padding:22px 0; border-top:1px solid var(--border-standard); }
+.admin-session-details { min-width:0; flex:1; }
+.admin-session-title { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+.admin-session-current { color:var(--color-primary,var(--text-body)); background:var(--bg-layer-3); border:1px solid var(--border-standard); border-radius:20px; padding:4px 10px; font-size:12px; }
+.admin-session-details dl { display:flex; flex-wrap:wrap; gap:16px 32px; margin:14px 0 0; }
+.admin-session-details dl>div { padding:0; border:0; }
+.admin-session-details dd { font-size:14px; }
+.admin-session-list button { flex-shrink:0; }
+.admin-session-skeleton { display:grid; gap:16px; padding:16px 0; }
+.admin-session-skeleton .jr-skeleton-block { height:92px; }
+@media(max-width:600px) { .admin-sessions-heading { flex-wrap:wrap; } .admin-session-list>li { align-items:start; flex-direction:column; gap:16px; } .admin-session-list button { align-self:stretch; } }

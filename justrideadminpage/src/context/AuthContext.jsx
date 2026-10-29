@@ -57,6 +57,19 @@ export function AuthProvider({ children }) {
     };
   }, [verifySession]);
 
+  // Recheck revoked admin sessions without reloading the sidebar or page content.
+  useEffect(() => {
+    if (role !== 'ADMIN') return;
+    const controller = new AbortController();
+    const check = () => {
+      if (document.visibilityState === 'visible') authApi.getProfile({ signal: controller.signal }).catch(() => {});
+    };
+    const timer = setInterval(check, 30000);
+    window.addEventListener('focus', check);
+    document.addEventListener('visibilitychange', check);
+    return () => { clearInterval(timer); controller.abort(); window.removeEventListener('focus', check); document.removeEventListener('visibilitychange', check); };
+  }, [role]);
+
   const login = useCallback(async ({ identifier, password }) => {
     setIsLoading(true);
     setAuthError(null);
