@@ -1,0 +1,15 @@
+.jr-record-editor { margin:auto; width:min(560px,calc(100% - 32px)); max-height:calc(100dvh - 40px); padding:24px; border:1px solid var(--border-standard); border-radius:18px; background:var(--bg-layer-2); color:var(--text-body); overflow:auto; }
+.jr-record-editor::backdrop { background:rgba(0,0,0,.7); }
+.jr-record-editor form { display:grid; gap:18px; }
+.jr-editor-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.jr-editor-heading h2 { font-size:22px; margin:0; }
+.jr-record-editor p,.jr-record-editor small { color:var(--text-muted); line-height:1.6; overflow-wrap:anywhere; }
+.jr-record-editor label { display:grid; gap:8px; font-size:14px; }
+.jr-record-editor input,.jr-record-editor select,.jr-record-editor textarea { min-width:0; width:100%; padding:12px; border:1px solid var(--border-standard); border-radius:8px; background:var(--bg-layer-1); color:inherit; font:inherit; }
+.jr-record-editor textarea { min-height:100px; resize:vertical; }
+.jr-record-editor .jr-editor-check { display:flex; align-items:center; gap:10px; }
+.jr-editor-check input { width:18px; height:18px; }
+.jr-editor-actions { display:flex; justify-content:flex-end; gap:12px; }
+.jr-record-editor button { padding:10px 16px; min-height:42px; }
+.jr-record-editor button:disabled { opacity:.5; cursor:wait; }
+.jr-record-editor .jr-editor-error { color:var(--color-danger); }

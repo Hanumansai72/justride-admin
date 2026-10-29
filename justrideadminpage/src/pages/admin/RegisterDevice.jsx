@@ -4,7 +4,7 @@ import { devicesApi } from '../../api/services';
 import './RegisterDevice.css';
 
 export default function RegisterDevice({ onNavigate, onLogout }) {
-  const [deviceName, setDeviceName] = useState('');
+  const [deviceName, setDeviceName] = useState('JustRide Hustle');
   const [deviceId, setDeviceId] = useState('');
   const [bleAddress, setBleAddress] = useState('');
   const [serialNumber, setSerialNumber] = useState('');
@@ -41,7 +41,8 @@ export default function RegisterDevice({ onNavigate, onLogout }) {
 
     try {
       const payload = {
-        devicename: deviceName.trim() || 'JustRide Telemetry Unit',
+        devicename: deviceName,
+          device_type: deviceName,
         device_id: deviceId.trim() || undefined,
         BLE_ADDRESS: bleAddress.trim() || undefined,
         serialnumber: serialNumber.trim() || undefined,
@@ -108,14 +109,10 @@ export default function RegisterDevice({ onNavigate, onLogout }) {
                   <label htmlFor="deviceName">Device Model / Display Name</label>
                   <div className="input-wrap">
                     <span className="material-symbols-outlined input-icon">devices</span>
-                    <input
-                      id="deviceName"
-                      type="text"
-                      placeholder="e.g. JustRide Pro Tracker X1"
-                      value={deviceName}
-                      onChange={(e) => setDeviceName(e.target.value)}
-                      required
-                    />
+                    <select id="deviceName" value={deviceName} onChange={e => setDeviceName(e.target.value)} required>
+                      <option value="JustRide Hustle">JustRide Hustle</option>
+                      <option value="JustRide Aventura">JustRide Aventura</option>
+                    </select>
                   </div>
                   <span className="field-hint">Human-readable label shown to riders and fleet managers.</span>
                 </div>

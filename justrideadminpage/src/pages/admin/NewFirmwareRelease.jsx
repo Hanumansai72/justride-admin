@@ -6,7 +6,7 @@ import './ProvisionStaff.css';
 export default function NewFirmwareRelease({ onNavigate, onLogout }) {
   const [version, setVersion] = useState('2.2.0');
   const [channel, setChannel] = useState('stable'); // stable, beta, deprecated
-  const [deviceType, setDeviceType] = useState('JustRide-V1');
+  const [deviceType, setDeviceType] = useState('JustRide Hustle');
   const [minSupportedVersion, setMinSupportedVersion] = useState('1.0.0');
   const [releaseNotes, setReleaseNotes] = useState(
     'Initial OTA release: Enhanced BLE reconnect handshake, battery ADC monitoring, and live status UI.'
@@ -151,14 +151,9 @@ export default function NewFirmwareRelease({ onNavigate, onLogout }) {
 
                       <div className="field-group">
                         <label className="field-label">Target Hardware Device</label>
-                        <input
-                          type="text"
-                          className="custom-form-input font-mono"
-                          placeholder="e.g. Tracker X1 Pro"
-                          value={deviceType}
-                          onChange={(e) => setDeviceType(e.target.value)}
-                          required
-                        />
+                        <select className="custom-form-input" value={deviceType} onChange={e => setDeviceType(e.target.value)} required>
+                            <option value="JustRide Hustle">JustRide Hustle</option><option value="JustRide Aventura">JustRide Aventura</option>
+                          </select>
                       </div>
 
                       <div className="field-group">

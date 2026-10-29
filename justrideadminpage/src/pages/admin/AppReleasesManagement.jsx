@@ -1,3 +1,5 @@
+import RecordEditor from '../../components/common/RecordEditor';
+import { useAuth } from '../../context/AuthContext';
 import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
@@ -5,6 +7,8 @@ import { appReleasesApi } from '../../api/services';
 import './FirmwareManagement.css';
 
 export default function AppReleasesManagement({ onNavigate, onLogout }) {
+  const { user: editorUser } = useAuth();
+  const [editing, setEditing] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [channelFilter, setChannelFilter] = useState('');
   const [platformFilter, setPlatformFilter] = useState('');
@@ -36,6 +40,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
       if (signal.aborted) return;
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map((r) => ({
+          raw: r,
           id: r._id,
           version: `v${r.version.replace(/^v/, '')}`,
           buildNumber: r.build_number,
@@ -356,6 +361,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
                           </td>
                           <td className="text-right">
                             <div className="row-action-btns">
+{editorUser?.role === 'ADMIN' && <button type="button" className="action-link-btn" title="Edit release" aria-label="Edit release" onClick={event => { event.stopPropagation(); setEditing(row.raw); }}><span className="material-symbols-outlined icon-20">edit</span></button>}
                               {!row.isFeatured ? (
                                 <button
                                   type="button"
@@ -441,6 +447,7 @@ export default function AppReleasesManagement({ onNavigate, onLogout }) {
           </div>
         </main>
       </div>
+      {editing && <RecordEditor kind="apk" record={editing} onClose={() => setEditing(null)} onSaved={fetchReleases} />}
     </div>
   );
 }

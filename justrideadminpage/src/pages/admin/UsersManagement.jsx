@@ -1,3 +1,5 @@
+import RecordEditor from '../../components/common/RecordEditor';
+import { useAuth } from '../../context/AuthContext';
 import UserAvatar from '../../components/common/UserAvatar';
 import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
@@ -6,6 +8,8 @@ import { usersApi } from '../../api/services';
 import './UsersManagement.css';
 
 export default function UsersManagement({ onNavigate, onLogout }) {
+  const { user: editorUser } = useAuth();
+  const [editing, setEditing] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -44,6 +48,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
         limit,
         search: searchQuery.trim() || undefined,
         role: roleFilter || undefined,
+        has_device: hasDeviceOnly ? true : undefined,
         status: statusFilter || undefined,
       };
 
@@ -51,6 +56,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
       if (signal.aborted) return;
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map((u) => ({
+          raw: u,
           id: u._id || u.id,
           name: u.name || 'Anonymous Rider',
           email: u.email,
@@ -91,7 +97,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
     } finally {
       if (!signal.aborted) setIsLoading(false);
     }
-  }, [currentPage, limit, searchQuery, roleFilter, statusFilter]);
+  }, [currentPage, limit, searchQuery, roleFilter, statusFilter, hasDeviceOnly]);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -260,7 +266,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                   <input
                     type="checkbox"
                     checked={hasDeviceOnly}
-                    onChange={(e) => setHasDeviceOnly(e.target.checked)}
+                    onChange={(e) => { setHasDeviceOnly(e.target.checked); setCurrentPage(1); }}
                     className="custom-checkbox"
                   />
                   <span>Has Device</span>
@@ -426,6 +432,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                             {/* Actions */}
                             <td className="text-right">
                               <div className="table-actions-group" onClick={(e) => e.stopPropagation()}>
+{editorUser?.role === 'ADMIN' && <button type="button" className="row-action-btn" title="Edit user" aria-label="Edit user" onClick={event => { event.stopPropagation(); setEditing(u.raw); }}><span className="material-symbols-outlined icon-20">edit</span></button>}
                                 <button
                                   type="button"
                                   className="row-action-btn"
@@ -497,6 +504,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
           </div>
         </main>
       </div>
+      {editing && <RecordEditor kind="user" record={editing} onClose={() => setEditing(null)} onSaved={fetchUsers} />}
     </div>
   );
 }

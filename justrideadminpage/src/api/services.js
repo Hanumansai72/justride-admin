@@ -27,6 +27,7 @@ export const dashboardApi = {
 export const usersApi = {
   getUsers: (params = {}, options = {}) => api.get('/admin/users', params, options),
   getUserById: (id, options = {}) => api.get(`/admin/users/${id}`, {}, options),
+  updateUser: (id, data) => api.put(`/admin/users/${id}`, data),
   updateStatus: (id, status, reason = '') =>
     api.patch(`/admin/users/${id}/status`, { status, reason }),
   deleteUser: (id) => api.delete(`/admin/users/${id}`),
@@ -67,6 +68,7 @@ export const pairingApi = {
 
 // ── 7. Firmware Rollout & Lifecycle Services ─────────────────────────
 export const firmwareApi = {
+  getUploadUrl: (data) => api.post('/admin/firmware/upload-url', data),
   getReleases: (params = {}, options = {}) => api.get('/admin/firmware', params, options),
   createRelease: (data) => api.post('/admin/firmware', data),
   updateRelease: (id, data) => api.put(`/admin/firmware/${id}`, data),

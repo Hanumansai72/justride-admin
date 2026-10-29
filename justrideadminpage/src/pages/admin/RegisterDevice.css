@@ -235,7 +235,7 @@
   pointer-events: none;
 }
 
-.input-wrap input {
+.input-wrap input, .input-wrap select {
   width: 100%;
   background-color: var(--bg-layer-1);
   border: 1px solid var(--bg-layer-3);
@@ -247,7 +247,7 @@
   transition: all 0.2s ease;
 }
 
-.input-wrap input:focus {
+.input-wrap input:focus, .input-wrap select:focus {
   border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(var(--rgb-primary), 0.15);
   background-color: var(--bg-layer-1);

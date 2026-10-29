@@ -1,3 +1,4 @@
+import RecordEditor from '../../components/common/RecordEditor';
 import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
@@ -6,6 +7,8 @@ import { devicesApi } from '../../api/services';
 import './DeviceInventory.css';
 
 export default function DeviceInventory({ onNavigate, onLogout }) {
+  const { user: editorUser } = useAuth();
+  const [editing, setEditing] = useState(null);
   const { role } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('Status: All');
@@ -54,11 +57,12 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
       if (signal.aborted) return;
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map((d) => ({
+          raw: d,
           id: d.device_id || d.BLE_ADDRESS || 'DEV-NODE',
           rawId: d._id,
           lastSeen: d.last_seen_at,
           serial: d.BLE_ADDRESS ? `BLE: ${d.BLE_ADDRESS}` : `DEV: ${d.device_id}`,
-          name: d.devicename || 'JustRide Telemetry Unit',
+          name: d.device_type || d.devicename || 'JustRide device',
           owner: d.linked_to
             ? {
                 name: d.linked_to.name || d.linked_to.email,
@@ -275,7 +279,8 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
               <span className="material-symbols-outlined chevron-icon">arrow_drop_down</span>
             </div>
 
-            <button
+
+<button
               type="button"
               className="btn-provision"
               onClick={() => onNavigate && onNavigate('register-device')}
@@ -288,6 +293,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
 
         {/* Data Table */}
         <div className="devices-table-wrap">
+
           <table className="devices-table">
             <thead>
               <tr>
@@ -360,6 +366,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
                       <td><time dateTime={d.lastSeen || undefined}>{d.lastSeen ? new Date(d.lastSeen).toLocaleString() : 'Not reported'}</time></td>
                       <td className="text-right" onClick={(e) => e.stopPropagation()}>
                         <div className="row-action-buttons">
+                          {editorUser?.role === 'ADMIN' && <button type="button" className="row-btn" title="Edit device" aria-label="Edit device" onClick={event => { event.stopPropagation(); setEditing(d.raw); }}><span className="material-symbols-outlined icon-20">edit</span></button>}
                           <button
                             type="button"
                             className="row-btn hover-white"
@@ -457,6 +464,7 @@ export default function DeviceInventory({ onNavigate, onLogout }) {
           </div>
         </div>
       </main>
+      {editing && <RecordEditor kind="device" record={editing} onClose={() => setEditing(null)} onSaved={fetchDevices} />}
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import RecordEditor from '../../components/common/RecordEditor';
+import { useAuth } from '../../context/AuthContext';
 import TopBar from '../../components/common/TopBar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react';
@@ -5,6 +7,8 @@ import { firmwareApi } from '../../api/services';
 import './FirmwareManagement.css';
 
 export default function FirmwareManagement({ onNavigate, onLogout }) {
+  const { user: editorUser } = useAuth();
+  const [editing, setEditing] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [channelFilter, setChannelFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,6 +38,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
       if (signal.aborted) return;
       if (res?.success && Array.isArray(res.data)) {
         const mapped = res.data.map((r) => ({
+          raw: r,
           id: r._id,
           version: `v${r.version.replace(/^v/, '')}`,
           hwRev: r.device_type || 'Universal HW',
@@ -304,6 +309,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
                           </td>
                           <td className="text-right">
                             <div className="row-action-btns">
+{editorUser?.role === 'ADMIN' && <button type="button" className="action-link-btn" title="Edit release" aria-label="Edit release" onClick={event => { event.stopPropagation(); setEditing(row.raw); }}><span className="material-symbols-outlined icon-20">edit</span></button>}
                               {!row.isFeatured ? (
                                 <button
                                   type="button"
@@ -375,6 +381,7 @@ export default function FirmwareManagement({ onNavigate, onLogout }) {
           </div>
         </main>
       </div>
+      {editing && <RecordEditor kind="firmware" record={editing} onClose={() => setEditing(null)} onSaved={fetchReleases} />}
     </div>
   );
 }
