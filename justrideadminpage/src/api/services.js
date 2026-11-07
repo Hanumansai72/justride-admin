@@ -53,6 +53,7 @@ export const devicesApi = {
   getDevices: (params = {}, options = {}) => api.get('/admin/devices', params, options),
   getDeviceById: (id, options = {}) => api.get(`/admin/devices/${id}`, {}, options),
   registerDevice: (data) => api.post('/admin/devices', data),
+  issueSetupCode: (id) => api.post(`/devices/${encodeURIComponent(id)}/setup-code`, {}),
   updateDevice: (id, data) => api.put(`/admin/devices/${id}`, data),
   blockDevice: (id, reason = '') => api.patch(`/admin/devices/${id}/block`, { reason }),
   unblockDevice: (id) => api.patch(`/admin/devices/${id}/unblock`),

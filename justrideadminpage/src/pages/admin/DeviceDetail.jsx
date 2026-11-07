@@ -14,6 +14,54 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
   const [loadError, setLoadError] = useState('');
   const requestRef = useRef(null);
   const [isUpdating, setIsUpdating] = useState(false);
+  const [setupFile, setSetupFile] = useState(null);
+  const [setupMessage, setSetupMessage] = useState('');
+  const [setupError, setSetupError] = useState('');
+
+  useEffect(() => {
+    setSetupFile(null);
+    setSetupMessage('');
+    setSetupError('');
+  }, [deviceId]);
+
+  const downloadSetup = (payload) => {
+    const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)],
+      { type: 'application/json' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'device-registration.json';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  };
+
+  const handleDeviceSetup = async () => {
+    if (!device?._id || isUpdating) return;
+    if (!window.confirm('Generate a new setup file for this display? This replaces its previous setup credential. Provision the new file to this same display over USB.')) return;
+    setIsUpdating(true);
+    setSetupError('');
+    setSetupMessage('');
+    setSetupFile(null);
+    try {
+      const res = await devicesApi.issueSetupCode(device._id);
+      if (!res?.success || !/^[A-F0-9]{32}$/.test(res.setup_code || '')) {
+        throw new Error(res?.message || 'Could not generate the device setup file.');
+      }
+      const payload = {
+        device_id: device.device_id,
+        BLE_ADDRESS: device.BLE_ADDRESS,
+        setup_code: res.setup_code,
+      };
+      setSetupFile(payload);
+      downloadSetup(payload);
+      setSetupMessage('Setup file generated. Use it to provision this display over USB. Keep the file private.');
+    } catch (err) {
+      setSetupError(err.message || 'Could not generate the setup file. Please try again.');
+    } finally {
+      setIsUpdating(false);
+    }
+  };
 
   const fetchDeviceDetails = useCallback(async () => {
     if (!deviceId) {
@@ -164,6 +212,22 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
               </div>
 
               {/* Bento Grid Layout */}
+              <section className="bento-box" aria-label="Device setup" style={{ marginBottom: '20px' }}>
+                <h3 className="bento-title">Device setup</h3>
+                <p style={{ color: 'var(--text-muted)', margin: '12px 0' }}>
+                  Download the private file used for one-time USB provisioning. Riders link the display through Bluetooth without entering a setup code.
+                </p>
+                <button type="button" className="btn-action-neutral"
+                  disabled={!device?._id || device.is_paired || !device.is_active || device.is_blocked || device.is_retired || isUpdating}
+                  onClick={handleDeviceSetup}>
+                  {isUpdating ? 'Please wait…' : 'Generate setup file'}
+                </button>
+                {setupFile && <button type="button" className="btn-action-neutral" style={{ marginLeft: '12px' }}
+                  onClick={() => downloadSetup(setupFile)}>Download again</button>}
+                {device?.is_paired && <p style={{ color: 'var(--text-muted)' }}>Unlink this device before generating a new setup file.</p>}
+                {setupMessage && <p role="status">{setupMessage}</p>}
+                {setupError && <p role="alert">{setupError}</p>}
+              </section>
               <div className="device-bento-grid">
                 {/* Left Column: Specs & Assignment */}
                 <div className="grid-col-left">
