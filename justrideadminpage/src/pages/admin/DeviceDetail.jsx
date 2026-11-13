@@ -3,7 +3,7 @@ import UserAvatar from '../../components/common/UserAvatar';
 import RequestError from '../../components/common/RequestError';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams } from 'react-router-dom';
-import { devicesApi, usersApi } from '../../api/services';
+import { devicesApi } from '../../api/services';
 import './DeviceDetail.css';
 
 export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigate, onLogout }) {
@@ -17,51 +17,12 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
   const [setupFile, setSetupFile] = useState(null);
   const [setupMessage, setSetupMessage] = useState('');
   const [setupError, setSetupError] = useState('');
-  const [userSearch, setUserSearch] = useState('');
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState('');
-  const [assignMessage, setAssignMessage] = useState('');
-  const [assignError, setAssignError] = useState('');
-  const [searchingUsers, setSearchingUsers] = useState(false);
 
   useEffect(() => {
     setSetupFile(null);
     setSetupMessage('');
     setSetupError('');
-    setUsers([]);
-    setSelectedUser('');
-    setAssignError('');
-    setAssignMessage('');
   }, [deviceId]);
-
-  const searchUsers = async (event) => {
-    event.preventDefault();
-    setSearchingUsers(true);
-    setAssignError('');
-    setSelectedUser('');
-    try {
-      const response = await usersApi.getUsers({ search: userSearch.trim(), status: 'active' });
-      if (!response?.success) throw new Error(response?.message || 'Could not find users.');
-      setUsers(response.data || []);
-      if (!response.data?.length) setAssignError('No active users found. Try their name or email.');
-    } catch (error) { setAssignError(error.message); }
-    finally { setSearchingUsers(false); }
-  };
-
-  const assignDevice = async () => {
-    if (!selectedUser || isUpdating || !device?._id) return;
-    setIsUpdating(true);
-    setAssignError('');
-    setAssignMessage('');
-    try {
-      const response = await devicesApi.assignDevice(device._id, selectedUser);
-      if (!response?.success) throw new Error(response?.message || 'Assignment failed.');
-      setAssignMessage('Device linked to the selected user. No setup code is needed.');
-      setSelectedUser('');
-      await fetchDeviceDetails();
-    } catch (error) { setAssignError(error.message); }
-    finally { setIsUpdating(false); }
-  };
 
   const downloadSetup = (payload) => {
     const url = URL.createObjectURL(new Blob([JSON.stringify(payload, null, 2)],
@@ -251,27 +212,6 @@ export default function DeviceDetail({ deviceId: propDeviceId, onBack, onNavigat
               </div>
 
               {/* Bento Grid Layout */}
-              <section className="bento-box" aria-label="Assign device" style={{ marginBottom: '20px' }}>
-                <h3 className="bento-title">Assign to a registered user</h3>
-                {device?.is_paired ? <p>This device is already linked. Unlink it before assigning it to someone else.</p> : <>
-                  <p>Search by name or email, select a user, and link this device directly.</p>
-                  <form onSubmit={searchUsers}>
-                    <label htmlFor="assignment-search">User name or email</label>
-                    <input id="assignment-search" value={userSearch} onChange={event => setUserSearch(event.target.value)} required disabled={isUpdating || searchingUsers} />
-                    <button className="btn-action-neutral" disabled={isUpdating || searchingUsers}>{searchingUsers ? 'Searching…' : 'Find user'}</button>
-                  </form>
-                  {users.length > 0 && <>
-                    <label htmlFor="assignment-user">Registered user</label>
-                    <select id="assignment-user" value={selectedUser} onChange={event => setSelectedUser(event.target.value)} disabled={isUpdating || searchingUsers}>
-                      <option value="">Select a user</option>
-                      {users.map(user => <option key={user._id} value={user._id} disabled={!!user.paired_device}>{user.name} — {user.email}{user.paired_device ? ' (already has a device)' : ''}</option>)}
-                    </select>
-                    <button type="button" className="btn-action-neutral" onClick={assignDevice} disabled={!selectedUser || isUpdating || searchingUsers || !device?.is_active || device?.is_blocked || device?.is_retired}>Assign device</button>
-                  </>}
-                </>}
-                {assignMessage && <p role="status">{assignMessage}</p>}
-                {assignError && <p role="alert">{assignError}</p>}
-              </section>
               <section className="bento-box" aria-label="Device setup" style={{ marginBottom: '20px' }}>
                 <h3 className="bento-title">Device setup</h3>
                 <p style={{ color: 'var(--text-muted)', margin: '12px 0' }}>
