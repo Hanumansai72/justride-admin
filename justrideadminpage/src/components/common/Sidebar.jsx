@@ -11,6 +11,7 @@ const items = [
   { id: 'app-releases', label: 'App APKs', icon: 'android', path: '/app-releases' },
   { id: 'users', label: 'Users', icon: 'group', path: '/users' },
   { id: 'interested-users', label: 'Interested Users', icon: 'person_add', path: '/interested-users' },
+  { id: 'community', label: 'Community', icon: 'group', path: '/community', adminOnly: true },
   { id: 'helpers', label: 'Helpers', icon: 'build', path: '/helpers' },
   { id: 'audit-logs', label: 'Audit Logs', icon: 'admin_panel_settings', path: '/audit-logs' },
 ];
@@ -34,7 +35,7 @@ const iconPaths = {
 };
 const icon = (name) => <svg className="nav-icon" aria-hidden="true" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d={iconPaths[name]} /></svg>;
 
-export default function Sidebar({ activeRoute, onNavigate, onLogout }) {
+export default function Sidebar({ activeRoute, onNavigate, onLogout, role }) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const moreDialog = useRef(null);
@@ -70,6 +71,7 @@ export default function Sidebar({ activeRoute, onNavigate, onLogout }) {
     </button>
   );
   const logout = () => { closeMore(); onLogout?.(); };
+  const visibleItems = items.filter(item => !item.adminOnly || role === 'ADMIN');
 
   return <>
     <aside id="admin-sidebar" aria-label="Admin navigation" className={`app-sidebar ${collapsed ? 'sidebar-collapsed' : ''}`}>
@@ -81,14 +83,14 @@ export default function Sidebar({ activeRoute, onNavigate, onLogout }) {
         <button type="button" className="sidebar-toggle" aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'} aria-expanded={!collapsed} aria-controls="admin-sidebar" onClick={toggleSidebar}>{icon(collapsed ? 'chevron_right' : 'chevron_left')}</button>
       </div>
       <nav className="sidebar-nav-section" aria-label="Main">
-        {items.map((item) => navButton(item))}
+        {visibleItems.map((item) => navButton(item))}
         <button type="button" className="nav-link-btn logout-btn" aria-label="Logout" title={collapsed ? 'Logout' : undefined} onClick={logout}>{icon('logout')}<span>Logout</span></button>
       </nav>
     </aside>
 
     <nav className="mobile-bottom-nav" aria-label="Mobile admin navigation">
       {mobileIds.map((id) => navButton(items.find((item) => item.id === id), true))}
-      <button type="button" className={`mobile-nav-link ${items.some((item) => !mobileIds.includes(item.id) && active(item)) ? 'active' : ''}`}
+      <button type="button" className={`mobile-nav-link ${visibleItems.some((item) => !mobileIds.includes(item.id) && active(item)) ? 'active' : ''}`}
         aria-label="More navigation" aria-haspopup="dialog" aria-expanded={moreOpen} aria-controls="admin-more-navigation"
         onClick={() => { moreDialog.current.showModal(); setMoreOpen(true); }}>
         {icon('menu')}<span>More</span>
@@ -97,7 +99,7 @@ export default function Sidebar({ activeRoute, onNavigate, onLogout }) {
     <dialog ref={moreDialog} id="admin-more-navigation" className="mobile-more-dialog" aria-labelledby="admin-more-title"
       onClose={() => setMoreOpen(false)} onClick={(event) => { if (event.target === moreDialog.current) closeMore(); }}>
       <div className="mobile-more-heading"><h2 id="admin-more-title">More</h2><button type="button" className="sidebar-toggle" aria-label="Close navigation" onClick={closeMore}>{icon('close')}</button></div>
-      <nav aria-label="More admin pages">{items.filter((item) => !mobileIds.includes(item.id)).map((item) => navButton(item))}</nav>
+      <nav aria-label="More admin pages">{visibleItems.filter((item) => !mobileIds.includes(item.id)).map((item) => navButton(item))}</nav>
       <button type="button" className="nav-link-btn logout-btn" aria-label="Logout" title={collapsed ? 'Logout' : undefined} onClick={logout}>{icon('logout')}<span>Logout</span></button>
     </dialog>
   </>;

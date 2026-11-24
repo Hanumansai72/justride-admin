@@ -11,6 +11,7 @@ const AdminProfile = lazy(() => import('./pages/admin/AdminProfile'));
 // Admin Modules
 const AdminDashboard = lazy(() => import('./pages/admin/AdminDashboard'));
 const UsersManagement = lazy(() => import('./pages/admin/UsersManagement'));
+const CommunityModeration = lazy(() => import('./pages/admin/CommunityModeration'));
 const InterestedUsers = lazy(() => import('./pages/admin/InterestedUsers'));
 const CreateUser = lazy(() => import('./pages/admin/CreateUser'));
 const UserDetail = lazy(() => import('./pages/admin/UserDetail'));
@@ -119,7 +120,7 @@ export default function App() {
 
   return (
     <div className="justride-application-root">
-      {user && pathname !== '/login' && <Sidebar onNavigate={handleNavigate} onLogout={handleLogout} />}
+      {user && pathname !== '/login' && <Sidebar role={role} onNavigate={handleNavigate} onLogout={handleLogout} />}
       <PageLoadBoundary key={user ? 'signed-in' : 'signed-out'}>
       <Suspense fallback={user ? <ContentSkeleton route /> : <CircleLoader fullScreen />}>
       {/* React Router Routes */}
@@ -160,6 +161,7 @@ export default function App() {
 
         {/* Users Management */}
         <Route path="/interested-users" element={<ProtectedRoute allowedRoles={['ADMIN', 'HELPER']}><InterestedUsers onNavigate={handleNavigate} onLogout={handleLogout} /></ProtectedRoute>} />
+        <Route path="/community" element={<ProtectedRoute allowedRoles={['ADMIN']}><CommunityModeration /></ProtectedRoute>} />
         <Route
           path="/users"
           element={
