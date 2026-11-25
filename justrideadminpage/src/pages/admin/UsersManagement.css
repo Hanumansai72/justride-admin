@@ -843,9 +843,48 @@
 .text-white { color: var(--text-body); }
 .text-primary { color: var(--color-primary); }
 .font-mono { font-family: ui-monospace, monospace; }
+.icon-14 { font-size: 14px; }
 .icon-16 { font-size: 16px; }
 .icon-18 { font-size: 18px; }
 .icon-20 { font-size: 20px; }
+
+/* Plan Badges */
+.user-plan-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.user-plan-badge.premium {
+  background: rgba(var(--rgb-primary), 0.15);
+  color: var(--color-primary);
+  border: 1px solid rgba(var(--rgb-primary), 0.35);
+  box-shadow: 0 0 8px rgba(var(--rgb-primary), 0.15);
+}
+
+.user-plan-badge.expired {
+  background: rgba(var(--rgb-warning), 0.12);
+  color: var(--color-warning);
+  border: 1px solid rgba(var(--rgb-warning), 0.25);
+}
+
+.user-plan-badge.free {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.row-action-btn.hover-primary:hover {
+  background-color: rgba(var(--rgb-primary), 0.15);
+  color: var(--color-primary);
+  border-color: rgba(var(--rgb-primary), 0.4);
+}
 
 @media (max-width: 1024px) {
   .users-summary-bento {

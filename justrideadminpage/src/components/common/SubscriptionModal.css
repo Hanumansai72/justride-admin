@@ -1,0 +1,426 @@
+/* Subscription Modal Styling */
+.jr-sub-modal {
+  margin: auto;
+  width: min(520px, calc(100% - 32px));
+  max-height: calc(100dvh - 40px);
+  padding: 0;
+  border: 1px solid var(--border-standard);
+  border-radius: 18px;
+  background: var(--bg-layer-2);
+  color: var(--text-body);
+  overflow: hidden;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.jr-sub-modal::backdrop {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+.sub-modal-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sub-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-standard);
+}
+
+.sub-modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.sub-crown-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(var(--rgb-primary), 0.15);
+  border: 1px solid rgba(var(--rgb-primary), 0.3);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sub-crown-icon span {
+  font-size: 26px;
+}
+
+.sub-modal-title {
+  font-size: 19px;
+  font-weight: 600;
+  margin: 0;
+  color: #fff;
+}
+
+.sub-modal-user {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 2px 0 0 0;
+}
+
+.sub-modal-email {
+  color: var(--text-body);
+}
+
+.sub-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.sub-close-btn:hover {
+  background: var(--bg-layer-1);
+  color: #fff;
+}
+
+/* Status Card */
+.sub-status-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: var(--bg-layer-1);
+  border: 1px solid var(--border-standard);
+}
+
+.sub-status-card.is-premium {
+  border-color: rgba(var(--rgb-primary), 0.35);
+  background: linear-gradient(135deg, rgba(var(--rgb-primary), 0.08) 0%, rgba(0, 0, 0, 0.4) 100%);
+}
+
+.sub-status-left {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sub-status-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.sub-status-val {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sub-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.04em;
+}
+
+.sub-pill.premium {
+  background: rgba(var(--rgb-primary), 0.2);
+  color: var(--color-primary);
+  border: 1px solid rgba(var(--rgb-primary), 0.4);
+}
+
+.sub-pill.expired {
+  background: rgba(var(--rgb-warning), 0.15);
+  color: var(--color-warning);
+  border: 1px solid rgba(var(--rgb-warning), 0.3);
+}
+
+.sub-pill.free {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sub-days-left {
+  font-size: 12px;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.sub-expired-date {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.sub-status-expiry {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.sub-status-expiry strong {
+  color: #fff;
+  font-size: 13px;
+}
+
+/* Form */
+.sub-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sub-section-heading {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* Presets Grid */
+.sub-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.sub-preset-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--border-standard);
+  background: var(--bg-layer-1);
+  color: var(--text-body);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sub-preset-btn:hover {
+  border-color: rgba(var(--rgb-primary), 0.5);
+  background: rgba(var(--rgb-primary), 0.05);
+}
+
+.sub-preset-btn.active {
+  border-color: var(--color-primary);
+  background: rgba(var(--rgb-primary), 0.15);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(var(--rgb-primary), 0.25);
+}
+
+.preset-label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.preset-days {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.sub-preset-btn.active .preset-days {
+  color: var(--color-primary);
+}
+
+/* Custom row */
+.sub-custom-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sub-preset-btn.custom-toggle {
+  flex-direction: row;
+  gap: 8px;
+  padding: 10px 16px;
+  min-height: 42px;
+}
+
+.sub-preset-btn.custom-toggle span.material-symbols-outlined {
+  font-size: 18px;
+}
+
+.sub-custom-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  background: var(--bg-layer-1);
+  border: 1px solid var(--border-standard);
+  border-radius: 10px;
+  padding: 0 12px;
+}
+
+.sub-custom-input-wrap:focus-within {
+  border-color: var(--color-primary);
+}
+
+.sub-custom-input {
+  width: 90px;
+  padding: 9px 0;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  outline: none;
+}
+
+.sub-input-suffix {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Revoke */
+.sub-revoke-wrap {
+  padding-top: 4px;
+}
+
+.sub-revoke-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px dashed rgba(var(--rgb-danger), 0.4);
+  color: var(--color-danger);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sub-revoke-btn:hover,
+.sub-revoke-btn.active {
+  background: rgba(var(--rgb-danger), 0.15);
+  border-color: var(--color-danger);
+}
+
+/* Preview Box */
+.sub-preview-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 13px;
+}
+
+.sub-preview-label {
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.sub-preview-outcome.success strong {
+  color: var(--color-primary);
+}
+
+.sub-preview-outcome.danger {
+  color: var(--color-danger);
+  font-weight: 500;
+}
+
+.sub-error-alert {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(var(--rgb-danger), 0.15);
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+  font-size: 13px;
+}
+
+/* Actions Row */
+.sub-actions-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.sub-btn-cancel {
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border-standard);
+  background: transparent;
+  color: var(--text-body);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sub-btn-cancel:hover:not(:disabled) {
+  background: var(--bg-layer-1);
+}
+
+.sub-btn-apply {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.sub-btn-apply.primary {
+  background: var(--color-primary);
+  color: #051a11;
+}
+
+.sub-btn-apply.primary:hover:not(:disabled) {
+  filter: brightness(1.1);
+  box-shadow: 0 0 16px rgba(var(--rgb-primary), 0.4);
+}
+
+.sub-btn-apply.danger {
+  background: var(--color-danger);
+  color: #fff;
+}
+
+.sub-btn-apply.danger:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.sub-btn-apply:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.spin-icon {
+  animation: spin 1s linear infinite;
+  font-size: 18px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 520px) {
+  .sub-presets-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

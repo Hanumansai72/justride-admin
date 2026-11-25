@@ -30,6 +30,8 @@ export const usersApi = {
   updateUser: (id, data) => api.put(`/admin/users/${id}`, data),
   updateStatus: (id, status, reason = '') =>
     api.patch(`/admin/users/${id}/status`, { status, reason }),
+  updateSubscription: (id, days) =>
+    api.patch(`/admin/users/${id}/subscription`, { days }),
   deleteUser: (id) => api.delete(`/admin/users/${id}`),
   getUserActivity: (id, options = {}) => api.get(`/admin/users/${id}/activity`, {}, options),
 };

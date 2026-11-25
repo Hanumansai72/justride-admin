@@ -1,4 +1,5 @@
 import RecordEditor from '../../components/common/RecordEditor';
+import SubscriptionModal from '../../components/common/SubscriptionModal';
 import { useAuth } from '../../context/AuthContext';
 import UserAvatar from '../../components/common/UserAvatar';
 import TopBar from '../../components/common/TopBar';
@@ -13,7 +14,9 @@ export default function UsersManagement({ onNavigate, onLogout }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [planFilter, setPlanFilter] = useState('');
   const [hasDeviceOnly, setHasDeviceOnly] = useState(false);
+  const [subModalUser, setSubModalUser] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [limit] = useState(10);
 
@@ -63,6 +66,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
           phone: u.phonenumber || 'Not Provided',
           role: u.role || 'USER',
           status: (u.status || 'active').toUpperCase(),
+          premium_until: u.premium_until || null,
           pairedDevice: u.paired_device ? (u.paired_device.device_id || u.paired_device.BLE_ADDRESS) : null,
           lastActivity: u.updatedAt ? new Date(u.updatedAt).toLocaleDateString() : 'Recent',
           createdDate: u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A',
@@ -127,6 +131,11 @@ export default function UsersManagement({ onNavigate, onLogout }) {
 
   const filteredUsers = users.filter((u) => {
     if (hasDeviceOnly && !u.pairedDevice) return false;
+    if (planFilter === 'premium') {
+      if (!u.premium_until || new Date(u.premium_until) <= new Date()) return false;
+    } else if (planFilter === 'free') {
+      if (u.premium_until && new Date(u.premium_until) > new Date()) return false;
+    }
     return true;
   });
 
@@ -262,6 +271,19 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                   <option value="banned">Banned</option>
                 </select>
 
+                <select
+                  className="toolbar-select"
+                  value={planFilter}
+                  onChange={(e) => {
+                    setPlanFilter(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <option value="">All Plans</option>
+                  <option value="premium">⭐ Premium Only</option>
+                  <option value="free">Free Only</option>
+                </select>
+
                 <label className="checkbox-filter-label">
                   <input
                     type="checkbox"
@@ -301,6 +323,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                       <th>USER</th>
                       <th>CONTACT</th>
                       <th>ROLE</th>
+                      <th>PLAN</th>
                       <th>STATUS</th>
                       <th>PAIRED DEVICE ID</th>
                       <th>LAST ACTIVITY</th>
@@ -310,7 +333,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                   <tbody>
                     {isLoading && users.length === 0 ? (
                       <tr>
-                        <td colSpan="7" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
                             <span className="material-symbols-outlined" style={{ animation: 'spin 1s linear infinite' }}>
                               sync
@@ -321,7 +344,7 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                       </tr>
                     ) : filteredUsers.length === 0 ? (
                       <tr>
-                        <td colSpan="7" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
+                        <td colSpan="8" style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
                           No users found matching your search and filter criteria.
                         </td>
                       </tr>
@@ -380,6 +403,25 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                               </span>
                             </td>
 
+                            {/* Plan */}
+                            <td>
+                              {u.premium_until && new Date(u.premium_until) > new Date() ? (
+                                <span
+                                  className="user-plan-badge premium"
+                                  title={`Valid until ${new Date(u.premium_until).toLocaleDateString()}`}
+                                >
+                                  <span className="material-symbols-outlined icon-14">stars</span>
+                                  <span>PREMIUM</span>
+                                </span>
+                              ) : u.premium_until ? (
+                                <span className="user-plan-badge expired" title={`Expired on ${new Date(u.premium_until).toLocaleDateString()}`}>
+                                  EXPIRED
+                                </span>
+                              ) : (
+                                <span className="user-plan-badge free">FREE</span>
+                              )}
+                            </td>
+
                             {/* Status */}
                             <td>
                               {u.status === 'ACTIVE' && (
@@ -433,6 +475,20 @@ export default function UsersManagement({ onNavigate, onLogout }) {
                             <td className="text-right">
                               <div className="table-actions-group" onClick={(e) => e.stopPropagation()}>
 {editorUser?.role === 'ADMIN' && <button type="button" className="row-action-btn" title="Edit user" aria-label="Edit user" onClick={event => { event.stopPropagation(); setEditing(u.raw); }}><span className="material-symbols-outlined icon-20">edit</span></button>}
+{editorUser?.role === 'ADMIN' && (
+  <button
+    type="button"
+    className="row-action-btn hover-primary"
+    title="Manage Subscription"
+    aria-label="Manage Subscription"
+    onClick={(event) => {
+      event.stopPropagation();
+      setSubModalUser(u);
+    }}
+  >
+    <span className="material-symbols-outlined icon-20">workspace_premium</span>
+  </button>
+)}
                                 <button
                                   type="button"
                                   className="row-action-btn"
@@ -505,6 +561,18 @@ export default function UsersManagement({ onNavigate, onLogout }) {
         </main>
       </div>
       {editing && <RecordEditor kind="user" record={editing} onClose={() => setEditing(null)} onSaved={fetchUsers} />}
+      {subModalUser && (
+        <SubscriptionModal
+          user={subModalUser}
+          onClose={() => setSubModalUser(null)}
+          onSaved={(newDate) => {
+            setUsers((prev) =>
+              prev.map((item) => (item.id === subModalUser.id ? { ...item, premium_until: newDate } : item))
+            );
+            setSubModalUser(null);
+          }}
+        />
+      )}
     </div>
   );
 }
